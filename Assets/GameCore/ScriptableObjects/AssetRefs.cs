@@ -2,7 +2,7 @@
 
 namespace GameCore.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "AssetRefs", menuName = "Asset References")]
+    [CreateAssetMenu(fileName = "AssetRefs", menuName = "Scriptable objects/Asset References")]
     public class AssetRefs : ScriptableObject
     {
         

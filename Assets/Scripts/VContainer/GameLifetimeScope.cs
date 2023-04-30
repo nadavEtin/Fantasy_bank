@@ -1,6 +1,6 @@
 using Assets.Scripts.Utility;
+using Assets.Utility.Jsons;
 using GameCore;
-using VContainer;
 using VContainer.Unity;
 
 namespace VContainer
@@ -11,6 +11,7 @@ namespace VContainer
         {
             builder.RegisterEntryPoint<GameDirector>();
             builder.Register<EventBus>(Lifetime.Singleton);
+            builder.Register<JsonSerialization>(Lifetime.Singleton);
         }
     }
 }
