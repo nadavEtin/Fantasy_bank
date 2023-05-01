@@ -1,0 +1,8 @@
+
+
+
+
+
+beautify:
+
+- make the event card tilt to the side of the swipe and have a trasparent stamp become move visible as the card gets closer to the minimum distance. then have an appropriate stamp animation
