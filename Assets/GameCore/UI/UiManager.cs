@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameCore.UI
 {
-    public class UiManager : IUIManager
+    public class UiManager : IUiManager
     {
         private readonly IAssetRefs _assetRefs;
 
@@ -14,6 +14,11 @@ namespace GameCore.UI
         {
             _assetRefs = assetRefs;
             _goldDisplayText = GameObject.Instantiate(_assetRefs.GoldDisplay).GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        public void GoldBalanceUpdate(int curAmnt)
+        {
+            _goldDisplayText.text = string.Format("Gold: {0}", curAmnt);
         }
     }
 }

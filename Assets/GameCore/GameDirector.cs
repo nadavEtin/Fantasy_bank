@@ -9,16 +9,16 @@ namespace GameCore
     public class GameDirector : IStartable, ITickable
     {
         private readonly EventBus _eventBus;
-        private readonly IUIManager _uiManager;
+        private readonly IUiManager _uiManager;
         private readonly IAssetRefs _assetRefs;
         
-        public GameDirector(EventBus bus)
+        public GameDirector(EventBus bus, IAssetRefs assetRefs)
         {
-            var assetRefs = Resources.Load("AssetRefs") as GameObject;
-            _assetRefs = assetRefs.GetComponent<AssetRefs>();
+            //var assetRefs = Resources.Load("AssetRefs");
+            _assetRefs = assetRefs;
             
             _eventBus = bus;
-            _uiManager = new UiManager(_assetRefs);
+            _uiManager = new UiManager(assetRefs);
         }
 
         private void LoadResources()

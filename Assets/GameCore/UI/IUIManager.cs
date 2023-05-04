@@ -1,7 +1,7 @@
 ﻿namespace GameCore.UI
 {
-    public interface IUIManager
+    public interface IUiManager
     {
-        
+        void GoldBalanceUpdate(int curAmnt);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.GameEvent.LoanEvent;
 using Lean.Touch;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,8 +9,9 @@ namespace Assets.GameEvent
 {
     public class GameEventView : MonoBehaviour
     {
-        private Action _yesResultAction, _noResultAction;
+        //private Action _yesResultAction, _noResultAction;
         private bool _pressed;
+        private LoanGameEventData _eventData;
         
         //remove these after setting up the constructor
         [SerializeField] private Camera _camera;
@@ -23,8 +25,9 @@ namespace Assets.GameEvent
         [Inject]
         public void Construct(Action yes, Action no, Camera cam)
         {
-            _yesResultAction = yes;
-            _noResultAction = no;
+            //_eventData.yes = yes;
+            //_noResultAction = no;
+            _eventData = new LoanGameEventData("yo", "man", yes, no, 100, 75);
             _camera = cam;
             _neutralPos = _settings.CardNeutralPos;
         }
@@ -85,24 +88,11 @@ namespace Assets.GameEvent
             _curFinger = null;
         }
 
-        /*public void OnPointerUp(PointerEventData eventData)
-        {
-            _pressed = false;
-            _touchData = null;
-            //check for result or snap back into place
-        }
-
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            _pressed = true;
-            _touchData = eventData;
-        }*/
-
         private void OnYesResult()
         {
-            //_yesResultAction();
             Debug.Log("yes result");
             _pressed = false;
+            _eventData.YesResult();
             
             //temp
             SnapToNeutralPos();
@@ -110,9 +100,9 @@ namespace Assets.GameEvent
 
         private void OnNoResult()
         {
-            //_noResultAction();
             Debug.Log("no result");
             _pressed = false;
+            _eventData.NoResult();
             
             //temp
             SnapToNeutralPos();

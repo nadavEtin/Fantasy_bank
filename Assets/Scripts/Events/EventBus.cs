@@ -5,6 +5,9 @@ namespace Assets.Scripts.Utility
 {
     public enum GameplayEvent
     {
+        //input
+        TouchStarted, TouchEnded,
+
         GameStart, GameEnd
     }
 
