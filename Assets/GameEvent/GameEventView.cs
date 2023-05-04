@@ -25,8 +25,6 @@ namespace Assets.GameEvent
         [Inject]
         public void Construct(Action yes, Action no, Camera cam)
         {
-            //_eventData.yes = yes;
-            //_noResultAction = no;
             _eventData = new LoanGameEventData("yo", "man", yes, no, 100, 75);
             _camera = cam;
             _neutralPos = _settings.CardNeutralPos;
@@ -34,14 +32,14 @@ namespace Assets.GameEvent
 
         private void OnEnable()
         {
-            LeanTouch.OnFingerDown += TouchStarted;
-            LeanTouch.OnFingerUp += TouchEnded;
+            //LeanTouch.OnFingerDown += TouchStarted;
+            //LeanTouch.OnFingerUp += TouchEnded;
         }
 
         private void OnDisable()
         {
-            LeanTouch.OnFingerDown -= TouchStarted;
-            LeanTouch.OnFingerUp -= TouchEnded;
+            //LeanTouch.OnFingerDown -= TouchStarted;
+            //LeanTouch.OnFingerUp -= TouchEnded;
         }
 
         private void Update()
@@ -78,7 +76,7 @@ namespace Assets.GameEvent
             transform.position = _neutralPos;
         }
 
-        private void TouchStarted(LeanFinger finger)
+        /*private void TouchStarted(LeanFinger finger)
         {
             _curFinger = LeanTouch.Fingers[0];
         }
@@ -86,7 +84,7 @@ namespace Assets.GameEvent
         private void TouchEnded(LeanFinger finger)
         {
             _curFinger = null;
-        }
+        }*/
 
         private void OnYesResult()
         {

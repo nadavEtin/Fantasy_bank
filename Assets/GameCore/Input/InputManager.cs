@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Utility;
+using GameCore.Events;
 using Lean.Touch;
 
 namespace Assets.GameCore
@@ -26,12 +27,12 @@ namespace Assets.GameCore
 
         private void TouchStarted(LeanFinger finger)
         {
-            _curFinger = LeanTouch.Fingers[0];
+            _eventBus.Publish(GameplayEvent.TouchStarted, new TouchEvent(TouchPhase.Started, finger));
         }
 
         private void TouchEnded(LeanFinger finger)
         {
-            _curFinger = null;
+            _eventBus.Publish(GameplayEvent.TouchEnded, new TouchEvent(TouchPhase.Ended, finger));
         }
     }
 }

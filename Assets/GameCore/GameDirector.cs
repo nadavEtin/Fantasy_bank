@@ -1,16 +1,20 @@
 using Assets.Scripts.Utility;
+using GameCore.Events;
 using GameCore.ScriptableObjects;
 using GameCore.UI;
+using Lean.Touch;
 using UnityEngine;
 using VContainer.Unity;
 
 namespace GameCore
 {
-    public class GameDirector : IStartable, ITickable
+    public class GameDirector : IStartable, ITickable, IGameDirector
     {
         private readonly EventBus _eventBus;
         private readonly IUiManager _uiManager;
         private readonly IAssetRefs _assetRefs;
+        
+        public TouchEvent RecentTouch { get; private set; }
         
         public GameDirector(EventBus bus, IAssetRefs assetRefs)
         {
@@ -21,9 +25,15 @@ namespace GameCore
             _uiManager = new UiManager(assetRefs);
         }
 
-        private void LoadResources()
+        private void TouchEventListener(BaseEventParams eventParams)
         {
-            
+            RecentTouch = (TouchEvent)eventParams;
+        }
+
+        public TouchEvent GetTouchData(BaseEventParams eventParams)
+        {
+            var touchData = (TouchEvent)eventParams;
+            return touchData;
         }
         
         public void Start()
