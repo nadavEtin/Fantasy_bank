@@ -1,6 +1,9 @@
 ﻿using System;
 using Assets.GameEvent.LoanEvent;
+using GameCore;
+using GameCore.Events;
 using Lean.Touch;
+using UnityEditor.DeviceSimulation;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer;
@@ -9,7 +12,6 @@ namespace Assets.GameEvent
 {
     public class GameEventView : MonoBehaviour
     {
-        //private Action _yesResultAction, _noResultAction;
         private bool _pressed;
         private LoanGameEventData _eventData;
         
@@ -17,29 +19,17 @@ namespace Assets.GameEvent
         [SerializeField] private Camera _camera;
         [SerializeField] private GameEventSettings _settings;
 
-        private LeanFinger _curFinger;
-
+        private TouchEventParams _curTouchData;
         private Vector2 _neutralPos;
-        //private PointerEventData _touchData;
+        private IGameDirector _gameDirector;
 
         [Inject]
-        public void Construct(Action yes, Action no, Camera cam)
+        public void Construct(IGameDirector gameDirector, Action yes, Action no, Camera cam)
         {
+            _gameDirector = gameDirector;
             _eventData = new LoanGameEventData("yo", "man", yes, no, 100, 75);
             _camera = cam;
             _neutralPos = _settings.CardNeutralPos;
-        }
-
-        private void OnEnable()
-        {
-            //LeanTouch.OnFingerDown += TouchStarted;
-            //LeanTouch.OnFingerUp += TouchEnded;
-        }
-
-        private void OnDisable()
-        {
-            //LeanTouch.OnFingerDown -= TouchStarted;
-            //LeanTouch.OnFingerUp -= TouchEnded;
         }
 
         private void Update()
@@ -47,8 +37,11 @@ namespace Assets.GameEvent
             if (!_pressed)
                 return;
             
+            //update the touch data for this frame
+            _curTouchData = _gameDirector.RecentTouch;
+            
             //---------   TODO:  MAKE A UNIT TEST FOR THIS -------//
-            transform.position = (Vector2)_camera.ScreenToWorldPoint(_curFinger.ScreenPosition);
+            transform.position = (Vector2)_camera.ScreenToWorldPoint(_curTouchData.TouchData.ScreenPosition);
             if (Mathf.Abs(transform.position.x) - _neutralPos.x > _settings.DragDistanceToResolveCard)
             {
                 if(transform.position.x > _neutralPos.x)
@@ -62,7 +55,7 @@ namespace Assets.GameEvent
         private void OnMouseDown()
         {
             _pressed = true;
-            //_curFinger = LeanTouch.Fingers[0];
+            _curTouchData = _gameDirector.RecentTouch;
         }
 
         private void OnMouseUp()
@@ -75,16 +68,6 @@ namespace Assets.GameEvent
         {
             transform.position = _neutralPos;
         }
-
-        /*private void TouchStarted(LeanFinger finger)
-        {
-            _curFinger = LeanTouch.Fingers[0];
-        }
-
-        private void TouchEnded(LeanFinger finger)
-        {
-            _curFinger = null;
-        }*/
 
         private void OnYesResult()
         {

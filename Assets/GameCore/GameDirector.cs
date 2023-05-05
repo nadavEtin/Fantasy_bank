@@ -15,11 +15,10 @@ namespace GameCore
         private readonly IUiManager _uiManager;
         private readonly IAssetRefs _assetRefs;
         
-        public TouchEvent RecentTouch { get; private set; }
+        public TouchEventParams RecentTouch { get; private set; }
         
         public GameDirector(EventBus bus, IAssetRefs assetRefs)
         {
-            //var assetRefs = Resources.Load("AssetRefs");
             _assetRefs = assetRefs;
             
             _eventBus = bus;
@@ -28,15 +27,9 @@ namespace GameCore
 
         private void TouchEventListener(BaseEventParams eventParams)
         {
-            RecentTouch = (TouchEvent)eventParams;
+            RecentTouch = (TouchEventParams)eventParams;
         }
 
-        public TouchEvent GetTouchData(BaseEventParams eventParams)
-        {
-            var touchData = (TouchEvent)eventParams;
-            return touchData;
-        }
-        
         public void Start()
         {
             _eventBus.Subscribe(GameplayEvent.TouchStarted, TouchEventListener);

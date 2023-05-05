@@ -27,12 +27,12 @@ namespace Assets.GameCore
 
         private void TouchStarted(LeanFinger finger)
         {
-            _eventBus.Publish(GameplayEvent.TouchStarted, new TouchEvent(TouchPhase.Started, finger));
+            _eventBus.Publish(GameplayEvent.TouchStarted, new TouchEventParams(TouchPhase.Started, finger));
         }
 
         private void TouchEnded(LeanFinger finger)
         {
-            _eventBus.Publish(GameplayEvent.TouchEnded, new TouchEvent(TouchPhase.Ended, finger));
+            _eventBus.Publish(GameplayEvent.TouchEnded, new TouchEventParams(TouchPhase.Ended, finger));
         }
     }
 }

@@ -8,12 +8,12 @@ namespace GameCore.Events
         Started, Ended
     }
     
-    public class TouchEvent : BaseEventParams
+    public class TouchEventParams : BaseEventParams
     {
         public TouchPhase Phase;
         public LeanFinger TouchData;
 
-        public TouchEvent(TouchPhase phase, LeanFinger touchData)
+        public TouchEventParams(TouchPhase phase, LeanFinger touchData)
         {
             Phase = phase;
             TouchData = touchData;
