@@ -3,12 +3,13 @@ using GameCore.Events;
 using GameCore.ScriptableObjects;
 using GameCore.UI;
 using Lean.Touch;
+using System;
 using UnityEngine;
 using VContainer.Unity;
 
 namespace GameCore
 {
-    public class GameDirector : IStartable, ITickable, IGameDirector
+    public class GameDirector : IStartable, IDisposable, IGameDirector
     {
         private readonly EventBus _eventBus;
         private readonly IUiManager _uiManager;
@@ -38,13 +39,12 @@ namespace GameCore
         
         public void Start()
         {
-            
-        
+            _eventBus.Subscribe(GameplayEvent.TouchStarted, TouchEventListener);
         }
 
-        public void Tick()
+        public void Dispose()
         {
-            
+            _eventBus.Unsubscribe(GameplayEvent.TouchStarted, TouchEventListener);
         }
     }
 }
