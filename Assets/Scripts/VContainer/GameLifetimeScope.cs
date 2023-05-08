@@ -21,6 +21,7 @@ namespace VContainer
             builder.Register<IUiManager, UiManager>(Lifetime.Scoped);
             builder.RegisterInstance<IAssetRefs, AssetRefs>(_assetRefs);
             builder.Register<InputManager>(Lifetime.Singleton);
+            builder.RegisterComponentInHierarchy<Canvas>();
         }
     }
 }

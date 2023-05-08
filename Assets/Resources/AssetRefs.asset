@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: AssetRefs
   m_EditorClassIdentifier: 
   _goldDisplay: {fileID: 4036683040202423254, guid: 1c0c914b4e3e02a4b80b74c9b00812c7, type: 3}
+  _gameEvent: {fileID: 3426804162143852959, guid: 10221b7b3d07bc04f87734efe86c9984, type: 3}

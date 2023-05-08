@@ -1,6 +1,9 @@
 ﻿using Assets.Scripts.Utility;
 using GameCore.Events;
+using GameCore.ScriptableObjects;
 using Lean.Touch;
+using VContainer;
+using VContainer.Unity;
 
 namespace Assets.GameCore
 {
@@ -8,9 +11,11 @@ namespace Assets.GameCore
     {
         private EventBus _eventBus;
 
-        public InputManager(EventBus eventBus) 
+        [Inject]
+        public InputManager(EventBus eventBus, IAssetRefs assetRefs, IObjectResolver container) 
         {
             _eventBus = eventBus;
+            container.Instantiate(assetRefs.GameEvent);
         }
 
         private void OnEnable()

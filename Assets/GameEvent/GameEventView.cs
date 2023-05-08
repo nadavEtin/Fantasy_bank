@@ -7,13 +7,14 @@ using UnityEditor.DeviceSimulation;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer;
+using VContainer.Unity;
 
 namespace Assets.GameEvent
 {
     public class GameEventView : MonoBehaviour
     {
         private bool _pressed;
-        private LoanGameEventData _eventData;
+        private IGameDataEvent _eventData;
         
         //remove these after setting up the constructor
         [SerializeField] private Camera _camera;
@@ -24,12 +25,22 @@ namespace Assets.GameEvent
         private IGameDirector _gameDirector;
 
         [Inject]
-        public void Construct(IGameDirector gameDirector, Action yes, Action no, Camera cam)
+        public void Construct(IGameDirector gameDirector/*, Action yes, Action no, Camera cam*/)
         {
             _gameDirector = gameDirector;
-            _eventData = new LoanGameEventData("yo", "man", yes, no, 100, 75);
-            _camera = cam;
-            _neutralPos = _settings.CardNeutralPos;
+            //_eventData = new LoanGameEventData("yo", "man", yes, no, 100, 75);
+            //_camera = cam;
+            //_neutralPos = _settings.CardNeutralPos;
+        }
+
+        private void Start()
+        {
+            Debug.Log("ye");
+        }
+
+        public void Injectooor(IObjectResolver resolver)
+        {
+            resolver.InjectGameObject(gameObject);
         }
 
         private void Update()

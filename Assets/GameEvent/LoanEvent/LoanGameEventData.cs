@@ -2,7 +2,7 @@
 
 namespace Assets.GameEvent.LoanEvent
 {
-    public class LoanGameEventData : BaseGameEventData
+    public class LoanGameEventData : BaseGameEventData, IGameDataEvent
     {
         protected override string _eventText { get; set; }
         public string EventText => _eventText;
