@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using GameCore.Factories;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
-namespace Assets.Scripts.Utility
+namespace ObjectPool
 {
     public enum ObjectTypes
     {

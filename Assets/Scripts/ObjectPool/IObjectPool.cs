@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.Utility
+namespace ObjectPool
 {
     public interface IObjectPool
     {

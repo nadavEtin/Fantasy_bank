@@ -1,10 +1,10 @@
-using Assets.GameEvent;
-using Assets.Scripts.Utility;
 using GameCore.Events;
 using GameCore.ScriptableObjects;
 using GameCore.UI;
 using Lean.Touch;
 using System;
+using GameEvent;
+using GameEvent.LoanEvent;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -17,6 +17,7 @@ namespace GameCore
         private readonly IUiManager _uiManager;
         private readonly IAssetRefs _assetRefs;
         private readonly Canvas _canvas;
+        private readonly GameEventManager _geManager;
         
         public TouchEventParams RecentTouch { get; private set; }
         
@@ -26,10 +27,9 @@ namespace GameCore
             _canvas = canvas;
             _eventBus = bus;
             _uiManager = new UiManager(assetRefs, canvas);
-
-            //_resolver = scope.Container;
-            //scope.Instantiate(_assetRefs.GameEvent);
-            //GameEventCreate();
+            _geManager = new GameEventManager(_assetRefs);
+            
+            GameEventCreate();
         }
 
         private void TouchEventListener(BaseEventParams eventParams)
@@ -53,9 +53,7 @@ namespace GameCore
 
         private void GameEventCreate()
         {
-            GameObject.Instantiate(_assetRefs.GameEvent).GetComponent<GameEventView>().Injectooor(_resolver);
-
-            //_resolver.Instantiate(_assetRefs.GameEvent).GetComponent<GameEventView>().Injectooor(_resolver);
+            _geManager.CreateGameEvent(GameEventType.Loan);
         }
 
         #endregion

@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Utility;
-using GameCore.Events;
+﻿using GameCore.Events;
 
 namespace GameCore
 {

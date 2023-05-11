@@ -1,11 +1,10 @@
-﻿using Assets.Scripts.Utility;
-using GameCore.Events;
+﻿using GameCore.Events;
 using GameCore.ScriptableObjects;
 using Lean.Touch;
 using VContainer;
 using VContainer.Unity;
 
-namespace Assets.GameCore
+namespace GameCore.Input
 {
     public class InputManager
     {

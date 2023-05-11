@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Utility;
+﻿using GameCore.Events;
 using UnityEngine;
 
 namespace GameCore.Factories
@@ -12,7 +12,7 @@ namespace GameCore.Factories
         
         public override GameObject Create()
         {
-            throw new System.NotImplementedException();
+            return null;
         }
     }
 }

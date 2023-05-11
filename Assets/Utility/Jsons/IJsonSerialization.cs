@@ -1,4 +1,4 @@
-﻿namespace Assets.Utility.Jsons
+﻿namespace Utility.Jsons
 {
     public interface IJsonSerialization
     {

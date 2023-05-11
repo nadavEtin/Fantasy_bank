@@ -1,7 +1,12 @@
 ﻿using System;
 
-namespace Assets.GameEvent.LoanEvent
+namespace GameEvent.LoanEvent
 {
+    public enum GameEventType
+    {
+        Loan
+    }
+
     public class LoanGameEventData : BaseGameEventData, IGameDataEvent
     {
         protected override string _eventText { get; set; }
@@ -12,9 +17,11 @@ namespace Assets.GameEvent.LoanEvent
         public Action YesResult => _yesResult;
         protected override Action _noResult { get; set; }
         public Action NoResult => _noResult;
+        public GameEventType Type { get; }
         protected override int _loanPrice { get; set; }
         public int LoanPrice => _loanPrice;
         protected override int _successChance { get; set; }
+        protected override GameEventType _type { get; set; }
         public int SuccessChance => _successChance;
 
         public LoanGameEventData(string eventText, string eventTitle, Action yesResult, Action noResult, int loanPrice, int successChance)

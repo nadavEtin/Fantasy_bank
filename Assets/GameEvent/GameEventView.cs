@@ -1,15 +1,11 @@
-﻿using System;
-using Assets.GameEvent.LoanEvent;
+﻿using Bank;
 using GameCore;
 using GameCore.Events;
-using Lean.Touch;
-using UnityEditor.DeviceSimulation;
+using GameCore.ScriptableObjects;
+using GameEvent.LoanEvent;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using VContainer;
-using VContainer.Unity;
 
-namespace Assets.GameEvent
+namespace GameEvent
 {
     public class GameEventView : MonoBehaviour
     {
@@ -23,24 +19,13 @@ namespace Assets.GameEvent
         private TouchEventParams _curTouchData;
         private Vector2 _neutralPos;
         private IGameDirector _gameDirector;
-
-        [Inject]
-        public void Construct(IGameDirector gameDirector/*, Action yes, Action no, Camera cam*/)
+        private IBankManager _bankManager;
+        
+        public void Init(IGameDirector gameDirector, IBankManager bankManager /*, Action yes, Action no, Camera cam*/)
         {
             _gameDirector = gameDirector;
-            //_eventData = new LoanGameEventData("yo", "man", yes, no, 100, 75);
-            //_camera = cam;
-            //_neutralPos = _settings.CardNeutralPos;
-        }
-
-        private void Start()
-        {
-            Debug.Log("ye");
-        }
-
-        public void Injectooor(IObjectResolver resolver)
-        {
-            resolver.InjectGameObject(gameObject);
+            _bankManager = bankManager;
+            _eventData = new LoanGameEventData("yo", "man", null, null, 100, 75);
         }
 
         private void Update()

@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.Utility
+namespace GameCore.Events
 {
     public enum GameplayEvent
     {
         //input
         TouchStarted, TouchEnded,
-
+        
+        GoldBalanceChanged,
         GameStart, GameEnd
     }
 
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class EventBus
     {
         private readonly Dictionary<GameplayEvent, List<Action<BaseEventParams>>> _subscription = new();

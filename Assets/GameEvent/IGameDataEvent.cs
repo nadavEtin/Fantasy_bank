@@ -1,10 +1,12 @@
 ﻿using System;
+using GameEvent.LoanEvent;
 
-namespace Assets.GameEvent
+namespace GameEvent
 {
     public interface IGameDataEvent
     {
         public Action YesResult { get; }
         public Action NoResult { get; }
+        public GameEventType Type { get; }
     }
 }

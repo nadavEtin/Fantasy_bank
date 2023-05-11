@@ -1,4 +1,4 @@
-﻿namespace Assets.Bank
+﻿namespace Bank
 {
     public class BankData : IBankData
     {

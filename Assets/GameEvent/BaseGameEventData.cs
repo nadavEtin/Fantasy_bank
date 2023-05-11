@@ -1,6 +1,7 @@
 ﻿using System;
+using GameEvent.LoanEvent;
 
-namespace Assets.GameEvent
+namespace GameEvent
 {
     public abstract class BaseGameEventData
     {
@@ -10,5 +11,6 @@ namespace Assets.GameEvent
         protected abstract Action _noResult { get; set; }
         protected abstract int _loanPrice { get; set; }
         protected abstract int _successChance { get; set; }
+        protected abstract GameEventType _type { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace Assets.Utility.Jsons
+namespace Utility.Jsons
 {
     public class JsonSerialization : IJsonSerialization
     {
