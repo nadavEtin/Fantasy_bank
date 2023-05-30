@@ -1,8 +1,8 @@
 using GameCore.Events;
 using GameCore.ScriptableObjects;
 using GameCore.UI;
-using Lean.Touch;
 using System;
+using Bank;
 using GameEvent;
 using GameEvent.LoanEvent;
 using UnityEngine;
@@ -14,20 +14,29 @@ namespace GameCore
     public class GameDirector : IStartable, IDisposable, IGameDirector
     {
         private readonly EventBus _eventBus;
-        private readonly IUiManager _uiManager;
+        
         private readonly IAssetRefs _assetRefs;
         private readonly Canvas _canvas;
-        private readonly GameEventManager _geManager;
+        private readonly IGameEventManager _geManager;
+        
+        private readonly Camera _camera;
+        
+        //should be inited by vcontainer
+        private readonly IBankManager _bankManager;
+        private readonly IUiManager _uiManager;
         
         public TouchEventParams RecentTouch { get; private set; }
         
-        public GameDirector(EventBus bus, IAssetRefs assetRefs, Canvas canvas, IObjectResolver scope)
+        public GameDirector(EventBus bus, IAssetRefs assetRefs, Canvas canvas, 
+            Camera camera, IUiManager uiManager)
         {
             _assetRefs = assetRefs;
             _canvas = canvas;
+            _camera = camera;
             _eventBus = bus;
-            _uiManager = new UiManager(assetRefs, canvas);
-            _geManager = new GameEventManager(_assetRefs);
+            _bankManager = new BankManager(_eventBus);
+            _uiManager = uiManager;
+            _geManager = new GameEventManager(_assetRefs, this, _bankManager, camera);
             
             GameEventCreate();
         }
@@ -53,7 +62,7 @@ namespace GameCore
 
         private void GameEventCreate()
         {
-            _geManager.CreateGameEvent(GameEventType.Loan);
+            //_geManager.CreateGameEvent(GameEventType.Loan);
         }
 
         #endregion

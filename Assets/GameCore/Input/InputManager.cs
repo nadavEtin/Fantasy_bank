@@ -1,29 +1,21 @@
-﻿using GameCore.Events;
-using GameCore.ScriptableObjects;
+﻿using System;
+using GameCore.Events;
 using Lean.Touch;
-using VContainer;
-using VContainer.Unity;
 
 namespace GameCore.Input
 {
-    public class InputManager
+    public class InputManager : IDisposable
     {
         private EventBus _eventBus;
-
-        [Inject]
-        public InputManager(EventBus eventBus, IAssetRefs assetRefs, IObjectResolver container) 
+        
+        public InputManager(EventBus eventBus) 
         {
             _eventBus = eventBus;
-            container.Instantiate(assetRefs.GameEvent);
-        }
-
-        private void OnEnable()
-        {
             LeanTouch.OnFingerDown += TouchStarted;
             LeanTouch.OnFingerUp += TouchEnded;
         }
 
-        private void OnDisable()
+        public void Dispose()
         {
             LeanTouch.OnFingerDown -= TouchStarted;
             LeanTouch.OnFingerUp -= TouchEnded;
@@ -38,5 +30,7 @@ namespace GameCore.Input
         {
             _eventBus.Publish(GameplayEvent.TouchEnded, new TouchEventParams(TouchPhase.Ended, finger));
         }
+
+        
     }
 }

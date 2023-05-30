@@ -9,29 +9,33 @@ namespace GameEvent.LoanEvent
 
     public class LoanGameEventData : BaseGameEventData, IGameDataEvent
     {
-        protected override string _eventText { get; set; }
-        public string EventText => _eventText;
-        protected override string _eventTitle { get; set; }
-        public string EventTitle => _eventTitle;
-        protected override Action _yesResult { get; set; }
-        public Action YesResult => _yesResult;
-        protected override Action _noResult { get; set; }
-        public Action NoResult => _noResult;
+        public int SuccessChance { get; }
+        public int LoanPrice { get; }
         public GameEventType Type { get; }
-        protected override int _loanPrice { get; set; }
-        public int LoanPrice => _loanPrice;
-        protected override int _successChance { get; set; }
-        protected override GameEventType _type { get; set; }
-        public int SuccessChance => _successChance;
 
-        public LoanGameEventData(string eventText, string eventTitle, Action yesResult, Action noResult, int loanPrice, int successChance)
+
+        public override void RequirementsMetValidation()
         {
-            _eventText = eventText;
-            _eventTitle = eventTitle;
-            _yesResult = yesResult;
-            _noResult = noResult;
-            _loanPrice = loanPrice;
-            _successChance = successChance;
+            throw new NotImplementedException();
+        }
+
+        protected override int[] _eventRequirements { get; set; }
+        protected override int _id { get; set; }
+        protected override string _eventText { get; set; }
+        protected override string _eventTitle { get; set; }
+        protected override Action<bool, IGameEventView> _resolutionCb { get; set; }
+        protected override GameEventType _type { get; set; }
+
+        public string EventText => _eventText;
+        public string EventTitle => _eventTitle;
+        public Action<bool, IGameEventView> ResolutionCb => _resolutionCb;
+
+        public LoanGameEventData(int id, string eventText, string eventTitle, Action<bool, IGameEventView> resolveCb,
+            int loanPrice, int successChance, GameEventType type, int[] eventRequirements) : base(id, eventText,
+            eventTitle, resolveCb, type, eventRequirements)
+        {
+            LoanPrice = loanPrice;
+            SuccessChance = successChance;
         }
     }
 }

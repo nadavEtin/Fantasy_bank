@@ -1,14 +1,15 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Utility.Jsons
 {
-    public class JsonSerialization : IJsonSerialization
+    public class JsonSerialization : IJsonSerialization, IStartable
     {
-        private readonly string baseFilePath; 
+        private string baseFilePath;
 
-        public JsonSerialization()
+        public void Start()
         {
             baseFilePath = Path.Combine(Application.persistentDataPath, "FantasyBank");
         }
@@ -16,7 +17,6 @@ namespace Utility.Jsons
         public void WriteDataToFile<T>(T dataObj, string fileName)
         {
             var jsonString = ToJson(dataObj);
-            
         }
 
         public void WriteDataToFile<T>(T[] dataObjArray, string fileName)

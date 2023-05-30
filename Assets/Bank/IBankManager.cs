@@ -3,6 +3,8 @@
     public interface IBankManager
     {
         int GoldBalance { get; }
-        bool GetPermissionToSpendGold(int goldAmount);
+        //bool CheckAvailableGold(int goldAmount);
+        bool GetGoldFromBank(int goldAmount);
+        void AddGoldToBank(int goldAmount);
     }
 }

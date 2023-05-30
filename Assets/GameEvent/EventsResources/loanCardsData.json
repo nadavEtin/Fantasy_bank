@@ -1,0 +1,103 @@
+{
+  "Items": [
+    {
+      "cardName": "The Minotaur Salesman",
+      "cardText": "“For generations my family has guarded the maze, it’s so old fashioned” said the Minotaur. “I want to see the world, meet new people, and sell them high quality axes!” I know what you think, ‘Everyone will be too afraid to even talk to him!’ but don’t worry” he said with a wink “my charisma will win them over”.",
+      "introImageName": "image1",
+      "approveImageName": "minotaur_salesman",
+      "cardDuration": 4,
+      "chanceOfSuccess": 90,
+      "loanCost": 20
+    },
+    {
+      "cardName": "Troll Tolls",
+      "cardText": "Three trolls enter the chamber. The largest of them says: “We trolls are starting a security company. No more lone troll guarding one bridge. Now any lord can have trolls guard his castle. Need gold to advertise new company. Give us gold, we give more back”.",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 2,
+      "chanceOfSuccess": 80,
+      "loanCost": 20
+    },
+    {
+      "cardName": "Tomato Farmer",
+      "cardText": "A tall man with a large hat says \"I tried being a bandit, was no good at it. My father was a tomato farmer, time to go back to my roots.\"",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 5,
+      "chanceOfSuccess": 88,
+      "loanCost": 20
+    },
+    {
+      "cardName": "Band of Adventurers",
+      "cardText": "There's amazing treasure in the ruins atop Supi mountain. We just need a small loan to get enchanted armor and weapons so we can deal with the monsters there.",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 4,
+      "chanceOfSuccess": 38,
+      "loanCost": 20
+    },
+    {
+      "cardName": "Dragon School",
+      "cardText": "A family of silver drakes wants to open a school for mages. They lost their hoard of gold and gems after being raided by a group of adventurers and could use a little help.",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 6,
+      "chanceOfSuccess": 70,
+      "loanCost": 20
+    },
+    {
+      "cardName": "The wise monk",
+      "cardText": "An old monk with thick eyebrows approaches: \" I've meditated all my life and have reached      enlightenment. My only wish is to share my knowledge with others. 20 others at a time, for an exclusive price.\" ",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 3,
+      "chanceOfSuccess": 2,
+      "loanCost": 20
+    },
+    {
+      "cardName": "Open stage tavern",
+      "cardText": "Life is hard for an average bard. Taverns only want the good bards to play for them. I'm going to change that and open a tavern where only average bards can play. Patrons will like that... right?",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 3,
+      "chanceOfSuccess": 50,
+      "loanCost": 20
+    },
+    {
+      "cardName": "placeholder3",
+      "cardText": "yes",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 4,
+      "chanceOfSuccess": 2,
+      "loanCost": 20
+    },
+    {
+      "cardName": "placeholder8",
+      "cardText": "yes",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 3,
+      "chanceOfSuccess": 2,
+      "loanCost": 20
+    },
+    {
+      "cardName": "placeholder4",
+      "cardText": "yes",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 4,
+      "chanceOfSuccess": 2,
+      "loanCost": 20
+    },
+    {
+      "cardName": "placeholder5",
+      "cardText": "yes",
+      "introImageName": "image1",
+      "approveImageName": "loan_result_sprite",
+      "cardDuration": 2,
+      "chanceOfSuccess": 2,
+      "loanCost": 20
+    }
+  ]
+}

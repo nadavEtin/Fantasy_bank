@@ -18,12 +18,13 @@ namespace VContainer
         {
             builder.RegisterEntryPoint<GameDirector>();
             builder.Register<EventBus>(Lifetime.Singleton);
-            builder.Register<JsonSerialization>(Lifetime.Singleton);
-            builder.Register<IUiManager, UiManager>(Lifetime.Scoped);
+            builder.Register<JsonSerialization>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<UiManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.RegisterInstance<IAssetRefs, AssetRefs>(_assetRefs);
-            builder.Register<InputManager>(Lifetime.Singleton);
-            builder.Register<IBankManager, BankManager>(Lifetime.Scoped);
+            builder.RegisterEntryPoint<InputManager>();
+            builder.Register<BankManager>(Lifetime.Scoped).AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<Canvas>();
+            builder.RegisterComponentInHierarchy<Camera>();
         }
     }
 }

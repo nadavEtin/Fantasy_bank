@@ -5,8 +5,8 @@ namespace GameEvent
 {
     public interface IGameDataEvent
     {
-        public Action YesResult { get; }
-        public Action NoResult { get; }
-        public GameEventType Type { get; }
+        Action<bool, IGameEventView> ResolutionCb { get; }
+        GameEventType Type { get; }
+        int LoanPrice { get; }
     }
 }

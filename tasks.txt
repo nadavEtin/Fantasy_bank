@@ -12,3 +12,12 @@ beautify:
 stories:
 
 - make a story about 'private void'
+
+special events:
+- event that naturally ticks 2/3/4... every turn
+
+
+relics/effects:
+- makes all countdowns tick for +1
+- makes all coundowns tick double as fast
+- one a specific day cant approve loans/they cost more/less/different success chance

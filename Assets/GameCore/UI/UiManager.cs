@@ -1,7 +1,6 @@
 ﻿using GameCore.ScriptableObjects;
 using TMPro;
 using UnityEngine;
-using VContainer;
 
 namespace GameCore.UI
 {
@@ -11,7 +10,7 @@ namespace GameCore.UI
         private Canvas _canvas;
 
         private TextMeshProUGUI _goldDisplayText;
-
+        
         public UiManager(IAssetRefs assetRefs, Canvas canvas)
         {
             _assetRefs = assetRefs;

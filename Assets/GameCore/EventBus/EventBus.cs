@@ -40,7 +40,7 @@ namespace GameCore.Events
         public void Publish(GameplayEvent eventType, BaseEventParams eventParams)
         {
             //var handlerList = _subscription[eventType];
-            if (_subscription[eventType] == null)
+            if (_subscription.ContainsKey(eventType) == false)
                 return;
 
             var handlerList = _subscription[eventType];

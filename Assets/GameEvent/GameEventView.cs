@@ -1,4 +1,5 @@
-﻿using Bank;
+﻿using System;
+using Bank;
 using GameCore;
 using GameCore.Events;
 using GameCore.ScriptableObjects;
@@ -7,10 +8,16 @@ using UnityEngine;
 
 namespace GameEvent
 {
-    public class GameEventView : MonoBehaviour
+    public interface IGameEventView
+    {
+        IGameDataEvent EventData { get; }
+    }
+
+    public class GameEventView : MonoBehaviour, IGameEventView
     {
         private bool _pressed;
         private IGameDataEvent _eventData;
+        public IGameDataEvent EventData => _eventData;
         
         //remove these after setting up the constructor
         [SerializeField] private Camera _camera;
@@ -20,12 +27,31 @@ namespace GameEvent
         private Vector2 _neutralPos;
         private IGameDirector _gameDirector;
         private IBankManager _bankManager;
-        
-        public void Init(IGameDirector gameDirector, IBankManager bankManager /*, Action yes, Action no, Camera cam*/)
+        private IGameEventManager _gameEventManager;
+        private Action<bool, IGameEventView> _resolutionCb;
+
+        public void Init(IGameDirector gameDirector,  IBankManager bankManager, Action<bool, 
+            IGameEventView> resolutionCb, Camera camera)
         {
+            _camera = camera;
             _gameDirector = gameDirector;
             _bankManager = bankManager;
-            _eventData = new LoanGameEventData("yo", "man", null, null, 100, 75);
+            _resolutionCb = resolutionCb;
+            _eventData = new LoanGameEventData(1, "event text", "title", 
+                resolutionCb, 100, 75, GameEventType.Loan, null);
+        }
+
+        public void ActivateEvent()
+        {
+            if (_bankManager.GoldBalance < _eventData.LoanPrice)
+            {
+                //TODO: show some 'not enough gold' message
+                OnNoResult();
+            }
+            else
+            {
+                //TODO: show the event
+            }
         }
 
         private void Update()
@@ -69,7 +95,16 @@ namespace GameEvent
         {
             Debug.Log("yes result");
             _pressed = false;
-            _eventData.YesResult();
+            
+            
+            var res = _bankManager.GetGoldFromBank(_eventData.LoanPrice);
+            if(res == false)
+                OnNoResult();
+                    
+            //_gameEventManager.
+                //TODO: continue process after approved loan
+            
+            _eventData.ResolutionCb(true, this);
             
             //temp
             SnapToNeutralPos();
@@ -79,7 +114,7 @@ namespace GameEvent
         {
             Debug.Log("no result");
             _pressed = false;
-            _eventData.NoResult();
+            _eventData.ResolutionCb(false, this);
             
             //temp
             SnapToNeutralPos();
