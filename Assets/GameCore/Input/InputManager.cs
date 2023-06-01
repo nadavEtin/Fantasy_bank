@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Numerics;
 using GameCore.Events;
 using Lean.Touch;
 
 namespace GameCore.Input
 {
-    public class InputManager : IDisposable
+    public class InputManager : IDisposable, IInputManager
     {
         private EventBus _eventBus;
+        
+        public LeanFinger RecentTouch { get; private set; }
         
         public InputManager(EventBus eventBus) 
         {
@@ -23,11 +26,13 @@ namespace GameCore.Input
 
         private void TouchStarted(LeanFinger finger)
         {
+            RecentTouch = finger;
             _eventBus.Publish(GameplayEvent.TouchStarted, new TouchEventParams(TouchPhase.Started, finger));
         }
 
         private void TouchEnded(LeanFinger finger)
         {
+            RecentTouch = finger;
             _eventBus.Publish(GameplayEvent.TouchEnded, new TouchEventParams(TouchPhase.Ended, finger));
         }
 

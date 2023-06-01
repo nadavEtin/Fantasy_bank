@@ -3,9 +3,12 @@ using UnityEngine;
 namespace GameCore.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "GameEventSettings", menuName = "Scriptable objects/Game event settings")]
-    public class GameEventSettings : ScriptableObject
+    public class GameEventSettings : ScriptableObject, IGameEventSettings
     {
-        public float DragDistanceToResolveCard;
-        public Vector2 CardNeutralPos;
+        [SerializeField] private float _dragDistanceToResolveCard;
+        [SerializeField] private Vector2 _cardNeutralPos;
+
+        public float DragDistanceToResolveCard => _dragDistanceToResolveCard;
+        public Vector2 CardNeutralPos => _cardNeutralPos;
     }
 }

@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using Bank;
 using GameCore;
+using GameCore.Input;
 using GameCore.ScriptableObjects;
 using GameEvent.LoanEvent;
 using UnityEngine;
 
 namespace GameEvent
 {
-    public class GameEventManager : IGameEventManager, IGameEventValidation
+    public class EventManager : IGameEventManager, IEventViewAccess
     {
         private IAssetRefs _assetRefs;
-        private IGameDirector _gameDirector;
+        private IInputManager _inputManager;
         private IBankManager _bankManager;
         private EventValidator _eventValidator;
         private Camera _camera;
@@ -19,13 +20,13 @@ namespace GameEvent
         private Dictionary<GameEventType, List<IGameEventView>> _approvedEventsOnCountdown;
         private GameObject _eventContainer;
 
-        public GameEventManager(IAssetRefs assetRefs, IGameDirector gameDirector, IBankManager bankManager,
-            Camera camera)
+        public EventManager(IAssetRefs assetRefs, IInputManager inputManager, 
+            IBankManager bankManager, Camera camera)
         {
             _assetRefs = assetRefs;
-            _gameDirector = gameDirector;
+            _inputManager = inputManager;
             _bankManager = bankManager;
-            _eventValidator = new EventValidator();
+            _eventValidator = new EventValidator(_bankManager);
             _camera = camera;
             _pendingEvents = new Dictionary<GameEventType, List<IGameEventView>>();
             _approvedEventsOnCountdown = new Dictionary<GameEventType, List<IGameEventView>>();
@@ -38,7 +39,7 @@ namespace GameEvent
         {
             var geView = GameObject.Instantiate(_assetRefs.GameEvent, _eventContainer.transform)
                 .GetComponent<GameEventView>();
-            geView.Init(_gameDirector, _bankManager, EventResolution, _camera);
+            geView.Init(_inputManager, this, _bankManager, EventResolution, _camera);
 
             if (_pendingEvents.ContainsKey(type) == false)
                 _pendingEvents.Add(type, new List<IGameEventView>());
@@ -53,7 +54,13 @@ namespace GameEvent
 
         public bool EventValidation(BaseGameEventData eventData)
         {
-            throw new NotImplementedException();
+            switch (eventData.eventType)
+            {
+                case GameEventType.Loan:
+                    return _eventValidator.LoanEventValidation((LoanGameEventData)eventData);;
+                default:
+                    return true;
+            }
         }
     }
 }
