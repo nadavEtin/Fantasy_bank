@@ -1,7 +1,5 @@
 ﻿using System;
 using Bank;
-using GameCore;
-using GameCore.Events;
 using GameCore.Input;
 using GameCore.ScriptableObjects;
 using GameEvent.LoanEvent;
@@ -22,27 +20,32 @@ namespace GameEvent
         private Vector2 _neutralPos;
 
         private IInputManager _inputManager;
-        private IBankManager _bankManager;
+        private IBankBalance _bankBalance;
         private IEventViewAccess _eventViewAccess;
         private Action<bool, IGameEventView> _resolutionCb;
         private Camera _camera;
 
-        public void Init(IInputManager inputManager, IEventViewAccess eventManager, IBankManager bankManager,
+        public void Init(IInputManager inputManager, IEventViewAccess eventManager, IBankBalance bankBalance,
             Action<bool, IGameEventView> resolutionCb, Camera camera)
         {
             _camera = camera;
             _inputManager = inputManager;
             _eventViewAccess = eventManager;
-            _bankManager = bankManager;
+            _bankBalance = bankBalance;
             _resolutionCb = resolutionCb;
             _eventData = new LoanGameEventData(1, "event text", "title",
-                resolutionCb, 100, 75, GameEventType.Loan, null);
+                resolutionCb, _bankBalance, 100, 75, GameEventType.Loan, null);
+        }
+
+        public bool EventValidation()
+        {
+            return _eventData.RequirementsMetValidation();
         }
 
         public void ActivateEvent()
         {
-            _eventViewAccess.EventValidation((LoanGameEventData)_eventData);
-            if (_bankManager.GoldBalance < _eventData.LoanPrice)
+            //var res = _eventViewAccess.EventValidation((LoanGameEventData)_eventData);
+            /*if (res)
             {
                 //TODO: show some 'not enough gold' message
                 OnNoResult();
@@ -50,7 +53,7 @@ namespace GameEvent
             else
             {
                 //TODO: show the event
-            }
+            }*/
         }
 
         private void Update()
@@ -94,16 +97,16 @@ namespace GameEvent
         {
             Debug.Log("yes result");
             _pressed = false;
-
-
-            var res = _bankManager.GetGoldFromBank(_eventData.LoanPrice);
+            
+            //TODO: invoke yesCb that should check if theres enoguh balance in the bank
+            /*var res = _bankBalance.GetGoldFromBank(_eventData.LoanPrice);
             if (res == false)
-                OnNoResult();
+                OnNoResult();*/
 
             //_gameEventManager.
             //TODO: continue process after approved loan
 
-            _eventData.ResolutionCb(true, this);
+            //_eventData.ResolutionCb(true, this);
 
             //temp
             SnapToNeutralPos();
@@ -113,7 +116,7 @@ namespace GameEvent
         {
             Debug.Log("no result");
             _pressed = false;
-            _eventData.ResolutionCb(false, this);
+            //_eventData.ResolutionCb(false, this);
 
             //temp
             SnapToNeutralPos();

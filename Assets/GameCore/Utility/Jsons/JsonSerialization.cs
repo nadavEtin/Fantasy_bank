@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace Utility.Jsons
+namespace GameCore.Utility.Jsons
 {
     public class JsonSerialization : IJsonSerialization, IStartable
     {

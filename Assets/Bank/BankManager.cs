@@ -1,16 +1,14 @@
-﻿using GameCore.Events;
-
-namespace Bank
+﻿namespace Bank
 {
-    public class BankManager : IBankManager
+    public class BankManager : IBankBalance, IBankDeposit, IBankWithdraw
     {
-        private EventBus _eventBus;
+        //private EventBus _eventBus;
         public int GoldBalance { get; private set; }
         
-        public BankManager(EventBus eventBus)
+        /*public BankManager(EventBus eventBus)
         {
             _eventBus = eventBus;
-        }
+        }*/
 
         public bool GetGoldFromBank(int goldAmount)
         {

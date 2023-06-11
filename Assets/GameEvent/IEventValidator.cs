@@ -1,11 +1,9 @@
-﻿using GameEvent.LoanEvent;
-
-namespace GameEvent
+﻿namespace GameEvent
 {
     public interface IEventValidator
     {
         void UpdateAvailableEvents();
         void EventCompleted(int id);
-        bool LoanEventValidation(LoanGameEventData eventData);
+        bool EventValidationEntry(IGameEventView eventView);
     }
 }

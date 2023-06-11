@@ -2,6 +2,6 @@
 {
     public interface IEventViewAccess
     {
-        public bool EventValidation(BaseGameEventData eventData);
+        //public bool EventValidation(BaseGameEventData eventData);
     }
 }

@@ -1,66 +1,51 @@
-using GameCore.Events;
 using GameCore.ScriptableObjects;
 using GameCore.UI;
-using System;
 using Bank;
+using GameCore.EventBus;
+using GameCore.EventBus.GameplayEvents;
 using GameEvent;
-using GameEvent.LoanEvent;
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 
 namespace GameCore
 {
-    public class GameDirector : IStartable, IDisposable, IGameDirector
+    public class GameDirector : IGameDirector
     {
-        private readonly EventBus _eventBus;
+        private readonly EventBus.EventBus _eventBus;
 
         private readonly IAssetRefs _assetRefs;
         private readonly Canvas _canvas;
         private readonly IGameEventManager _geManager;
 
         private readonly Camera _camera;
-        private readonly IBankManager _bankManager;
+        private readonly IBankBalance _bankBalance;
         private readonly IUiManager _uiManager;
 
-        public TouchEventParams RecentTouch { get; private set; }
-
-        public GameDirector(EventBus bus, IAssetRefs assetRefs, IBankManager bankManager,
+        public GameDirector(EventBus.EventBus bus, IAssetRefs assetRefs, IBankBalance bankBalance,
             IGameEventManager eventManager, Canvas canvas, Camera camera, IUiManager uiManager)
         {
             _assetRefs = assetRefs;
             _canvas = canvas;
             _camera = camera;
             _eventBus = bus;
-            _bankManager = bankManager;
+            _bankBalance = bankBalance;
             _uiManager = uiManager;
-            _geManager = eventManager; //new GameEventManager(_assetRefs, this, _bankManager, camera);
+            _geManager = eventManager;
 
             GameEventCreate();
         }
-
-        private void TouchEventListener(BaseEventParams eventParams)
-        {
-            RecentTouch = (TouchEventParams)eventParams;
-        }
-
-        public void Start()
-        {
-            _eventBus.Subscribe(GameplayEvent.TouchStarted, TouchEventListener);
-        }
-
-        public void Dispose()
-        {
-            _eventBus.Unsubscribe(GameplayEvent.TouchStarted, TouchEventListener);
-        }
+        
 
         #region Game Flow
 
-        private IObjectResolver _resolver;
+        private void AdvanceTurn()
+        {
+            _eventBus.Publish(GameplayEvent.NextTurn, new NextTurnEventParams());
+        }
 
         private void GameEventCreate()
         {
-            //_geManager.CreateGameEvent(GameEventType.Loan);
+            _geManager.CreateGameEvent(GameEventType.Loan);
         }
 
         #endregion

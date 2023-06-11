@@ -1,6 +1,4 @@
-﻿using GameEvent.LoanEvent;
-
-namespace GameEvent
+﻿namespace GameEvent
 {
     public interface IGameEventManager
     {

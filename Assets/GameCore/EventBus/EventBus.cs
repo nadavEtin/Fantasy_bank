@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameCore.Events
+namespace GameCore.EventBus
 {
     public enum GameplayEvent
     {
         //input
         TouchStarted, TouchEnded,
+        
+        //game flow
+        NextTurn,
         
         GoldBalanceChanged,
         GameStart, GameEnd

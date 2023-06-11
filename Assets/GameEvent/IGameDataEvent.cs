@@ -1,12 +1,12 @@
 ﻿using System;
-using GameEvent.LoanEvent;
 
 namespace GameEvent
 {
     public interface IGameDataEvent
     {
-        Action<bool, IGameEventView> ResolutionCb { get; }
-        GameEventType Type { get; }
-        int LoanPrice { get; }
+        //Action<bool, IGameEventView> ResolutionCb { get; }
+        GameEventType EventType { get; }
+        int ID { get; }
+        bool RequirementsMetValidation();
     }
 }

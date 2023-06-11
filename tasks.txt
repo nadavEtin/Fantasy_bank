@@ -15,6 +15,7 @@ stories:
 
 special events:
 - event that naturally ticks 2/3/4... every turn
+- something makes dragging the cards to yes/no pos much "harder" / slower
 
 
 relics/effects:

@@ -1,6 +1,6 @@
 ﻿using Lean.Touch;
 
-namespace GameCore.Events
+namespace GameCore.EventBus
 {
     public enum TouchPhase
     {

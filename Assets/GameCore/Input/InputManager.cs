@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Numerics;
-using GameCore.Events;
+using GameCore.EventBus;
 using Lean.Touch;
 
 namespace GameCore.Input
 {
     public class InputManager : IDisposable, IInputManager
     {
-        private EventBus _eventBus;
+        private readonly EventBus.EventBus _eventBus;
         
         public LeanFinger RecentTouch { get; private set; }
         
-        public InputManager(EventBus eventBus) 
+        public InputManager(EventBus.EventBus eventBus) 
         {
             _eventBus = eventBus;
             LeanTouch.OnFingerDown += TouchStarted;

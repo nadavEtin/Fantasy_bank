@@ -1,4 +1,4 @@
-﻿namespace GameCore.Events
+﻿namespace GameCore.EventBus
 {
     public class SingleParamInt : BaseEventParams
     {

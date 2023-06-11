@@ -1,33 +1,37 @@
 ﻿using System;
-using GameEvent.LoanEvent;
+using Bank;
+using UnityEditor.Compilation;
 
 namespace GameEvent
 {
-    public abstract class BaseGameEventData
+    public enum GameEventType
     {
-        public int[] EventRequirements => _eventRequirements;
-        public int ID => _id;
-        public abstract GameEventType eventType { get; protected set; }
+        Loan
+    }
+    
+    public abstract class BaseGameEventData : IGameDataEvent
+    {
+        public int[] EventRequirements { get; protected set; }
+        public int ID { get; protected set; }
 
-        public abstract void RequirementsMetValidation();
-
-        protected abstract int[] _eventRequirements { get; set; }
-        protected abstract int _id { get; set; }
-        protected abstract string _eventText { get; set; }
-        protected abstract string _eventTitle { get; set; }
-        protected abstract Action<bool, IGameEventView> _resolutionCb { get; set; }
+        public abstract bool RequirementsMetValidation();
+        public GameEventType EventType { get; protected set; }
+        protected string _eventText { get; set; }
+        protected string _eventTitle { get; set; }
+        protected Action<bool, IGameEventView> _resolutionCb { get; set; }
+        protected IBankBalance _bankBalance;
         
 
-        protected BaseGameEventData(int id, string eventText, string eventTitle,
-            Action<bool, IGameEventView> resolutionCb,
-            GameEventType eventType, int[] eventRequirements)
+        protected BaseGameEventData(int id, string eventText, string eventTitle, IBankBalance bankBalance,
+            Action<bool, IGameEventView> resolutionCb, GameEventType eventType, int[] eventRequirements)
         {
-            _id = id;
+            _bankBalance = bankBalance;
+            ID = id;
             _eventText = eventText;
             _eventTitle = eventTitle;
             _resolutionCb = resolutionCb;
-            eventType = eventType;
-            _eventRequirements = eventRequirements;
+            EventType = eventType;
+            EventRequirements = eventRequirements;
         }
     }
 }

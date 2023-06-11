@@ -1,9 +1,7 @@
-﻿using GameCore.Events;
-
-namespace GameCore
+﻿namespace GameCore
 {
     public interface IGameDirector
     {
-        TouchEventParams RecentTouch { get; }
+        //TouchEventParams RecentTouch { get; }
     }
 }

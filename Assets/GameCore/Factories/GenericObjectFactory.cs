@@ -1,11 +1,10 @@
-﻿using GameCore.Events;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace GameCore.Factories
 {
     public class GenericObjectFactory : BaseGameObjectFactory
     {
-        public GenericObjectFactory(EventBus eventBus)
+        public GenericObjectFactory(EventBus.EventBus eventBus)
         {
             
         }

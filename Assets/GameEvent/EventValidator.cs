@@ -1,30 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Bank;
-using GameEvent.LoanEvent;
 
 namespace GameEvent
 {
     public class EventValidator : IEventValidator
     {
-        private IBankManager _bankManager;
+        private IBankBalance _bankBalance;
         
         private List<int> _completedEvents;
-        private List<BaseGameEventData> _allEvents;
-        private List<BaseGameEventData> _availableEventsPool;
+        private List<IGameEventView> _allEvents;
+        private List<IGameEventView> _availableEventsPool;
 
-        public EventValidator(IBankManager bankManager)
+        public EventValidator()
         {
             _completedEvents = new List<int>();
-            _allEvents = new List<BaseGameEventData>();
-            _availableEventsPool = new List<BaseGameEventData>();
+            _allEvents = new List<IGameEventView>();
+            _availableEventsPool = new List<IGameEventView>();
         }
 
         public void EventCompleted(int id)
         {
             _completedEvents.Add(id);
-            _availableEventsPool.Remove(_availableEventsPool.FirstOrDefault(a => a.ID == id));
+            _availableEventsPool.Remove(_availableEventsPool.FirstOrDefault(a => a.EventData.ID == id));
             UpdateAvailableEvents();
         }
 
@@ -32,7 +30,7 @@ namespace GameEvent
         {
             foreach (var eve in _allEvents)
             {
-                if (EventRequirementsMet(eve.EventRequirements))
+                if (eve.EventData.RequirementsMetValidation())
                 {
                     _availableEventsPool.Add(eve);
                     _allEvents.Remove(eve);
@@ -40,23 +38,17 @@ namespace GameEvent
             }
         }
 
-        public bool EventValidationEntry(BaseGameEventData eventData)
+        public bool EventValidationEntry(IGameEventView eventView)
         {
-            switch (eventData.eventType)
-            {
-                case GameEventType.Loan:
-                    return LoanEventValidation((LoanGameEventData)eventData);
-            }
+            var res = eventView.EventValidation();
+            var yarp = GeneralEventValidation(eventView);
 
             return false;
         }
 
-        public bool LoanEventValidation(LoanGameEventData eventData)
+        private bool GeneralEventValidation(IGameEventView eventView)
         {
-            if (EventRequirementsMet(eventData.EventRequirements) == false)
-                return false;
-
-            return eventData.LoanPrice >= _bankManager.GoldBalance;
+            return true;
         }
 
         private bool EventRequirementsMet(IReadOnlyCollection<int> requirements)

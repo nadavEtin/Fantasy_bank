@@ -1,4 +1,4 @@
-﻿namespace Utility.Jsons
+﻿namespace GameCore.Utility.Jsons
 {
     public interface IJsonSerialization
     {
