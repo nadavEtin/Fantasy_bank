@@ -1,4 +1,6 @@
-﻿namespace GameCore.Utility.Jsons
+﻿using System.Collections.Generic;
+
+namespace GameCore.Utility.Jsons
 {
     [System.Serializable]
     public class EventDataSerialized
@@ -7,13 +9,13 @@
         public int[] eventRequirements;
         public string name, text;
 
-        public EventDataSerialized(int id, int eventDuration, int type, int[] eventRequirements, string name,
+        public EventDataSerialized(int id, int eventDuration, int type, List<int> eventRequirements, string name,
             string text)
         {
             this.id = id;
             this.eventDuration = eventDuration;
             this.type = type;
-            this.eventRequirements = eventRequirements;
+            this.eventRequirements = eventRequirements.ToArray();
             this.name = name;
             this.text = text;
         }
@@ -24,7 +26,7 @@
     {
         private int loanCost, chanceOfSuccess;
 
-        public LoanEventDataSerialized(int id, int eventDuration, int type, int[] eventRequirements, string name,
+        public LoanEventDataSerialized(int id, int eventDuration, int type, List<int> eventRequirements, string name,
             string text, int loanCost, int chanceOfSuccess) : 
             base(id, eventDuration, type, eventRequirements, name, text)
         {

@@ -8,18 +8,19 @@ namespace GameCore.Utility.Jsons
     public class JsonSerialization : IJsonSerialization, IStartable
     {
         private string baseFilePath;
+        private string _streamingAssetsPath = Application.streamingAssetsPath;
 
         public void Start()
         {
             baseFilePath = Path.Combine(Application.persistentDataPath, "FantasyBank");
         }
 
-        public void WriteDataToFile<T>(T dataObj, string fileName)
+        public static void WriteDataToFile<T>(T dataObj, string fileName)
         {
             var jsonString = ToJson(dataObj);
         }
 
-        public void WriteDataToFile<T>(T[] dataObjArray, string fileName)
+        public static void WriteDataToFile<T>(T[] dataObjArray, string fileName)
         {
             var jsonString = ToJson(dataObjArray);
 
@@ -32,7 +33,7 @@ namespace GameCore.Utility.Jsons
             return JsonUtility.ToJson(wrapper);
         }
 
-        private string ToJson<T>(T obj)
+        private static string ToJson<T>(T obj)
         {
             SingleObjWrapper<T> wrapper = new SingleObjWrapper<T>();
             wrapper.Item = obj;

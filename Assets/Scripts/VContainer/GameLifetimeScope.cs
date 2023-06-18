@@ -1,5 +1,6 @@
 using Bank;
 using GameCore;
+using GameCore.DataManagement.Events;
 using GameCore.EventBus;
 using GameCore.Input;
 using GameCore.ScriptableObjects;
@@ -27,12 +28,13 @@ namespace VContainer
             builder.Register<BankManager>(Lifetime.Scoped).AsImplementedInterfaces();
             builder.Register<EventManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<EventValidator>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<EventsData>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<Canvas>();
             builder.RegisterComponentInHierarchy<Camera>();
             
             builder.RegisterBuildCallback(container =>
             {
-                
+                container.Resolve<EventsData>();
             });
         }
     }

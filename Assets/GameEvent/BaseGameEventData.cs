@@ -1,12 +1,11 @@
 ﻿using System;
 using Bank;
-using UnityEditor.Compilation;
 
 namespace GameEvent
 {
     public enum GameEventType
     {
-        Loan
+        Loan = 1
     }
     
     public abstract class BaseGameEventData : IGameDataEvent

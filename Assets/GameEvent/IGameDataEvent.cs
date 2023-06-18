@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GameEvent
+﻿namespace GameEvent
 {
     public interface IGameDataEvent
     {

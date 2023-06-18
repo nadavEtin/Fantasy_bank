@@ -5,7 +5,6 @@ using GameCore.EventBus;
 using GameCore.EventBus.GameplayEvents;
 using GameEvent;
 using UnityEngine;
-using VContainer;
 
 namespace GameCore
 {

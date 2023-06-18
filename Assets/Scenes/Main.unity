@@ -283,6 +283,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _assetRefs: {fileID: 11400000, guid: fab4aff44b4f55748940874f946b567b, type: 2}
+  _eventSettings: {fileID: 11400000, guid: b06a2533ab72a1a4794f106572a20f1f, type: 2}
 --- !u!4 &393446630
 Transform:
   m_ObjectHideFlags: 0
