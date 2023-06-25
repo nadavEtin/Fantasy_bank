@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Bank;
 using GameCore.Input;
 using GameCore.ScriptableObjects;
+using GameEvent.EventCardView;
 using UnityEngine;
 
 namespace GameEvent

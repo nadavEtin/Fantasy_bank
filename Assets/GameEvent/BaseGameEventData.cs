@@ -1,5 +1,6 @@
 ﻿using System;
 using Bank;
+using GameEvent.EventCardView;
 
 namespace GameEvent
 {

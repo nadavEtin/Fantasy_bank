@@ -23,7 +23,23 @@ namespace GameCore.Utility.Jsons
             this.loanEvents = loanEvents;
         }
 
-        //public List<object> regularEvents { get; }
+        public EventDataSerialized GetSpecificEvent(int idKey)
+        {
+            var res = regularEvents.Find(e => e.value.id == idKey);
+            if (res != null)
+                return res.value;
+            var res2 = loanEvents.Find(e => e.value.id == idKey);
+            return res2?.value;
+        }
+        
+        public EventDataSerialized GetSpecificEvent(string nameKey)
+        {
+            var res = regularEvents.Find(e => e.value.name == nameKey);
+            if (res != null)
+                return res.value;
+            var res2 = loanEvents.Find(e => e.value.name == nameKey);
+            return res2?.value;
+        }
     }
 
     [Serializable]

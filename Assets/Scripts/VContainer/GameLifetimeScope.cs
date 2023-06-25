@@ -6,6 +6,7 @@ using GameCore.Input;
 using GameCore.ScriptableObjects;
 using GameCore.UI;
 using GameCore.Utility.Jsons;
+using GameCore.Utility.Screen;
 using GameEvent;
 using UnityEngine;
 using VContainer.Unity;
@@ -29,12 +30,14 @@ namespace VContainer
             builder.Register<EventManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<EventValidator>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<EventsData>(Lifetime.Singleton);
+            builder.Register<ScreenParams>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<Canvas>();
             builder.RegisterComponentInHierarchy<Camera>();
             
             builder.RegisterBuildCallback(container =>
             {
                 container.Resolve<EventsData>();
+                container.Resolve<ScreenParams>();
             });
         }
     }

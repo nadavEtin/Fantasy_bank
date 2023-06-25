@@ -1,4 +1,4 @@
-﻿namespace GameEvent
+﻿namespace GameEvent.EventCardView
 {
     public interface IGameEventView
     {

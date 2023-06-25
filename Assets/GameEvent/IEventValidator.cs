@@ -1,4 +1,6 @@
-﻿namespace GameEvent
+﻿using GameEvent.EventCardView;
+
+namespace GameEvent
 {
     public interface IEventValidator
     {

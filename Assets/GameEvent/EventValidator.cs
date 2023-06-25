@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Bank;
+using GameEvent.EventCardView;
 
 namespace GameEvent
 {

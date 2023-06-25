@@ -5,7 +5,7 @@ using GameCore.ScriptableObjects;
 using GameEvent.LoanEvent;
 using UnityEngine;
 
-namespace GameEvent
+namespace GameEvent.EventCardView
 {
     public class GameEventView : MonoBehaviour, IGameEventView
     {

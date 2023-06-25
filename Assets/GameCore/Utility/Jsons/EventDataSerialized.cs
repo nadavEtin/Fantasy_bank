@@ -5,18 +5,20 @@ namespace GameCore.Utility.Jsons
     [System.Serializable]
     public class EventDataSerialized
     {
-        public int id, eventDuration, type;
+        public int id;
+        public string name;
         public int[] eventRequirements;
-        public string name, text;
+        public int eventDuration, type;
+        public string text;
 
         public EventDataSerialized(int id, int eventDuration, int type, List<int> eventRequirements, string name,
             string text)
         {
             this.id = id;
+            this.name = name;
             this.eventDuration = eventDuration;
             this.type = type;
             this.eventRequirements = eventRequirements.ToArray();
-            this.name = name;
             this.text = text;
         }
     }
@@ -24,7 +26,7 @@ namespace GameCore.Utility.Jsons
     [System.Serializable]
     public class LoanEventDataSerialized : EventDataSerialized
     {
-        private int loanCost, chanceOfSuccess;
+        public int loanCost, chanceOfSuccess;
 
         public LoanEventDataSerialized(int id, int eventDuration, int type, List<int> eventRequirements, string name,
             string text, int loanCost, int chanceOfSuccess) : 
