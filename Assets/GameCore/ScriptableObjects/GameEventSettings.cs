@@ -7,7 +7,8 @@ namespace GameCore.ScriptableObjects
     {
         [SerializeField] private float _dragDistanceToResolveCard;
         [SerializeField] private Vector2 _cardNeutralPos;
-
+        
+        public int DefaultEventCountReduction { get; set; }
         public float DragDistanceToResolveCard => _dragDistanceToResolveCard;
         public Vector2 CardNeutralPos => _cardNeutralPos;
     }

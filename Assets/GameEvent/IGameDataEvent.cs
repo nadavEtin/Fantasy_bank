@@ -2,9 +2,11 @@
 {
     public interface IGameDataEvent
     {
-        //Action<bool, IGameEventView> ResolutionCb { get; }
         GameEventType EventType { get; }
         int ID { get; }
+        string EventText { get; }
+        string EventTitle { get; }
+        int CountdownDuration { get; }
         bool RequirementsMetValidation();
     }
 }

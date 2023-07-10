@@ -11,7 +11,7 @@ namespace GameCore.EventBus
         //game flow
         NextTurn,
         
-        GoldBalanceChanged,
+        GoldBalanceChanged, EventApproved, EventCountdownDone,
         GameStart, GameEnd
     }
 
@@ -22,13 +22,8 @@ namespace GameCore.EventBus
 
         public void Subscribe(GameplayEvent eventType, Action<BaseEventParams> handler)
         {
-            //var handlerList = _subscription[eventType];
-            if(_subscription.ContainsKey(eventType) == false)
-            //if (handlerList == null)
-            {
-                //handlerList = new List<Action<BaseEventParams>>();
+            if(_subscription.ContainsKey(eventType) == false) 
                 _subscription.Add(eventType, new List<Action<BaseEventParams>>());
-            }
 
             var handlerList = _subscription[eventType];
             if (handlerList.Contains(handler) == false)
@@ -42,7 +37,6 @@ namespace GameCore.EventBus
 
         public void Publish(GameplayEvent eventType, BaseEventParams eventParams)
         {
-            //var handlerList = _subscription[eventType];
             if (_subscription.ContainsKey(eventType) == false)
                 return;
 

@@ -6,9 +6,13 @@ namespace GameCore.ScriptableObjects
     public class AssetRefs : ScriptableObject, IAssetRefs
     {
         //Prefabs
-        [SerializeField] private GameObject _goldDisplay, _gameEvent;
+        [SerializeField] private GameObject _goldDisplay;
+        
+        //game events
+        [SerializeField] private GameObject _eventCountdown, _gameEvent;
 
         public GameObject GoldDisplay => _goldDisplay;
         public GameObject GameEvent => _gameEvent;
+        public GameObject EventCountdown => _eventCountdown;
     }
 }

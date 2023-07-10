@@ -9,13 +9,11 @@ namespace GameEvent.LoanEvent
         public int SuccessChance { get; }
         public int LoanPrice { get; }
         public GameEventType Type { get; }
-        public string EventText => _eventText;
-        public string EventTitle => _eventTitle;
         public Action<bool, IGameEventView> ResolutionCb => _resolutionCb;
 
-        public LoanGameEventData(int id, string eventText, string eventTitle, Action<bool, IGameEventView> resolveCb,
+        public LoanGameEventData(int id, string eventText, string eventTitle, int countdownDuration, Action<bool, IGameEventView> resolveCb,
             IBankBalance bankBalance, int loanPrice, int successChance, GameEventType eventType,
-            int[] eventRequirements) : base(id, eventText, eventTitle, bankBalance, resolveCb, eventType,
+            int[] eventRequirements) : base(id, eventText, eventTitle, countdownDuration, bankBalance, resolveCb, eventType,
             eventRequirements)
         {
             LoanPrice = loanPrice;

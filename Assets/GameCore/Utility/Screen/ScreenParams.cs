@@ -15,6 +15,8 @@ namespace GameCore.Utility.Screen
             _cam = Camera.main;
             ScreenHeight = _cam!.orthographicSize * 2f;
             ScreenWidth = ScreenHeight * _cam.aspect;
+            RightEdgeXPos = ScreenWidth / 2;
+            LeftEdgeXPos = ScreenWidth / -2;
         }
     }
 }

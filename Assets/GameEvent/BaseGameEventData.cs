@@ -11,24 +11,26 @@ namespace GameEvent
     
     public abstract class BaseGameEventData : IGameDataEvent
     {
-        public int[] EventRequirements { get; protected set; }
-        public int ID { get; protected set; }
+        public int[] EventRequirements { get; }
+        public int ID { get; }
 
         public abstract bool RequirementsMetValidation();
-        public GameEventType EventType { get; protected set; }
-        protected string _eventText { get; set; }
-        protected string _eventTitle { get; set; }
+        public GameEventType EventType { get; }
+        public string EventText { get; }
+        public string EventTitle { get; }
+        public int CountdownDuration { get; }
         protected Action<bool, IGameEventView> _resolutionCb { get; set; }
         protected IBankBalance _bankBalance;
         
 
-        protected BaseGameEventData(int id, string eventText, string eventTitle, IBankBalance bankBalance,
+        protected BaseGameEventData(int id, string eventText, string eventTitle, int countdownDuration, IBankBalance bankBalance,
             Action<bool, IGameEventView> resolutionCb, GameEventType eventType, int[] eventRequirements)
         {
             _bankBalance = bankBalance;
             ID = id;
-            _eventText = eventText;
-            _eventTitle = eventTitle;
+            EventText = eventText;
+            EventTitle = eventTitle;
+            CountdownDuration = countdownDuration;
             _resolutionCb = resolutionCb;
             EventType = eventType;
             EventRequirements = eventRequirements;

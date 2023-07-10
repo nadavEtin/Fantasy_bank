@@ -1,5 +1,7 @@
 ﻿using System;
 using Bank;
+using GameCore.EventBus;
+using GameCore.EventBus.GameplayEvents;
 using GameCore.Input;
 using GameCore.ScriptableObjects;
 using GameEvent.LoanEvent;
@@ -24,16 +26,18 @@ namespace GameEvent.EventCardView
         private IEventViewAccess _eventViewAccess;
         private Action<bool, IGameEventView> _resolutionCb;
         private Camera _camera;
+        private EventBus _eventBus;
 
         public void Init(IInputManager inputManager, IEventViewAccess eventManager, IBankBalance bankBalance,
-            Action<bool, IGameEventView> resolutionCb, Camera camera)
+            Action<bool, IGameEventView> resolutionCb, Camera camera, EventBus eventBus)
         {
             _camera = camera;
             _inputManager = inputManager;
             _eventViewAccess = eventManager;
             _bankBalance = bankBalance;
+            _eventBus = eventBus;
             _resolutionCb = resolutionCb;
-            _eventData = new LoanGameEventData(1, "event text", "title",
+            _eventData = new LoanGameEventData(1, "event text", "title", 5,
                 resolutionCb, _bankBalance, 100, 75, GameEventType.Loan, null);
         }
 
@@ -105,7 +109,7 @@ namespace GameEvent.EventCardView
 
             //_gameEventManager.
             //TODO: continue process after approved loan
-
+            _eventBus.Publish(GameplayEvent.EventApproved, new EventApprovedParams(EventData));
             //_eventData.ResolutionCb(true, this);
 
             //temp

@@ -2,13 +2,7 @@
 {
     public class BankManager : IBankBalance, IBankDeposit, IBankWithdraw
     {
-        //private EventBus _eventBus;
         public int GoldBalance { get; private set; }
-        
-        /*public BankManager(EventBus eventBus)
-        {
-            _eventBus = eventBus;
-        }*/
 
         public bool GetGoldFromBank(int goldAmount)
         {
@@ -17,7 +11,6 @@
             
             GoldBalance -= goldAmount;
             return true;
-
         }
 
         public void AddGoldToBank(int goldAmount)
