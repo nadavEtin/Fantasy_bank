@@ -7,5 +7,6 @@ namespace GameCore.ScriptableObjects
         public GameObject GoldDisplay { get; }
         public GameObject GameEvent { get; }
         GameObject EventCountdown { get; }
+        GameObject EventResolutionScreen { get; }
     }
 }

@@ -14,18 +14,19 @@ namespace GameEvent.EventCountdown
         
         public int CountdownDuration { get; private set; }
         public RectTransform ObjTransform { get; private set; }
-        public int Id => _eventData.ID;
+        //public int Id => _eventData.ID;
+        public IGameDataEvent EventData { get; private set; }
 
         private ScreenParams _screenParams;
         private Vector2 _defaultHiddenPos;
         private bool _extended;
         private RectTransform _rectTransform;
         //private Action<IGameDataEvent> _resolutionCb;
-        private IGameDataEvent _eventData;
+        
 
         public void Setup(IGameDataEvent eventData)
         {
-            _eventData = eventData;
+            EventData = eventData;
             ObjTransform = GetComponent<RectTransform>();
             CountdownDuration = eventData.CountdownDuration;
             _eventName.text = eventData.EventTitle;

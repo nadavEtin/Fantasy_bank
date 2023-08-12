@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using GameEvent;
 
 namespace GameCore.EventBus.GameplayEvents
 {
     public class EventCountdownDone : BaseEventParams
     {
-        public List<int> CompletedEventIds { get; private set; }
+        public List<IGameDataEvent> CompletedEventsData { get; }
 
-        public EventCountdownDone(List<int> completedEventIds)
+        public EventCountdownDone(List<IGameDataEvent> completedEventsData)
         {
-            CompletedEventIds = completedEventIds;
+            CompletedEventsData = completedEventsData;
         }
     }
 }

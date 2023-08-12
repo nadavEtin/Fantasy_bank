@@ -4,6 +4,7 @@ using System.Linq;
 using GameCore.EventBus;
 using GameCore.EventBus.GameplayEvents;
 using GameCore.ScriptableObjects;
+using GameCore.Utility.GeneralClasses;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -35,17 +36,18 @@ namespace GameEvent.EventCountdown
         private void EventApproved(BaseEventParams evParams)
         {
             var eventParams = (EventApprovedParams)evParams;
-            var newCdObj = _countdownFactory.Create(_canvas.transform);
-            newCdObj.transform.SetParent(_canvas.transform);
+            var newCdObj = _countdownFactory.Create(_canvas.transform).GetComponent<IEventCountdownView>();
+            newCdObj.ObjTransform.SetParent(_canvas.transform);
             //newCdObj.transform.position = 
             newCdObj.Setup(eventParams.EventData);
             _activeEventCountdowns.Add(newCdObj);
             SortCountdownViews();
         }
 
-        private void ResolveCountdownEvent(IGameDataEvent data)
+        /*private void ResolveCountdownEvent(IGameDataEvent data)
         {
-        }
+            
+        }*/
 
         private void SortCountdownViews()
         {
@@ -59,7 +61,7 @@ namespace GameEvent.EventCountdown
 
         private void NewTurn(BaseEventParams evParams)
         {
-            var finishedCountdownIds = new List<int>();
+            var finishedCountdownIds = new List<IGameDataEvent>();
             
             foreach (var activeEventCountdown in _activeEventCountdowns)
             {
@@ -68,7 +70,7 @@ namespace GameEvent.EventCountdown
                 {
                     _activeEventCountdowns.Remove(activeEventCountdown);
                     activeEventCountdown.CountdownDone();
-                    finishedCountdownIds.Add(activeEventCountdown.Id);
+                    finishedCountdownIds.Add(activeEventCountdown.EventData);
                 }
             }
             
@@ -84,26 +86,25 @@ namespace GameEvent.EventCountdown
         }
     }
 
-    public class EventCountdownFactory
+    public class EventCountdownFactory : BaseFactory
     {
-        private readonly IAssetRefs _assetRefs;
-        private IObjectResolver _resolver;
+        //private readonly IAssetRefs _assetRefs;
+        //private IObjectResolver _resolver;
 
-        public EventCountdownFactory(IAssetRefs assetRefs, IObjectResolver resolver)
+        public EventCountdownFactory(IAssetRefs assetRefs, IObjectResolver resolver) : base(assetRefs, resolver)
         {
-            _assetRefs = assetRefs;
-            _resolver = resolver;
+
         }
 
-        public EventCountdownView Create()
+        public override GameObject Create()
         {
-            return _resolver.Instantiate(_assetRefs.EventCountdown).GetComponent<EventCountdownView>();
+            return _resolver.Instantiate(_assetRefs.EventCountdown);
             //return GameObject.Instantiate(_assetRefs.EventCountdown).GetComponent<EventCountdownView>();
         }
 
-        public EventCountdownView Create(Transform parent)
+        public override GameObject Create(Transform parent)
         {
-            return _resolver.Instantiate(_assetRefs.EventCountdown, parent).GetComponent<EventCountdownView>();
+            return _resolver.Instantiate(_assetRefs.EventCountdown, parent);
             //return GameObject.Instantiate(_assetRefs.EventCountdown).GetComponent<EventCountdownView>();
         }
     }

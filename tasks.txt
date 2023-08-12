@@ -24,3 +24,5 @@ relics/effects:
 - makes all coundowns tick double as fast
 - one a specific day cant approve loans/they cost more/less/different success chance
 - immediately finish an event's countdown
+
+- random effect that makes the next event to finish countdown to automatically win/lose

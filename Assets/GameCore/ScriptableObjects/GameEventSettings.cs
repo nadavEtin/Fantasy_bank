@@ -8,8 +8,12 @@ namespace GameCore.ScriptableObjects
         [SerializeField] private float _dragDistanceToResolveCard;
         [SerializeField] private Vector2 _cardNeutralPos;
         
+        [Tooltip("Percent of screen size. X is width Y is height")]
+        [SerializeField] private Vector2 _eventResolutionViewSize;
+        
         public int DefaultEventCountReduction { get; set; }
         public float DragDistanceToResolveCard => _dragDistanceToResolveCard;
         public Vector2 CardNeutralPos => _cardNeutralPos;
+        public Vector2 EventResolutionViewSize => _eventResolutionViewSize;
     }
 }

@@ -53,10 +53,12 @@ namespace GameCore
 
         private void GameEventCreate()
         {
-            _resolver.Instantiate(_assetRefs.EventCountdown);
+            //_resolver.Instantiate(_assetRefs.EventCountdown);
             
             
-            _geManager.CreateGameEvent(GameEventType.Loan);
+            //_geManager.CreateGameEvent(GameEventType.Loan);
+
+            _resolver.Instantiate(_assetRefs.EventResolutionScreen);
         }
 
         #endregion

@@ -8,7 +8,8 @@ namespace GameEvent.EventCountdown
         void Setup(IGameDataEvent eventData);
         int CountdownDuration { get; }
         RectTransform ObjTransform { get; }
-        int Id { get; }
+        //int Id { get; }
+        IGameDataEvent EventData { get; }
         void ReduceCountdown(int amount);
         void CountdownDone();
     }

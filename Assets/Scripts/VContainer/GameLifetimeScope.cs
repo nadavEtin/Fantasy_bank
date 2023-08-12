@@ -9,6 +9,7 @@ using GameCore.Utility.Jsons;
 using GameCore.Utility.Screen;
 using GameEvent;
 using GameEvent.EventCountdown;
+using GameEvent.EventResolution;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -55,11 +56,13 @@ namespace VContainer
         private void Factories()
         {
             _containerBuilder.Register<EventCountdownFactory>(Lifetime.Singleton);
+            _containerBuilder.Register<EventResolutionViewFactory>(Lifetime.Singleton);
             _containerBuilder.RegisterBuildCallback(container =>
             {
                 container.Resolve<EventCountdownFactory>();
+                container.Resolve<EventResolutionViewFactory>();
+
             });
-            //_containerBuilder.
         }
     }
 }
