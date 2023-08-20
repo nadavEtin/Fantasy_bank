@@ -2,7 +2,8 @@
 
 namespace GameCore.Factories
 {
-    public class GenericObjectFactory : BaseGameObjectFactory
+    //TODO: remove this
+    /*public class GenericObjectFactory : BaseGameObjectFactory
     {
         public GenericObjectFactory(EventBus.EventBus eventBus)
         {
@@ -13,5 +14,5 @@ namespace GameCore.Factories
         {
             return null;
         }
-    }
+    }*/
 }

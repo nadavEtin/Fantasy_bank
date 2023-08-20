@@ -4,21 +4,18 @@ using System.Linq;
 using GameCore.EventBus;
 using GameCore.EventBus.GameplayEvents;
 using GameCore.ScriptableObjects;
-using GameCore.Utility.GeneralClasses;
 using UnityEngine;
-using VContainer;
-using VContainer.Unity;
 
 namespace GameEvent.EventCountdown
 {
     public class EventCountdownManager : IDisposable
     {
         private List<IEventCountdownView> _activeEventCountdowns;
-        private EventCountdownFactory _countdownFactory;
-        private EventBus _eventBus;
-        private IGameEventSettings _settings;
-        private Canvas _canvas;
-        private float _countdownViewsGap = 15;
+        private readonly EventCountdownFactory _countdownFactory;
+        private readonly EventBus _eventBus;
+        private readonly IGameEventSettings _settings;
+        private readonly Canvas _canvas;
+        private readonly float _countdownViewsGap = 15;
 
         public EventCountdownManager(EventCountdownFactory countdownFactory, EventBus eventBus,
             IGameEventSettings settings, Canvas canvas)
@@ -83,29 +80,6 @@ namespace GameEvent.EventCountdown
         {
             _eventBus.Unsubscribe(GameplayEvent.EventApproved, EventApproved);
             _eventBus.Unsubscribe(GameplayEvent.NextTurn, NewTurn);
-        }
-    }
-
-    public class EventCountdownFactory : BaseFactory
-    {
-        //private readonly IAssetRefs _assetRefs;
-        //private IObjectResolver _resolver;
-
-        public EventCountdownFactory(IAssetRefs assetRefs, IObjectResolver resolver) : base(assetRefs, resolver)
-        {
-
-        }
-
-        public override GameObject Create()
-        {
-            return _resolver.Instantiate(_assetRefs.EventCountdown);
-            //return GameObject.Instantiate(_assetRefs.EventCountdown).GetComponent<EventCountdownView>();
-        }
-
-        public override GameObject Create(Transform parent)
-        {
-            return _resolver.Instantiate(_assetRefs.EventCountdown, parent);
-            //return GameObject.Instantiate(_assetRefs.EventCountdown).GetComponent<EventCountdownView>();
         }
     }
 }

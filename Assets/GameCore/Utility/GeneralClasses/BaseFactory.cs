@@ -4,7 +4,7 @@ using VContainer;
 
 namespace GameCore.Utility.GeneralClasses
 {
-    public abstract class BaseFactory
+    public abstract class BaseFactory : IBaseFactory
     {
         protected IAssetRefs _assetRefs;
         protected IObjectResolver _resolver;

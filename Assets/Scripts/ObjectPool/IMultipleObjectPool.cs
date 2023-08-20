@@ -2,7 +2,7 @@
 
 namespace ObjectPool
 {
-    public interface IObjectPool
+    public interface IMultipleObjectPool
     {
         void AddObjectToPool(GameObject obj, ObjectTypes type);
 

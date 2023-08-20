@@ -55,8 +55,9 @@ namespace VContainer
 
         private void Factories()
         {
-            _containerBuilder.Register<EventCountdownFactory>(Lifetime.Singleton);
-            _containerBuilder.Register<EventResolutionViewFactory>(Lifetime.Singleton);
+            _containerBuilder.Register<EventCountdownFactory>(Lifetime.Singleton).AsImplementedInterfaces();
+            _containerBuilder.Register<EventResolutionViewFactory>(Lifetime.Singleton).AsImplementedInterfaces();
+            //TODO: check if this is needed after using implemented intefaces
             _containerBuilder.RegisterBuildCallback(container =>
             {
                 container.Resolve<EventCountdownFactory>();

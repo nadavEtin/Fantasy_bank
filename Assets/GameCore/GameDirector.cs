@@ -24,7 +24,7 @@ namespace GameCore
         private readonly IUiManager _uiManager;
         
         //test
-        private IObjectResolver _resolver;
+        private readonly IObjectResolver _resolver;
 
         public GameDirector(EventBus.EventBus bus, IAssetRefs assetRefs, IBankBalance bankBalance,
             IGameEventManager eventManager, Canvas canvas, Camera camera, IUiManager uiManager, IObjectResolver resolver)
