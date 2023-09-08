@@ -8,5 +8,6 @@ namespace GameCore.ScriptableObjects
         Vector2 CardNeutralPos { get; }
         int DefaultEventCountReduction { get; set; }
         Vector2 EventResolutionViewSize { get; }
+        Vector2 EventResolutionNeutralPos { get; }
     }
 }

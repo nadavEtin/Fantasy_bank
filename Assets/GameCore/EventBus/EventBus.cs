@@ -9,7 +9,7 @@ namespace GameCore.EventBus
         TouchStarted, TouchEnded,
         
         //game flow
-        NextTurn,
+        NextTurn, ResolveReadyEvents,
         
         GoldBalanceChanged, EventApproved, EventCountdownDone,
         GameStart, GameEnd
@@ -32,7 +32,8 @@ namespace GameCore.EventBus
 
         public void Unsubscribe(GameplayEvent eventType, Action<BaseEventParams> handler)
         {
-            _subscription[eventType]?.Remove(handler);
+            if(_subscription.ContainsKey(eventType))
+                _subscription[eventType]?.Remove(handler);
         }
 
         public void Publish(GameplayEvent eventType, BaseEventParams eventParams)

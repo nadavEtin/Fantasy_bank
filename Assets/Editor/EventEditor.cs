@@ -12,7 +12,7 @@ namespace Editor
         private EditorEventsData _eventsData;
         
         private bool loanType;
-        private string eventName;
+        private string eventName, resolutionName, resolutionText;
         private string eventText, eventRequirements;
         private int eventDuration, eventId;
         private List<int> eventRequirementsList = new();
@@ -47,7 +47,9 @@ namespace Editor
             //separate the ids with a comma ,
             eventRequirements = EditorGUILayout.TextField("Requirements", eventRequirements);
             eventName = EditorGUILayout.TextField("Title", eventName);
-            eventText = EditorGUILayout.TextArea(eventText, GUILayout.Height(50));
+            eventText = EditorGUILayout.TextArea(eventText, GUILayout.Height(40));
+            resolutionName = EditorGUILayout.TextField("Resolution Name", resolutionName);
+            resolutionText = EditorGUILayout.TextArea(resolutionText, GUILayout.Height(40));
             eventDuration = EditorGUILayout.IntField("Duration", eventDuration);
             
             //save btn
@@ -87,13 +89,11 @@ namespace Editor
             switch (type)
             {
                 case 1:
-                    var loanEv = new LoanEventDataSerialized(eventId, eventDuration, type, eventRequirementsList, eventName,
-                        eventText, loanCost, chanceOfSuccess);
+                    var loanEv = new LoanEventDataSerialized(eventId, eventDuration, type, eventRequirementsList, eventName, eventText, resolutionName, resolutionText, loanCost, chanceOfSuccess);
                     _eventsData.SaveEvent(loanEv);
                     break;
                 default:
-                    var regEv = new EventDataSerialized(eventId, eventDuration, type, eventRequirementsList, eventName,
-                        eventText);
+                    var regEv = new EventDataSerialized(eventId, eventDuration, type, eventRequirementsList, eventName, eventText, resolutionName, resolutionText);
                     _eventsData.SaveEvent(regEv);
                     break;
             }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.GameEvent.EventResolution;
 using GameCore.EventBus;
 using GameCore.EventBus.GameplayEvents;
 using GameCore.ScriptableObjects;
+using GameCore.Utility.GeneralClasses;
 using UnityEngine;
 
 namespace GameEvent.EventCountdown
@@ -11,19 +13,21 @@ namespace GameEvent.EventCountdown
     public class EventCountdownManager : IDisposable
     {
         private List<IEventCountdownView> _activeEventCountdowns;
-        private readonly EventCountdownFactory _countdownFactory;
+        private readonly IBaseFactory _countdownFactory;
         private readonly EventBus _eventBus;
         private readonly IGameEventSettings _settings;
         private readonly Canvas _canvas;
         private readonly float _countdownViewsGap = 15;
+        private IEventResolutionViewManager _eventResolutionManager;
 
-        public EventCountdownManager(EventCountdownFactory countdownFactory, EventBus eventBus,
-            IGameEventSettings settings, Canvas canvas)
+        public EventCountdownManager(IBaseFactory countdownFactory, IEventResolutionViewManager eventResolutionViewManager, EventBus eventBus, IGameEventSettings settings, Canvas canvas)
         {
             _activeEventCountdowns = new List<IEventCountdownView>();
             _countdownFactory = countdownFactory;
             _eventBus = eventBus;
             _canvas = canvas;
+            _settings = settings;
+            _eventResolutionManager = eventResolutionViewManager;
 
             //event handling
             _eventBus.Subscribe(GameplayEvent.EventApproved, EventApproved);
@@ -35,7 +39,6 @@ namespace GameEvent.EventCountdown
             var eventParams = (EventApprovedParams)evParams;
             var newCdObj = _countdownFactory.Create(_canvas.transform).GetComponent<IEventCountdownView>();
             newCdObj.ObjTransform.SetParent(_canvas.transform);
-            //newCdObj.transform.position = 
             newCdObj.Setup(eventParams.EventData);
             _activeEventCountdowns.Add(newCdObj);
             SortCountdownViews();
@@ -68,6 +71,9 @@ namespace GameEvent.EventCountdown
                     _activeEventCountdowns.Remove(activeEventCountdown);
                     activeEventCountdown.CountdownDone();
                     finishedCountdownIds.Add(activeEventCountdown.EventData);
+
+                    //add finished countdown to event resolution
+                    _eventResolutionManager.AddEventResolution(activeEventCountdown.EventData);
                 }
             }
             

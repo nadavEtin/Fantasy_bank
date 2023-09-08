@@ -6,6 +6,8 @@
         int ID { get; }
         string EventText { get; }
         string EventTitle { get; }
+        string EventResolutionTitle { get; }
+        string EventResolutionMainText { get; }
         int CountdownDuration { get; }
         bool RequirementsMetValidation();
     }

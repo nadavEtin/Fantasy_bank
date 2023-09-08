@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace GameEvent
 {
-    public class EventManager : IGameEventManager, IEventViewAccess, IDisposable
+    public class EventManager : IGameEventManager, IDisposable
     {
         private IAssetRefs _assetRefs;
         private readonly IInputManager _inputManager;
@@ -52,7 +52,7 @@ namespace GameEvent
         {
             var geView = GameObject.Instantiate(_assetRefs.GameEvent, _eventContainer.transform)
                 .GetComponent<GameEventView>();
-            geView.Init(_inputManager, this, _bankBalance, EventResolution, _camera, _eventBus);
+            geView.Init(_inputManager, _bankBalance, EventResolution, _camera, _eventBus);
 
             if (_pendingEvents.ContainsKey(type) == false)
                 _pendingEvents.Add(type, new List<IGameEventView>());

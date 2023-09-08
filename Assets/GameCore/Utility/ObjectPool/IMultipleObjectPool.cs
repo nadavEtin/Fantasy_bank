@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ObjectPool
+namespace Assets.GameCore.Utility.ObjectPool
 {
     public interface IMultipleObjectPool
     {

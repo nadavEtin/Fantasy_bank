@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dragDistanceToResolveCard: 4
   _cardNeutralPos: {x: 0, y: 0}
-  _eventResolutionViewSize: {x: 0.75, y: 0.5}
+  _eventResolutionViewSize: {x: 0.5, y: 0.5}

@@ -1,14 +1,17 @@
-{    
+{
+    "regularEvents": [],
     "loanEvents": [
         {
             "key": 1,
             "value": {
                 "id": 1,
                 "name": "The Minotaur salesman",
+                "resolutionName": "",
                 "eventRequirements": [],
                 "eventDuration": 4,
                 "type": 1,
                 "text": "“For generations my family has guarded the maze, it’s so old fashioned” said the Minotaur. “I want to see the world, meet new people, and sell them high quality axes!” I know what you think, ‘Everyone will be too afraid to even talk to him!’ but don’t worry” he said with a wink “my charisma will win them over”.",
+                "resolutionText": "",
                 "loanCost": 100,
                 "chanceOfSuccess": 90
             }
@@ -18,10 +21,12 @@
             "value": {
                 "id": 2,
                 "name": "Troll Tolls",
+                "resolutionName": "",
                 "eventRequirements": [],
                 "eventDuration": 2,
                 "type": 1,
                 "text": "Three trolls enter the chamber. The largest of them says: “We Trolls are starting a security company. No more lone troll guarding one bridge. Now any lord can have Trolls guard his castle. Need gold to advertise new company. Give us gold, we give more back”",
+                "resolutionText": "",
                 "loanCost": 80,
                 "chanceOfSuccess": 85
             }
@@ -31,25 +36,14 @@
             "value": {
                 "id": 3,
                 "name": "Tomato Farmer",
+                "resolutionName": "",
                 "eventRequirements": [],
                 "eventDuration": 5,
                 "type": 1,
                 "text": "A tall man with a large hat says \"I tried being a bandit, was no good at it. My father was a tomato farmer, time to go back to my roots\"",
+                "resolutionText": "",
                 "loanCost": 60,
                 "chanceOfSuccess": 82
-            }
-        },
-        {
-            "key": 4,
-            "value": {
-                "id": 4,
-                "name": "Band of Adventurers",
-                "eventRequirements": [],
-                "eventDuration": 4,
-                "type": 1,
-                "text": "A group of bright eyed adventurers approaches: \"There's amazing treasure in the ruins atop Supi mountain. We just need a small loan to get enchanted armor and weapons so we can deal with the monsters there!\"",
-                "loanCost": 130,
-                "chanceOfSuccess": 45
             }
         },
         {
@@ -57,12 +51,14 @@
             "value": {
                 "id": 5,
                 "name": "Dragon School",
+                "resolutionName": "",
                 "eventRequirements": [
                     4
                 ],
                 "eventDuration": 6,
                 "type": 1,
                 "text": "A family of silver drakes wants to open a school for mages. They lost their hoard of gold and gems after being raided by a group of adventurers and could use a little help",
+                "resolutionText": "",
                 "loanCost": 70,
                 "chanceOfSuccess": 70
             }
@@ -72,12 +68,14 @@
             "value": {
                 "id": 6,
                 "name": "The Wise Monk",
+                "resolutionName": "",
                 "eventRequirements": [
                     4
                 ],
                 "eventDuration": 3,
                 "type": 1,
                 "text": "An old monk with thick eyebrows approaches: \"I've meditated all my life and have reached enlightenment. My only wish is to share my knowledge with others. 20 others at a time, for an exclusive price\"",
+                "resolutionText": "",
                 "loanCost": 25,
                 "chanceOfSuccess": 20
             }
@@ -87,12 +85,14 @@
             "value": {
                 "id": 7,
                 "name": "Open Stage Tavern",
+                "resolutionName": "",
                 "eventRequirements": [
                     4
                 ],
                 "eventDuration": 4,
                 "type": 1,
                 "text": "A mediocre looking musician approaches: \"Life is hard for an average bard. Taverns only want the good bards to play for them. I'm going to change that and open a tavern where only average bards can play. Patrons will like that... right?\"",
+                "resolutionText": "",
                 "loanCost": 55,
                 "chanceOfSuccess": 25
             }
@@ -102,10 +102,12 @@
             "value": {
                 "id": 8,
                 "name": "Garden of the Ent",
+                "resolutionName": "",
                 "eventRequirements": [],
                 "eventDuration": 12,
                 "type": 1,
                 "text": "It looks like a large Oak tree was planted in the middle of the hall, but it turns out to be an Ent! How unusual. Slowly, he starts to speak: \"MMmmm.. I.. want to.. plant.. a garden.. of.. trees. MMMm\" a tall Elf steps beside the Ent \"If you'll allow me, master Onod. We propose to start a gardening venture of sorts, specializing in planting new forests. Master Onod will provide his unique expertise and oversight and we elves will provide a... swifter pace of labor than the Ents are comftarble with\". The Ent grunts, seemingly in approval. \"A natural partnership!\".",
+                "resolutionText": "",
                 "loanCost": 45,
                 "chanceOfSuccess": 75
             }
@@ -115,12 +117,29 @@
             "value": {
                 "id": 9,
                 "name": "The Wolf Breeder",
+                "resolutionName": "",
                 "eventRequirements": [],
                 "eventDuration": 5,
                 "type": 1,
                 "text": "I train wolves. For hunters, scouts. Dire wolves for war. I have a few cubs. Not enough. Need to buy land, build training grounds. Lot of customers looking for well trained wolves...",
+                "resolutionText": "",
                 "loanCost": 90,
                 "chanceOfSuccess": 50
+            }
+        },
+        {
+            "key": 4,
+            "value": {
+                "id": 4,
+                "name": "Band of Adventurers",
+                "resolutionName": "boa resolution",
+                "eventRequirements": [],
+                "eventDuration": 4,
+                "type": 1,
+                "text": "A group of bright eyed adventurers approaches: \"There's amazing treasure in the ruins atop Supi mountain. We just need a small loan to get enchanted armor and weapons so we can deal with the monsters there!\"",
+                "resolutionText": "resolution text",
+                "loanCost": 130,
+                "chanceOfSuccess": 45
             }
         }
     ]

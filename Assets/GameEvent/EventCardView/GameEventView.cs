@@ -23,21 +23,20 @@ namespace GameEvent.EventCardView
 
         private IInputManager _inputManager;
         private IBankBalance _bankBalance;
-        private IEventViewAccess _eventViewAccess;
         private Action<bool, IGameEventView> _resolutionCb;
         private Camera _camera;
         private EventBus _eventBus;
 
-        public void Init(IInputManager inputManager, IEventViewAccess eventManager, IBankBalance bankBalance,
-            Action<bool, IGameEventView> resolutionCb, Camera camera, EventBus eventBus)
+        public void Init(IInputManager inputManager, IBankBalance bankBalance, Action<bool, IGameEventView> resolutionCb,
+            Camera camera, EventBus eventBus)
         {
             _camera = camera;
             _inputManager = inputManager;
-            _eventViewAccess = eventManager;
             _bankBalance = bankBalance;
             _eventBus = eventBus;
             _resolutionCb = resolutionCb;
-            _eventData = new LoanGameEventData(1, "event text", "title", 5,
+
+            _eventData = new LoanGameEventData(1, "event text", "title", "resolution title", "resolution text", 5,
                 resolutionCb, _bankBalance, 100, 75, GameEventType.Loan, null);
         }
 

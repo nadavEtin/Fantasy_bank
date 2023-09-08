@@ -1,6 +1,9 @@
-﻿using GameCore.ScriptableObjects;
+﻿using GameCore.EventBus;
+using GameCore.ScriptableObjects;
 using GameCore.Utility.GeneralClasses;
 using GameCore.Utility.Screen;
+using System;
+using TMPro;
 using UnityEngine;
 using VContainer;
 
@@ -10,10 +13,13 @@ namespace GameEvent.EventResolution
     {
         [SerializeField] private GameObject _background;
         [SerializeField] private GameObject _confirmButtonObj;
+        [SerializeField] private TextMeshPro _titleText, _mainText;
 
         private ScreenParams _screenParams;
         private IGameEventSettings _gameSettings;
         private IGenericButton _confirmBtn;
+        private Action<BaseEventParams> _cb;
+        private int _eventId;
 
         [Inject]
         private void Construct(ScreenParams screenParams, IGameEventSettings settings)
@@ -31,9 +37,20 @@ namespace GameEvent.EventResolution
             _confirmBtn.Setup(ConfirmBtnClicked, 1);
         }
 
+        public void Setup(string titleText, string mainText, int id, Action<BaseEventParams> cb)
+        {
+            _titleText.text = titleText;
+            _mainText.text = mainText;
+            _cb = cb;
+            _eventId = id;
+        }
+
         private void ConfirmBtnClicked()
         {
+            //TODO: apply effects of the event resolving, if any
 
+            //continue to the next resolution
+            _cb.Invoke(null);
         }
     }
 }

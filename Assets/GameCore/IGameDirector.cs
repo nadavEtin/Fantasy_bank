@@ -2,6 +2,6 @@
 {
     public interface IGameDirector
     {
-        //TouchEventParams RecentTouch { get; }
+        void GamePhaseDone(GamePhases phase);
     }
 }

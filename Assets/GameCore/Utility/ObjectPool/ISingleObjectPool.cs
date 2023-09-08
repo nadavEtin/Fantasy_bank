@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.ObjectPool
+namespace Assets.GameCore.Utility.ObjectPool
 {
     public interface ISingleObjectPool
     {

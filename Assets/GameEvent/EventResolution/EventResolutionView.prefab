@@ -343,6 +343,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _background: {fileID: 7837193102016922406}
   _confirmButtonObj: {fileID: 7837193101163452688}
+  _titleText: {fileID: 7837193101031004066}
+  _mainText: {fileID: 7837193101902047209}
 --- !u!1 &7837193101902047211
 GameObject:
   m_ObjectHideFlags: 0

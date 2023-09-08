@@ -1,3 +1,4 @@
+using Assets.GameEvent.EventResolution;
 using Bank;
 using GameCore;
 using GameCore.DataManagement.Events;
@@ -37,6 +38,7 @@ namespace VContainer
             builder.Register<BankManager>(Lifetime.Scoped).AsImplementedInterfaces();
             builder.Register<EventManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<EventValidator>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<EventResolutionViewManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<EventsData>(Lifetime.Singleton);
             builder.Register<ScreenParams>(Lifetime.Singleton);
             builder.Register<EventCountdownManager>(Lifetime.Singleton);
@@ -58,12 +60,12 @@ namespace VContainer
             _containerBuilder.Register<EventCountdownFactory>(Lifetime.Singleton).AsImplementedInterfaces();
             _containerBuilder.Register<EventResolutionViewFactory>(Lifetime.Singleton).AsImplementedInterfaces();
             //TODO: check if this is needed after using implemented intefaces
-            _containerBuilder.RegisterBuildCallback(container =>
+            /*_containerBuilder.RegisterBuildCallback(container =>
             {
                 container.Resolve<EventCountdownFactory>();
                 container.Resolve<EventResolutionViewFactory>();
 
-            });
+            });*/
         }
     }
 }

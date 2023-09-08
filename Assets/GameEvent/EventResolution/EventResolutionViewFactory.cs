@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.ObjectPool;
+﻿using Assets.GameCore.Utility.ObjectPool;
 using GameCore.ScriptableObjects;
 using GameCore.Utility.GeneralClasses;
 using UnityEngine;
@@ -33,7 +33,7 @@ namespace GameEvent.EventResolution
         {
             var eventResolution = _eventResolutionPool.GetObjectFromPool();
 
-            if (eventResolution == null)            
+            if (eventResolution == null)
                 return eventResolution = _resolver.Instantiate(_eventResolutionPrefab, parent);
             else
             {
