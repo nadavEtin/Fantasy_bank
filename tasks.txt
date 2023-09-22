@@ -26,5 +26,8 @@ relics/effects:
 - immediately finish an event's countdown
 - delay event\events, adds turns to their countdown
 - events that approving or denying them have effects, like approving a powerful mages request gives -2 duration to all active countdowns, or approving a bandits request makes the peasnts angry with some negative consequense. 
+- overconfident: can only approve loans with success chance less than 50%, with stronger effects like exuberance: 40%, euphoria: 30% etc
+- timid: can only approve if the success chance is over 50%, scared: over 60% etc
+- must approve every loan if able to/must decline all loans
 
 - random effect that makes the next event to finish countdown to automatically win/lose

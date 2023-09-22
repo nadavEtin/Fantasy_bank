@@ -5,15 +5,15 @@ using System;
 
 namespace GameEvent.LoanEvent
 {
-    public class LoanGameEventData : BaseGameEventData
+    public class LoanGameEventData : BaseGameEventData, ILoanGameDataEvent
     {
         public int SuccessChance { get; }
         public int LoanPrice { get; }
-        public GameEventType Type { get; }
+        public StoryType Type { get; }
         public Action<bool, IGameEventView> ResolutionCb => _resolutionCb;
 
         public LoanGameEventData(int id, string eventText, string eventTitle, string eventResolutionTitle, string eventResolutionText, int countdownDuration, Action<bool, IGameEventView> resolveCb,
-            IBankBalance bankBalance, int loanPrice, int successChance, GameEventType eventType,
+            IBankBalance bankBalance, int loanPrice, int successChance, StoryType eventType,
             int[] eventRequirements) : base(id, eventText, eventTitle, eventResolutionTitle, eventResolutionText, countdownDuration, eventType, eventRequirements, bankBalance,
             resolveCb)
         {
@@ -27,9 +27,9 @@ namespace GameEvent.LoanEvent
             SuccessChance = successChance;
         }
 
-        public override bool RequirementsMetValidation()
-        {
-            return _bankBalance.GoldBalance >= LoanPrice;
-        }
+        //public override bool RequirementsMetValidation()
+        //{
+        //    return _bankBalance.GoldBalance >= LoanPrice;
+        //}
     }
 }

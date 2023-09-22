@@ -3,7 +3,7 @@
     public interface IGameEventView
     {
         IGameDataEvent EventData { get; }
-        bool EventValidation();
+        //bool EventValidation();
 
         void ActivateEvent();
     }

@@ -9,14 +9,15 @@ namespace Editor
     [ExecuteAlways]
     public class EventEditor : EditorWindow
     {
-        private EditorEventsData _eventsData;
+        //private EditorEventsData _eventsData;
         
         private bool loanType;
         private string eventName, resolutionName, resolutionText;
         private string eventText, eventRequirements;
         private int eventDuration, eventId;
         private List<int> eventRequirementsList = new();
-        
+        private StoriesRefs _storiesRefs;
+
         //loan
         private int loanCost, chanceOfSuccess;
 
@@ -30,7 +31,8 @@ namespace Editor
 
         private void OnEnable()
         {
-            _eventsData = new EditorEventsData();
+            _storiesRefs = (StoriesRefs)Resources.Load("StoriesRefs");
+            _storiesRefs.InitSetup();
         }
 
         private void OnGUI()
@@ -89,12 +91,12 @@ namespace Editor
             switch (type)
             {
                 case 1:
-                    var loanEv = new LoanEventDataSerialized(eventId, eventDuration, type, eventRequirementsList, eventName, eventText, resolutionName, resolutionText, loanCost, chanceOfSuccess);
-                    _eventsData.SaveEvent(loanEv);
+                    var loanEv = new LoanStoryDataSerialized(eventId, eventDuration, type, eventRequirementsList, eventName, eventText, resolutionName, resolutionText, loanCost, chanceOfSuccess);
+                    _storiesRefs.SaveStory(loanEv, StoryType.Loan);
                     break;
                 default:
                     var regEv = new EventDataSerialized(eventId, eventDuration, type, eventRequirementsList, eventName, eventText, resolutionName, resolutionText);
-                    _eventsData.SaveEvent(regEv);
+                    _storiesRefs.SaveStory(regEv, StoryType.Other);
                     break;
             }
         }
@@ -109,14 +111,14 @@ namespace Editor
             }
             if (eventId != 0)
             {
-                eventData = _eventsData.LoadSpecificEvent(eventId);
+                eventData = _storiesRefs.LoadSpecificStory(eventId);
                 
             }
-            else if (eventName != string.Empty)
+            /*else if (eventName != string.Empty)
             {
-                eventData = _eventsData.LoadSpecificEvent(eventName);
+                eventData = _storiesRefs.LoadSpecificStory(eventName);
                 
-            }
+            }*/
             
             if (eventData == null)
             {
@@ -124,9 +126,9 @@ namespace Editor
                 return;
             }
             
-            if (eventData.type == (int)GameEventType.Loan)
+            if (eventData.type == (int)StoryType.Loan)
             { 
-                var loan = (LoanEventDataSerialized)eventData;
+                var loan = (LoanStoryDataSerialized)eventData;
                 loanType = true;
                 loanCost = loan.loanCost;
                 chanceOfSuccess = loan.chanceOfSuccess;

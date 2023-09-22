@@ -37,11 +37,11 @@ namespace GameEvent.EventResolution
             _confirmBtn.Setup(ConfirmBtnClicked, 1);
         }
 
-        public void Setup(string titleText, string mainText, int id, Action<BaseEventParams> cb)
+        public void Setup(string titleText, string mainText, int id, Action<BaseEventParams> callback)
         {
             _titleText.text = titleText;
             _mainText.text = mainText;
-            _cb = cb;
+            _cb = callback;
             _eventId = id;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.GameCore.EventEffectsResolver;
 using GameCore;
 using GameCore.EventBus;
 using GameCore.ScriptableObjects;
@@ -16,18 +17,20 @@ namespace Assets.GameEvent.EventResolution
         private Stack<IGameDataEvent> _activeEventResolutions;
         private IGameDataEvent _currentlyShownEvent;
         private IBaseFactory _eventResolutionFactory;
+        private IEventEffectsResolver _effectsResolver;
         private EventBus _eventBus;
         private IGameDirector _gameDirector;
 
-        private EventResolutionViewManager(IBaseFactory eventResolutionFactory, IGameEventSettings settings, EventBus eventBus, IGameDirector gameDirector)
+        private EventResolutionViewManager(IBaseFactory eventResolutionFactory, IGameEventSettings settings, EventBus eventBus, IGameDirector gameDirector, IEventEffectsResolver effectsResolver)
         {
             _activeEventResolutions = new Stack<IGameDataEvent>();
             _eventResolutionFactory = eventResolutionFactory;
             _eventResolutionNeutralPos = settings.EventResolutionNeutralPos;
             _eventBus = eventBus;
             _gameDirector = gameDirector;
+            _effectsResolver = effectsResolver;
 
-            _eventBus.Subscribe(GameplayEvent.ResolveReadyEvents, ShowEventResolutions);
+            _eventBus.Subscribe(GameplayEvent.ResolveReadyEvents, ShowEventResolutions);            
         }
 
         public void AddEventResolution(IGameDataEvent data)
@@ -40,7 +43,7 @@ namespace Assets.GameEvent.EventResolution
         private EventResolutionView CreateEventResolutionView(IGameDataEvent data)
         {
             var newResolutionView = _eventResolutionFactory.Create().GetComponent<EventResolutionView>();
-            newResolutionView.Setup(data.EventResolutionTitle, data.EventResolutionMainText, data.ID, ShowEventResolutions);
+            newResolutionView.Setup(data.EventResolutionTitle, data.EventResolutionMainText, data.ID, callback: ShowEventResolutions);
             return newResolutionView;
         }
 

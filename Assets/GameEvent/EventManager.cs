@@ -21,8 +21,8 @@ namespace GameEvent
 
         //events that are being showed to the player in this round, usually 1-5 events
         private List<IGameEventView> _currentRoundEvents;
-        private Dictionary<GameEventType, List<IGameEventView>> _pendingEvents;
-        private Dictionary<GameEventType, List<IGameEventView>> _approvedEventsOnCountdown;
+        private Dictionary<StoryType, List<IGameEventView>> _pendingEvents;
+        private Dictionary<StoryType, List<IGameEventView>> _approvedEventsOnCountdown;
         private readonly GameObject _eventContainer;
 
         public EventManager(IAssetRefs assetRefs, IInputManager inputManager,
@@ -32,15 +32,16 @@ namespace GameEvent
             _inputManager = inputManager;
             _bankBalance = bankBalance;
             _currentRoundEvents = new List<IGameEventView>();
-            _eventValidator = new EventValidator();
+            _eventValidator = new StoryValidator();
             _camera = camera;
             _eventBus = eventBus;
-            _pendingEvents = new Dictionary<GameEventType, List<IGameEventView>>();
-            _approvedEventsOnCountdown = new Dictionary<GameEventType, List<IGameEventView>>();
+            _pendingEvents = new Dictionary<StoryType, List<IGameEventView>>();
+            _approvedEventsOnCountdown = new Dictionary<StoryType, List<IGameEventView>>();
 
-            foreach (GameEventType type in Enum.GetValues(typeof(GameEventType)))
+            foreach (StoryType type in Enum.GetValues(typeof(StoryType)))
                 _approvedEventsOnCountdown.Add(type, new List<IGameEventView>());
             _eventContainer = new GameObject("GameEventContainer");
+            EventSubscriptions();
         }
 
         public void EventValidation(IGameEventView view)
@@ -48,9 +49,10 @@ namespace GameEvent
             _eventValidator.EventValidationEntry(view);
         }
 
-        public void CreateGameEvent(GameEventType type)
+        public void CreateGameEvent(StoryType type)
         {
-            var geView = GameObject.Instantiate(_assetRefs.GameEvent, _eventContainer.transform)
+            //TODO: instantiate through the lifetime resolver and inject the needed vars, replace init method with constructor
+            var geView = GameObject.Instantiate(_assetRefs.StoryView, _eventContainer.transform)
                 .GetComponent<GameEventView>();
             geView.Init(_inputManager, _bankBalance, EventResolution, _camera, _eventBus);
 
@@ -71,6 +73,12 @@ namespace GameEvent
                     //show event result screen
                 }
             }
+        }
+
+        private void NewTurn(BaseEventParams eventParams)
+        {
+            _currentRoundEvents = _eventValidator.GetEventsForCurrentTurn();
+            NextEvent();
         }
 
         private void NextEvent()
@@ -95,11 +103,14 @@ namespace GameEvent
         private void EventSubscriptions()
         {
             _eventBus.Subscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
+            _eventBus.Subscribe(GameplayEvent.NextTurn, NewTurn);
+            _eventBus.Subscribe(GameplayEvent.GameStart, NewTurn);
         }
 
         public void Dispose()
         {
             _eventBus.Unsubscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
+            _eventBus.Unsubscribe(GameplayEvent.NextTurn, NewTurn);
         }
     }
 }

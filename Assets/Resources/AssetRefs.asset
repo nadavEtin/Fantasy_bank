@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _goldDisplay: {fileID: 4036683040202423254, guid: 1c0c914b4e3e02a4b80b74c9b00812c7, type: 3}
   _eventCountdown: {fileID: 3321674827580994723, guid: 2428c0cb732396b46966ece2a965ad1e, type: 3}
-  _gameEvent: {fileID: 3426804162143852959, guid: 10221b7b3d07bc04f87734efe86c9984, type: 3}
+  _sotryView: {fileID: 3426804162143852959, guid: 10221b7b3d07bc04f87734efe86c9984, type: 3}
   _eventResolutionScreen: {fileID: 7837193101834857583, guid: 3f6cd13578f6a714cbf6e7cc7608d063, type: 3}

@@ -1,3 +1,4 @@
+using Assets.GameCore.EventEffectsResolver;
 using Assets.GameEvent.EventResolution;
 using Bank;
 using GameCore;
@@ -20,6 +21,7 @@ namespace VContainer
     {
         [SerializeField] private AssetRefs _assetRefs;
         [SerializeField] private GameEventSettings _eventSettings;
+        [SerializeField] private StoriesRefs _storyRefs;
 
         private IContainerBuilder _containerBuilder;
 
@@ -29,6 +31,7 @@ namespace VContainer
             
             builder.RegisterInstance<IAssetRefs, AssetRefs>(_assetRefs);
             builder.RegisterInstance<IGameEventSettings, GameEventSettings>(_eventSettings);
+            builder.RegisterInstance<IStoriesRefs, StoriesRefs>(_storyRefs);
             
             builder.RegisterEntryPoint<GameDirector>();
             builder.Register<EventBus>(Lifetime.Singleton);
@@ -37,8 +40,9 @@ namespace VContainer
             builder.Register<InputManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<BankManager>(Lifetime.Scoped).AsImplementedInterfaces();
             builder.Register<EventManager>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<EventValidator>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<StoryValidator>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<EventResolutionViewManager>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<EventEffectsResolver>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<EventsData>(Lifetime.Singleton);
             builder.Register<ScreenParams>(Lifetime.Singleton);
             builder.Register<EventCountdownManager>(Lifetime.Singleton);

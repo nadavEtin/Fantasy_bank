@@ -25,6 +25,7 @@ namespace GameCore
         private readonly EventBus.EventBus _eventBus;
 
         private readonly IAssetRefs _assetRefs;
+        private readonly IStoriesRefs _storyRefs;
         private readonly Canvas _canvas;
         private readonly IGameEventManager _geManager;
 
@@ -38,10 +39,11 @@ namespace GameCore
         //test
         private readonly IObjectResolver _resolver;
 
-        public GameDirector(EventBus.EventBus bus, IAssetRefs assetRefs, IBankBalance bankBalance,
+        public GameDirector(EventBus.EventBus bus, IAssetRefs assetRefs, IStoriesRefs storyRefs, IBankBalance bankBalance,
             IGameEventManager eventManager, Canvas canvas, Camera camera, IUiManager uiManager, IObjectResolver resolver)
         {
             _assetRefs = assetRefs;
+            _storyRefs = storyRefs;
             _canvas = canvas;
             _camera = camera;
             _eventBus = bus;
@@ -52,8 +54,23 @@ namespace GameCore
             _currentPhase = _gamePhases[0];
 
             _resolver = resolver;
+            ComponentsSetup();
+            StartGame();
+            //GameEventCreate();
+        }
+
+        private void StartGame()
+        {
+            _eventBus.Publish(GameplayEvent.GameStart, new EmptyParams());
+            //_currentPhase = GamePhases.ResolveReadyEvents;
+            //GamePhaseDone(_currentPhase);
+
+        }
+
+        private void ComponentsSetup()
+        {
             DOTween.Init();
-            GameEventCreate();
+            _storyRefs.InitSetup();
         }
 
 
@@ -64,9 +81,10 @@ namespace GameCore
             switch (phase)
             {
                 case GamePhases.ResolveReadyEvents:
-
+                    _eventBus.Publish(GameplayEvent.MainPhase, new EmptyParams());
                     break;
                 case GamePhases.MainPhase:
+                    
                     break;
                 
                 case GamePhases.AdvanceEvent:

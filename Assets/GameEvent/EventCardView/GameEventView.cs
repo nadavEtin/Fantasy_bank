@@ -37,13 +37,13 @@ namespace GameEvent.EventCardView
             _resolutionCb = resolutionCb;
 
             _eventData = new LoanGameEventData(1, "event text", "title", "resolution title", "resolution text", 5,
-                resolutionCb, _bankBalance, 100, 75, GameEventType.Loan, null);
+                resolutionCb, _bankBalance, 100, 75, StoryType.Loan, null);
         }
 
-        public bool EventValidation()
+        /*public bool EventValidation()
         {
             return _eventData.RequirementsMetValidation();
-        }
+        }*/
 
         public void ActivateEvent()
         {
