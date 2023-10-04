@@ -1,5 +1,6 @@
 ﻿using Bank;
-using GameEvent.EventCardView;
+using GameCore.Utility.Jsons;
+using GameEvent.StoryView;
 using GameEvent.LoanEvent;
 using System;
 using System.Collections.Generic;
@@ -7,33 +8,61 @@ using System.Linq;
 
 namespace GameEvent
 {
-    public class StoryValidator : IEventValidator
+    public class StoryValidator : IStoryValidator
     {
         private IBankBalance _bankBalance;
+        private IStoriesRefs _storyRefs;
 
         private List<int> _completedEvents;
-        private List<IGameEventView> _unavailableEvents;
-        private List<IGameEventView> _availableEventsPool;
+        //private Dictionary<StoryType, Dictionary<int, EventDataSerialized>> _unavailableEvents;
+        private List<IGameDataEvent> _unavailableEvents;
+        private List<IGameDataEvent> _availableEventsPool;
 
-        public StoryValidator()
+        public StoryValidator(IBankBalance bankBalance, IStoriesRefs storyRefs)
         {
             _completedEvents = new List<int>();
-            _unavailableEvents = new List<IGameEventView>();
-            _availableEventsPool = new List<IGameEventView>();
+            _unavailableEvents = new List<IGameDataEvent>();
+            _availableEventsPool = new List<IGameDataEvent>();
+            _bankBalance = bankBalance;
+            _storyRefs = storyRefs;
+            //_unavailableEvents = _storyRefs.AllStories;            
+        }
+
+        public void GameStart()
+        {
+            foreach (var storyType in _storyRefs.AllStories)
+            {
+                switch (storyType.Key)
+                {
+                    case StoryType.Other:
+                        break;
+                    case StoryType.Loan:
+                        foreach (var story in storyType.Value.Values)
+                        {
+                            var loan = (LoanStoryDataSerialized)story;
+                            var loanData = new LoanGameEventData(loan, loan.loanCost, loan.chanceOfSuccess);
+                            _unavailableEvents.Add(loanData);
+                        }
+                        break;
+                    default:
+                        break;
+                }                
+            }
+            UpdateAvailableEvents();
         }
 
         public void EventCompleted(int id)
         {
             _completedEvents.Add(id);
-            _availableEventsPool.Remove(_availableEventsPool.FirstOrDefault(a => a.EventData.ID == id));
+            _availableEventsPool.Remove(_availableEventsPool.FirstOrDefault(a => a.ID == id));
             UpdateAvailableEvents();
         }
 
         public void UpdateAvailableEvents()
         {
-            foreach (var eve in _unavailableEvents)
+            foreach (var eve in _unavailableEvents.ToList())
             {
-                if (EventRequirementsMet(eve.EventData.EventRequirements))
+                if (EventRequirementsMet(eve.EventRequirements))
                 {
                     //Add the event to the pool of available events
                     _availableEventsPool.Add(eve);
@@ -44,15 +73,15 @@ namespace GameEvent
             }
         }
 
-        public bool EventValidationEntry(IGameEventView eventView)
+        public bool EventValidationEntry(IGameDataEvent eventData)
         {
             var res = false;
-            if (GeneralEventValidation(eventView))
+            if (GeneralEventValidation(eventData))
             {
-                switch (eventView.EventData.EventType)
+                switch (eventData.EventType)
                 {
                     case StoryType.Loan:
-                        res = LoanTypeValidation(eventView.EventData);
+                        res = LoanTypeValidation(eventData);
                         break;
                     default:
                         break;
@@ -62,10 +91,10 @@ namespace GameEvent
             return res;
         }
 
-        public List<IGameEventView> GetEventsForCurrentTurn()
+        public List<IGameDataEvent> GetStoriesForCurrentTurn()
         {
             Random random = new Random();
-            var result = new List<IGameEventView>();
+            var result = new List<IGameDataEvent>();
             UpdateAvailableEvents();
             for (int i = 0; i < 3; i++)
             {
@@ -85,9 +114,9 @@ namespace GameEvent
             return result;
         }
 
-        private bool GeneralEventValidation(IGameEventView eventView)
+        private bool GeneralEventValidation(IGameDataEvent eventView)
         {
-            return EventRequirementsMet(eventView.EventData.EventRequirements);
+            return EventRequirementsMet(eventView.EventRequirements);
         }
 
         private bool EventRequirementsMet(IReadOnlyCollection<int> requirements)

@@ -9,11 +9,11 @@ namespace Assets.GameCore.Utility.ObjectPool
         GenericObject
     }
 
-    public class MuktipleObjectPool : IMultipleObjectPool
+    public class MultipleObjectPool : IMultipleObjectPool
     {
         private readonly Dictionary<ObjectTypes, List<GameObject>> _objectPool;
 
-        public MuktipleObjectPool()
+        public MultipleObjectPool()
         {
             _objectPool = new Dictionary<ObjectTypes, List<GameObject>>();
         }

@@ -1,6 +1,6 @@
 ﻿using Bank;
 using GameCore.Utility.Jsons;
-using GameEvent.EventCardView;
+using GameEvent.StoryView;
 using System;
 
 namespace GameEvent.LoanEvent
@@ -10,9 +10,9 @@ namespace GameEvent.LoanEvent
         public int SuccessChance { get; }
         public int LoanPrice { get; }
         public StoryType Type { get; }
-        public Action<bool, IGameEventView> ResolutionCb => _resolutionCb;
+        public Action<bool, IStoryCardView> ResolutionCb => _resolutionCb;
 
-        public LoanGameEventData(int id, string eventText, string eventTitle, string eventResolutionTitle, string eventResolutionText, int countdownDuration, Action<bool, IGameEventView> resolveCb,
+        public LoanGameEventData(int id, string eventText, string eventTitle, string eventResolutionTitle, string eventResolutionText, int countdownDuration, Action<bool, IStoryCardView> resolveCb,
             IBankBalance bankBalance, int loanPrice, int successChance, StoryType eventType,
             int[] eventRequirements) : base(id, eventText, eventTitle, eventResolutionTitle, eventResolutionText, countdownDuration, eventType, eventRequirements, bankBalance,
             resolveCb)

@@ -1,4 +1,5 @@
-﻿using GameCore.EventBus;
+﻿using Assets.GameCore.Utility.ObjectPool;
+using GameCore.EventBus;
 using GameCore.ScriptableObjects;
 using GameCore.Utility.GeneralClasses;
 using GameCore.Utility.Screen;
@@ -9,7 +10,7 @@ using VContainer;
 
 namespace GameEvent.EventResolution
 {
-    public class EventResolutionView : MonoBehaviour
+    public class EventResolutionView : MonoBehaviour, IPoolable
     {
         [SerializeField] private GameObject _background;
         [SerializeField] private GameObject _confirmButtonObj;
@@ -18,8 +19,10 @@ namespace GameEvent.EventResolution
         private ScreenParams _screenParams;
         private IGameEventSettings _gameSettings;
         private IGenericButton _confirmBtn;
-        private Action<BaseEventParams> _cb;
+        private Action<BaseEventParams> _closeResolutionCb;
         private int _eventId;
+
+        public Action<GameObject> ObjectPoolCb { get; set; }
 
         [Inject]
         private void Construct(ScreenParams screenParams, IGameEventSettings settings)
@@ -41,7 +44,7 @@ namespace GameEvent.EventResolution
         {
             _titleText.text = titleText;
             _mainText.text = mainText;
-            _cb = callback;
+            _closeResolutionCb = callback;
             _eventId = id;
         }
 
@@ -50,7 +53,18 @@ namespace GameEvent.EventResolution
             //TODO: apply effects of the event resolving, if any
 
             //continue to the next resolution
-            _cb.Invoke(null);
+            _closeResolutionCb.Invoke(null);
+            ExecutePoolCb();
+        }
+
+        public void SetupReturnToPoolCb(Action<GameObject> cb)
+        {
+            ObjectPoolCb = cb;
+        }
+
+        public void ExecutePoolCb()
+        {
+            ObjectPoolCb(gameObject);
         }
     }
 }

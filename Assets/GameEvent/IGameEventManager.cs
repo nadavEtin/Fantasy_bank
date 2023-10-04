@@ -2,6 +2,6 @@
 {
     public interface IGameEventManager
     {
-        void CreateGameEvent(StoryType type);
+        //void CreateGameEvent(StoryType type);
     }
 }

@@ -5,7 +5,9 @@ using GameCore.EventBus;
 using GameCore.EventBus.GameplayEvents;
 using GameCore.Input;
 using GameCore.ScriptableObjects;
-using GameEvent.EventCardView;
+using GameCore.Utility.GeneralClasses;
+using GameCore.Utility.Jsons;
+using GameEvent.StoryView;
 using UnityEngine;
 
 namespace GameEvent
@@ -15,51 +17,41 @@ namespace GameEvent
         private IAssetRefs _assetRefs;
         private readonly IInputManager _inputManager;
         private readonly IBankBalance _bankBalance;
-        private IEventValidator _eventValidator;
+        private IStoryValidator _storyValidator;
+        private IBaseFactory _storyViewFactory;
         private Camera _camera;
         private EventBus _eventBus;
 
         //events that are being showed to the player in this round, usually 1-5 events
-        private List<IGameEventView> _currentRoundEvents;
-        private Dictionary<StoryType, List<IGameEventView>> _pendingEvents;
-        private Dictionary<StoryType, List<IGameEventView>> _approvedEventsOnCountdown;
+        private List<IGameDataEvent> _currentRoundEvents;
+        private Dictionary<StoryType, List<IGameDataEvent>> _pendingEvents;
+        private Dictionary<StoryType, List<IGameDataEvent>> _approvedEventsOnCountdown;
         private readonly GameObject _eventContainer;
 
-        public EventManager(IAssetRefs assetRefs, IInputManager inputManager,
-            IBankBalance bankBalance, Camera camera, EventBus eventBus)
+        public EventManager(IAssetRefs assetRefs, IInputManager inputManager, IBaseFactory storyViewFactory,
+            IBankBalance bankBalance, IStoriesRefs storiesRefs, Camera camera, EventBus eventBus)
         {
             _assetRefs = assetRefs;
             _inputManager = inputManager;
             _bankBalance = bankBalance;
-            _currentRoundEvents = new List<IGameEventView>();
-            _eventValidator = new StoryValidator();
+            _storyViewFactory = storyViewFactory;
+            _currentRoundEvents = new List<IGameDataEvent>();
+            _storyValidator = new StoryValidator(bankBalance, storiesRefs);
             _camera = camera;
             _eventBus = eventBus;
-            _pendingEvents = new Dictionary<StoryType, List<IGameEventView>>();
-            _approvedEventsOnCountdown = new Dictionary<StoryType, List<IGameEventView>>();
+            _pendingEvents = new Dictionary<StoryType, List<IGameDataEvent>>();
+            _approvedEventsOnCountdown = new Dictionary<StoryType, List<IGameDataEvent>>();
 
             foreach (StoryType type in Enum.GetValues(typeof(StoryType)))
-                _approvedEventsOnCountdown.Add(type, new List<IGameEventView>());
+                _approvedEventsOnCountdown.Add(type, new List<IGameDataEvent>());
             _eventContainer = new GameObject("GameEventContainer");
             EventSubscriptions();
         }
 
-        public void EventValidation(IGameEventView view)
+        public void EventValidation(IGameDataEvent data)
         {
-            _eventValidator.EventValidationEntry(view);
-        }
-
-        public void CreateGameEvent(StoryType type)
-        {
-            //TODO: instantiate through the lifetime resolver and inject the needed vars, replace init method with constructor
-            var geView = GameObject.Instantiate(_assetRefs.StoryView, _eventContainer.transform)
-                .GetComponent<GameEventView>();
-            geView.Init(_inputManager, _bankBalance, EventResolution, _camera, _eventBus);
-
-            if (_pendingEvents.ContainsKey(type) == false)
-                _pendingEvents.Add(type, new List<IGameEventView>());
-            _pendingEvents[type].Add(geView);
-        }
+            _storyValidator.EventValidationEntry(data);
+        }        
 
         private void CountdownResolution(BaseEventParams events)
         {
@@ -67,7 +59,7 @@ namespace GameEvent
             foreach (var eventData in eventParams.CompletedEventsData)
             {
                 var currentEventView = _approvedEventsOnCountdown[eventData.EventType]
-                    .Find(e => e.EventData.ID == eventData.ID);
+                    .Find(e => e.ID == eventData.ID);
                 if (currentEventView != null)
                 {
                     //show event result screen
@@ -75,18 +67,27 @@ namespace GameEvent
             }
         }
 
-        private void NewTurn(BaseEventParams eventParams)
+        private void GameStart(BaseEventParams eventParams = null)
         {
-            _currentRoundEvents = _eventValidator.GetEventsForCurrentTurn();
-            NextEvent();
+            _storyValidator.GameStart();
+            NewTurn();
         }
 
-        private void NextEvent()
+        private void NewTurn(BaseEventParams eventParams = null)
+        {
+            _currentRoundEvents = _storyValidator.GetStoriesForCurrentTurn();
+            NextStory();
+        }
+
+        private void NextStory()
         {
             if (_currentRoundEvents.Count > 0)
             {
-                var curEvent = _currentRoundEvents[0];
-                curEvent.ActivateEvent();
+                var curStory = _currentRoundEvents[0];
+                var curStoryView = _storyViewFactory.Create(_eventContainer.transform);
+                var validation = _storyValidator.EventValidationEntry(curStory);
+                curStoryView.GetComponent<IStoryCardView>().Init(curStory, EventResolution);
+                curStoryView.GetComponent<IStoryCardView>().ActivateEvent(validation);
             }
             else
             {
@@ -94,23 +95,23 @@ namespace GameEvent
             }
         }
 
-        private void EventResolution(bool approved, IGameEventView curEvent = null)
+        private void EventResolution(bool approved, IGameDataEvent curEvent = null)
         {
             if (approved && curEvent != null)
-                _approvedEventsOnCountdown[curEvent.EventData.EventType].Add(curEvent);
+                _approvedEventsOnCountdown[curEvent.EventType].Add(curEvent);
         }
 
         private void EventSubscriptions()
         {
             _eventBus.Subscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
             _eventBus.Subscribe(GameplayEvent.NextTurn, NewTurn);
-            _eventBus.Subscribe(GameplayEvent.GameStart, NewTurn);
+            _eventBus.Subscribe(GameplayEvent.GameStart, GameStart);
         }
 
         public void Dispose()
         {
             _eventBus.Unsubscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
-            _eventBus.Unsubscribe(GameplayEvent.NextTurn, NewTurn);
+            _eventBus.Unsubscribe(GameplayEvent.NextTurn, GameStart);
         }
     }
 }

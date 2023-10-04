@@ -6,8 +6,8 @@ namespace GameCore.Utility.Jsons
     [Serializable]
     public class StoriesDataContainerObj : IEventsDataContainerObj
     {
-        public List<DictionaryWrapper<EventDataSerialized>> RegularEvents; // { get; }
-        public List<DictionaryWrapper<LoanStoryDataSerialized>> LoanEvents;
+        public List<DictionaryWrapper<EventDataSerialized>> RegularEvents; //Any change to this parameter names must be reflected in the stories data json file!!
+        public List<DictionaryWrapper<LoanStoryDataSerialized>> LoanEvents; //Any change to this parameter names must be reflected in the stories data json file!!
 
         public StoriesDataContainerObj()
         {

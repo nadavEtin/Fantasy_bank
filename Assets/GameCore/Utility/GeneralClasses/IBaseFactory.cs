@@ -6,5 +6,6 @@ namespace GameCore.Utility.GeneralClasses
     {
         GameObject Create();
         GameObject Create(Transform parent);
+        void ReturnToObjectPool(GameObject obj);
     }
 }

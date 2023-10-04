@@ -1,6 +1,6 @@
 {
-    "regularEvents": [],
-    "loanEvents": [
+    "RegularEvents": [],
+    "LoanEvents": [
         {
             "key": 1,
             "value": {

@@ -1,4 +1,5 @@
 using System;
+using Assets.GameCore.Utility.ObjectPool;
 using DG.Tweening;
 using GameCore.Utility.Screen;
 using TMPro;
@@ -8,7 +9,7 @@ using VContainer;
 namespace GameEvent.EventCountdown
 {
     [RequireComponent(typeof(RectTransform))]
-    public class EventCountdownView : MonoBehaviour, IEventCountdownView
+    public class EventCountdownView : MonoBehaviour, IEventCountdownView, IPoolable
     {
         [SerializeField] private TextMeshProUGUI _eventName, _countdownNum;
         
@@ -16,6 +17,8 @@ namespace GameEvent.EventCountdown
         public RectTransform ObjTransform { get; private set; }
         //public int Id => _eventData.ID;
         public IGameDataEvent EventData { get; private set; }
+
+        public Action<GameObject> ObjectPoolCb { get; private set; }
 
         private ScreenParams _screenParams;
         private Vector2 _defaultHiddenPos;
@@ -54,7 +57,7 @@ namespace GameEvent.EventCountdown
             //disappear the countdown view, with animation?
             gameObject.SetActive(false);
             //send the view obj to its object pool
-            
+            ExecutePoolCb();
         }
 
         [Inject]
@@ -79,6 +82,16 @@ namespace GameEvent.EventCountdown
             _extended = false;
             _rectTransform.DOMoveX(_defaultHiddenPos.x, 0.5f);
             //transform.DOMoveX(_defaultHiddenPos.x, 0.5f);
+        }
+
+        public void SetupReturnToPoolCb(Action<GameObject> cb)
+        {
+            ObjectPoolCb = cb;
+        }
+
+        public void ExecutePoolCb()
+        {
+            ObjectPoolCb(gameObject);
         }
     }
 }

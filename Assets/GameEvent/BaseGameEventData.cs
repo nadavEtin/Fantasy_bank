@@ -1,7 +1,7 @@
 ﻿using System;
 using Bank;
 using GameCore.Utility.Jsons;
-using GameEvent.EventCardView;
+using GameEvent.StoryView;
 
 namespace GameEvent
 {
@@ -23,7 +23,7 @@ namespace GameEvent
         public int CountdownDuration { get; }
         public string EventResolutionTitle { get; }
         public string EventResolutionMainText { get; }
-        protected Action<bool, IGameEventView> _resolutionCb { get; set; }
+        protected Action<bool, IStoryCardView> _resolutionCb { get; set; }
         //protected IBankBalance _bankBalance;
         
         protected BaseGameEventData(EventDataSerialized eventData)
@@ -42,7 +42,7 @@ namespace GameEvent
         }
 
         protected BaseGameEventData(int id, string eventText, string eventTitle, string eventResolutionTitle, string eventResolutionMainText, int countdownDuration, StoryType eventType, int[] eventRequirements, 
-            IBankBalance bankBalance, Action<bool, IGameEventView> resolutionCb)
+            IBankBalance bankBalance, Action<bool, IStoryCardView> resolutionCb)
         {
             //_bankBalance = bankBalance;
             ID = id;
