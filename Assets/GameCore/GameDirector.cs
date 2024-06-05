@@ -76,6 +76,7 @@ namespace GameCore
 
         #region Game Flow
 
+        //TODO: maybe change this to a list of phases? easier to chnge the order dynamically?
         public void GamePhaseDone(GamePhases phase)
         {
             switch (phase)

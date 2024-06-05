@@ -9,7 +9,7 @@ namespace GameCore.EventBus
         TouchStarted, TouchEnded,
         
         //game flow
-        NextTurn, ResolveReadyEvents, MainPhase,
+        NextTurn, NextRound, ResolveReadyEvents, MainPhase,
         
         GoldBalanceChanged, EventApproved, EventCountdownDone,
         GameStart, GameEnd

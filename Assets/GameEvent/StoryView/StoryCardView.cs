@@ -121,7 +121,7 @@ namespace GameEvent.StoryView
             //_eventData.ResolutionCb(true, this);
 
             //temp
-            SnapToNeutralPos();
+            //SnapToNeutralPos();
         }
 
         private void OnNoResult()
@@ -131,7 +131,7 @@ namespace GameEvent.StoryView
             //_eventData.ResolutionCb(false, this);
 
             //temp
-            SnapToNeutralPos();
+            //SnapToNeutralPos();
         }
 
         public void SetupReturnToPoolCb(Action<GameObject> cb)
