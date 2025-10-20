@@ -50,7 +50,7 @@ namespace GameEvent
 
         public void EventValidation(IGameDataEvent data)
         {
-            _storyValidator.EventValidationEntry(data);
+            _storyValidator.StoryEventValidationEntry(data);
         }        
 
         private void CountdownResolution(BaseEventParams events)
@@ -85,7 +85,7 @@ namespace GameEvent
             {
                 var curStory = _currentRoundEvents[0];
                 var curStoryView = _storyViewFactory.Create(_eventContainer.transform);
-                var validation = _storyValidator.EventValidationEntry(curStory);
+                var validation = _storyValidator.StoryEventValidationEntry(curStory);
                 curStoryView.GetComponent<IStoryCardView>().Init(curStory, EventResolution);
                 curStoryView.GetComponent<IStoryCardView>().ActivateEvent(validation);
             }

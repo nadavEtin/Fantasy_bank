@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StoriesRefs", menuName = "Scriptable Objects/Stories References")]
 public class StoriesRefs : ScriptableObject, IStoriesRefs
 {
-    public Dictionary<StoryType, Dictionary<int, EventDataSerialized>> AllStories { private set; get; }
+    public Dictionary<StoryType, Dictionary<string, EventDataSerialized>> AllStories { private set; get; }
 
     private string _SA_path;
     private string _eventsFileName = "EventsData.json";
@@ -23,11 +23,13 @@ public class StoriesRefs : ScriptableObject, IStoriesRefs
     {
         _SA_path = $"{Application.dataPath}/StreamingAssets";
         _eventsFilePath = $"{_SA_path}/{_eventsFileName}";
-        AllStories = new Dictionary<StoryType, Dictionary<int, EventDataSerialized>>();
-        AllStories.Add(StoryType.Other, new Dictionary<int, EventDataSerialized>());
-        AllStories.Add(StoryType.Loan, new Dictionary<int, EventDataSerialized>());
+        AllStories = new Dictionary<StoryType, Dictionary<string, EventDataSerialized>>
+        {
+            { StoryType.Other, new Dictionary<string, EventDataSerialized>() },
+            { StoryType.Loan, new Dictionary<string, EventDataSerialized>() }
+        };
 
-        LoadStoriesFromFile();
+        LoadStoriesFromFile();        
     }
 
     public void SaveStory(EventDataSerialized data, StoryType type)
@@ -44,13 +46,14 @@ public class StoriesRefs : ScriptableObject, IStoriesRefs
         }*/
 
         //search for this event by id
-        var existingEvent = AllStories[type].ContainsKey(data.id);   //.FirstOrDefault(e => e.key == data.id);
+        var eventName = data.name.ToLower();
+        var existingEvent = AllStories[type].ContainsKey(eventName);   //.FirstOrDefault(e => e.key == data.id);
 
         //replace it if exists otherwise add it
         if (existingEvent)
-            AllStories[type][data.id] = data;
+            AllStories[type][eventName] = data;
         else
-            AllStories[type].Add(data.id, data);
+            AllStories[type].Add(eventName, data);
         WriteDataToFile();
     }
 
@@ -67,24 +70,26 @@ public class StoriesRefs : ScriptableObject, IStoriesRefs
         WriteDataToFile();
     }*/
 
-    public EventDataSerialized LoadSpecificStory(int idKey, int type = -1)
+    public EventDataSerialized LoadSpecificStory(string keyName, int type = -1)
     {
+        var keyLower = keyName.ToLower();
         if (type > 0)
         {
             var expectedType = (StoryType)type;
-            if (AllStories[expectedType].ContainsKey(idKey))
-                return AllStories[expectedType][idKey];
+            
+            if (AllStories[expectedType].ContainsKey(keyLower))
+                return AllStories[expectedType][keyLower];
         }
         else
         {
             foreach (var dicType in AllStories)
             {
-                if (dicType.Value.ContainsKey(idKey))
-                    return dicType.Value[idKey];
+                if (dicType.Value.ContainsKey(keyLower))
+                    return dicType.Value[keyLower];
             }
         }
 
-        Debug.Log($"Event id {idKey} not found");
+        Debug.Log($"Event id {keyLower} not found");
         return null;
         /*if (AllStories[type].ContainsKey(idKey))
             return AllStories[type][idKey];

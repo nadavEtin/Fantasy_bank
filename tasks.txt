@@ -29,5 +29,7 @@ relics/effects:
 - overconfident: can only approve loans with success chance less than 50%, with stronger effects like exuberance: 40%, euphoria: 30% etc
 - timid: can only approve if the success chance is over 50%, scared: over 60% etc
 - must approve every loan if able to/must decline all loans
+- relic that reveales how many more loans offers will be in the day, maybe with some info about the loans too
 
 - random effect that makes the next event to finish countdown to automatically win/lose
+- global events / completed loans that have wide effects on other events. for example a wizard makes it rain, agriculture related events get a -2 turns bonus to their timer and/or +10% to succeed. ALLOWS FOR BUILDS OF RELATED TYPES OF EVENTS. fund a good blacksmith to help military style events to win etc.

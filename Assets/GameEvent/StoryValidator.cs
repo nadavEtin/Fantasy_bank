@@ -73,7 +73,7 @@ namespace GameEvent
             }
         }
 
-        public bool EventValidationEntry(IGameDataEvent eventData)
+        public bool StoryEventValidationEntry(IGameDataEvent eventData)
         {
             var res = false;
             if (GeneralEventValidation(eventData))

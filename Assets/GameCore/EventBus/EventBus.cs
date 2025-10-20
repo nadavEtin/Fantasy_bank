@@ -11,7 +11,8 @@ namespace GameCore.EventBus
         //game flow
         NextTurn, NextRound, ResolveReadyEvents, MainPhase,
         
-        GoldBalanceChanged, EventApproved, EventCountdownDone,
+        //game loop
+        GoldBalanceChanged, StoryEventApproved, StoryEventRefused, EventCountdownDone,
         GameStart, GameEnd
     }
 

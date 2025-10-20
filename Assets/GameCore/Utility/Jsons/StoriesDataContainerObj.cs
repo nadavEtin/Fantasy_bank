@@ -22,8 +22,8 @@ namespace GameCore.Utility.Jsons
             this.LoanEvents = loanEvents;
         }*/
 
-        public StoriesDataContainerObj(Dictionary<int, EventDataSerialized> regularEvents,
-            Dictionary<int, EventDataSerialized> loanEvents)
+        public StoriesDataContainerObj(Dictionary<string, EventDataSerialized> regularEvents,
+            Dictionary<string, EventDataSerialized> loanEvents)
         {
             RegularEvents = new List<DictionaryWrapper<EventDataSerialized>>();
             LoanEvents = new List<DictionaryWrapper<LoanStoryDataSerialized>>();
@@ -58,13 +58,13 @@ namespace GameCore.Utility.Jsons
     }
 
     [Serializable]
-    //A single unit in a dictionaru, or a touple
+    //A single unit in a dictionary, or a touple
     public class DictionaryWrapper<T>
     {
-        public int key;
+        public string key;
         public T value;
 
-        public DictionaryWrapper(int key, T value)
+        public DictionaryWrapper(string key, T value)
         {
             this.key = key;
             this.value = value;

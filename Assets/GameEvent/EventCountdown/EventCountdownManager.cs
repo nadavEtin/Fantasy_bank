@@ -30,7 +30,7 @@ namespace GameEvent.EventCountdown
             _eventResolutionManager = eventResolutionViewManager;
 
             //event handling
-            _eventBus.Subscribe(GameplayEvent.EventApproved, EventApproved);
+            _eventBus.Subscribe(GameplayEvent.StoryEventApproved, EventApproved);
             _eventBus.Subscribe(GameplayEvent.NextTurn, NewTurn);
         }
 
@@ -84,7 +84,7 @@ namespace GameEvent.EventCountdown
 
         public void Dispose()
         {
-            _eventBus.Unsubscribe(GameplayEvent.EventApproved, EventApproved);
+            _eventBus.Unsubscribe(GameplayEvent.StoryEventApproved, EventApproved);
             _eventBus.Unsubscribe(GameplayEvent.NextTurn, NewTurn);
         }
     }
