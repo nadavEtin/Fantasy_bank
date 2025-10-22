@@ -7,9 +7,10 @@ using VContainer.Unity;
 
 namespace GameEvent.EventCountdown
 {
-    public class EventCountdownFactory : BaseFactory
+    public class EventCountdownFactory : BaseFactory, IEventCountdownFactory
     {
         //private ISingleObjectPool _countdownObjectPool;
+        [Inject] private IAssetRefs _assetRefs;
 
         public EventCountdownFactory(IAssetRefs assetRefs, IObjectResolver resolver) : base(/*assetRefs,*/ resolver)
         {

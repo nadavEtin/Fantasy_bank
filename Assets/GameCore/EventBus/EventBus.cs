@@ -17,13 +17,13 @@ namespace GameCore.EventBus
     }
 
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class EventBus
+    public class EventBus : IEventBus
     {
         private readonly Dictionary<GameplayEvent, List<Action<BaseEventParams>>> _subscription = new();
 
         public void Subscribe(GameplayEvent eventType, Action<BaseEventParams> handler)
         {
-            if(_subscription.ContainsKey(eventType) == false) 
+            if (_subscription.ContainsKey(eventType) == false)
                 _subscription.Add(eventType, new List<Action<BaseEventParams>>());
 
             var handlerList = _subscription[eventType];
@@ -33,7 +33,7 @@ namespace GameCore.EventBus
 
         public void Unsubscribe(GameplayEvent eventType, Action<BaseEventParams> handler)
         {
-            if(_subscription.ContainsKey(eventType))
+            if (_subscription.ContainsKey(eventType))
                 _subscription[eventType]?.Remove(handler);
         }
 

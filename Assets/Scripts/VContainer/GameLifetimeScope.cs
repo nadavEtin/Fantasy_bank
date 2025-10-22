@@ -40,7 +40,7 @@ namespace VContainer
             builder.Register<UiManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<InputManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<BankManager>(Lifetime.Scoped).AsImplementedInterfaces();
-            builder.Register<EventManager>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<StoryEventManager>(Lifetime.Singleton).AsImplementedInterfaces();
             //builder.Register<StoryValidator>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<EventResolutionViewManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<EventEffectsResolver>(Lifetime.Singleton).AsImplementedInterfaces();

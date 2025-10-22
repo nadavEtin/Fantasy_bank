@@ -13,14 +13,14 @@ namespace GameEvent.EventCountdown
     public class EventCountdownManager : IDisposable
     {
         private List<IEventCountdownView> _activeEventCountdowns;
-        private readonly IBaseFactory _countdownFactory;
+        private readonly IEventCountdownFactory _countdownFactory;
         private readonly EventBus _eventBus;
         private readonly IGameEventSettings _settings;
         private readonly Canvas _canvas;
         private readonly float _countdownViewsGap = 15;
         private IEventResolutionViewManager _eventResolutionManager;
 
-        public EventCountdownManager(IBaseFactory countdownFactory, IEventResolutionViewManager eventResolutionViewManager, EventBus eventBus, IGameEventSettings settings, Canvas canvas)
+        public EventCountdownManager(IEventCountdownFactory countdownFactory, IEventResolutionViewManager eventResolutionViewManager, EventBus eventBus, IGameEventSettings settings, Canvas canvas)
         {
             _activeEventCountdowns = new List<IEventCountdownView>();
             _countdownFactory = countdownFactory;

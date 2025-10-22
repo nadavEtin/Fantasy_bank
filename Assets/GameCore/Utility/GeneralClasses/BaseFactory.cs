@@ -1,5 +1,4 @@
 ﻿using Assets.GameCore.Utility.ObjectPool;
-using GameCore.ScriptableObjects;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;

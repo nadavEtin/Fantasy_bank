@@ -6,11 +6,11 @@ namespace GameCore.Input
 {
     public class InputManager : IDisposable, IInputManager
     {
-        private readonly EventBus.EventBus _eventBus;
+        private readonly IEventBus _eventBus;
         
         public LeanFinger RecentTouch { get; private set; }
         
-        public InputManager(EventBus.EventBus eventBus) 
+        public InputManager(IEventBus eventBus) 
         {
             _eventBus = eventBus;
             LeanTouch.OnFingerDown += TouchStarted;
