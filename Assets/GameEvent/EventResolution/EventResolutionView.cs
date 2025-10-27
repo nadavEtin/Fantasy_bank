@@ -3,10 +3,10 @@ using GameCore.EventBus;
 using GameCore.ScriptableObjects;
 using GameCore.Utility.GeneralClasses;
 using GameCore.Utility.Screen;
+using Reflex.Attributes;
 using System;
 using TMPro;
 using UnityEngine;
-using VContainer;
 
 namespace GameEvent.EventResolution
 {

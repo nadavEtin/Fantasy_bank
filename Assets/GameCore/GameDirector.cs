@@ -5,10 +5,9 @@ using GameCore.EventBus.GameplayEvents;
 using GameCore.ScriptableObjects;
 using GameCore.UI;
 using GameEvent;
+using Reflex.Attributes;
 using System;
 using UnityEngine;
-using VContainer;
-using VContainer.Unity;
 
 namespace GameCore
 {
@@ -20,47 +19,42 @@ namespace GameCore
         AdvanceEvent
     }
 
-    public class GameDirector : IGameDirector, IStartable
+    public class GameDirector : IGameDirector
     {
-        private readonly EventBus.EventBus _eventBus;
-
-        private readonly IAssetRefs _assetRefs;
-        private readonly IStoriesRefs _storyRefs;
-        private readonly Canvas _canvas;
-        private readonly IGameEventManager _geManager;
-
-        private readonly Camera _camera;
-        private readonly IBankBalance _bankBalance;
-        private readonly IUiManager _uiManager;
+        [Inject] private EventBus.EventBus _eventBus;
+        [Inject] private IAssetRefs _assetRefs;
+        [Inject] private IStoriesRefs _storyRefs;
+        [Inject] private Canvas _canvas;
+        [Inject] private IGameEventManager _geManager;
+        [Inject] private Camera _camera;
+        [Inject] private IBankBalance _bankBalance;
+        [Inject] private IUiManager _uiManager;
+        //[Inject] private IObjectResolver _resolver;
 
         private GamePhases[] _gamePhases;
         private GamePhases _currentPhase;
 
         //test
-        private readonly IObjectResolver _resolver;
+        //private readonly IObjectResolver _resolver;
 
-        public GameDirector(EventBus.EventBus bus, IAssetRefs assetRefs, IStoriesRefs storyRefs, IBankBalance bankBalance,
-            IGameEventManager eventManager, Canvas canvas, Camera camera, IUiManager uiManager, IObjectResolver resolver)
-        {
-            _assetRefs = assetRefs;
-            _storyRefs = storyRefs;
-            _canvas = canvas;
-            _camera = camera;
-            _eventBus = bus;
-            _bankBalance = bankBalance;
-            _uiManager = uiManager;
-            _geManager = eventManager;
+        public GameDirector()
+        {            
             _gamePhases = (GamePhases[])Enum.GetValues(typeof(GamePhases));
             _currentPhase = _gamePhases[0];
-
-            _resolver = resolver;
+            Debug.Log(_assetRefs.ToString());
             ComponentsSetup();
             StartGame();
             //GameEventCreate();
         }
 
+        public void PubStartGame()
+        {
+            StartGame();
+        }
+
         private void StartGame()
         {
+            Debug.Log("Game Started");
             _eventBus.Publish(GameplayEvent.GameStart, new EmptyParams());
             //_currentPhase = GamePhases.ResolveReadyEvents;
             //GamePhaseDone(_currentPhase);
@@ -107,7 +101,7 @@ namespace GameCore
         {
 
 
-            _resolver.Instantiate(_assetRefs.EventResolutionScreen);
+            //_resolver.Instantiate(_assetRefs.EventResolutionScreen);
         }
 
         #endregion

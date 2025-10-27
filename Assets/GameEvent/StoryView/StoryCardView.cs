@@ -4,11 +4,11 @@ using GameCore.EventBus;
 using GameCore.EventBus.GameplayEvents;
 using GameCore.Input;
 using GameCore.ScriptableObjects;
+using Reflex.Attributes;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using VContainer;
 
 namespace GameEvent.StoryView
 {

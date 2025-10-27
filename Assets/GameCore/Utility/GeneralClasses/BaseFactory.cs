@@ -1,22 +1,16 @@
 ﻿using Assets.GameCore.Utility.ObjectPool;
+using GameCore.ScriptableObjects;
+using Reflex.Attributes;
 using UnityEngine;
-using VContainer;
-using VContainer.Unity;
 
 namespace GameCore.Utility.GeneralClasses
 {
     public abstract class BaseFactory : IBaseFactory
     {
-        //protected IAssetRefs _assetRefs;
-        protected IObjectResolver _resolver;
+        [Inject] protected IAssetRefs _assetRefs;
+        //protected GameObject _resolver;
         protected ISingleObjectPool _factoryObjectPool;
         protected GameObject _prefabGameObj;
-
-        protected BaseFactory(/*IAssetRefs assetRefs,*/ IObjectResolver resolver)
-        {
-            //_assetRefs = assetRefs;
-            _resolver = resolver;
-        }
 
         public virtual GameObject Create()
         {
@@ -25,7 +19,7 @@ namespace GameCore.Utility.GeneralClasses
             //Pool is empty
             if (newObj == null)
             {
-                newObj = _resolver.Instantiate(_prefabGameObj);
+                newObj = Object.Instantiate(_prefabGameObj);
                 try
                 {
                     newObj.GetComponent<IPoolable>().SetupReturnToPoolCb(ReturnToObjectPool);
@@ -34,9 +28,9 @@ namespace GameCore.Utility.GeneralClasses
                 {
                     Debug.LogError("New object prefab is missing IPoolable");
                     throw;
-                }                
+                }
             }
-            
+
             return newObj;
         }
 

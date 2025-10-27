@@ -1,10 +1,10 @@
-using System;
 using Assets.GameCore.Utility.ObjectPool;
 using DG.Tweening;
 using GameCore.Utility.Screen;
+using Reflex.Attributes;
+using System;
 using TMPro;
 using UnityEngine;
-using VContainer;
 
 namespace GameEvent.EventCountdown
 {
@@ -12,7 +12,7 @@ namespace GameEvent.EventCountdown
     public class EventCountdownView : MonoBehaviour, IEventCountdownView, IPoolable
     {
         [SerializeField] private TextMeshProUGUI _eventName, _countdownNum;
-        
+
         public int CountdownDuration { get; private set; }
         public RectTransform ObjTransform { get; private set; }
         //public int Id => _eventData.ID;
@@ -25,7 +25,7 @@ namespace GameEvent.EventCountdown
         private bool _extended;
         private RectTransform _rectTransform;
         //private Action<IGameDataEvent> _resolutionCb;
-        
+
 
         public void Setup(IGameDataEvent eventData)
         {
@@ -36,10 +36,10 @@ namespace GameEvent.EventCountdown
             _countdownNum.text = CountdownDuration.ToString();
             //_resolutionCb = cb;
         }
-        
+
         public void OnClick()
         {
-            if(_extended)
+            if (_extended)
                 PullbackView();
             else
                 ExtendView();

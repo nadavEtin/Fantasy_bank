@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
-using VContainer.Unity;
+//using VContainer.Unity;
 
 namespace GameCore.Utility.Jsons
 {
-    public class JsonSerialization : IJsonSerialization, IStartable
+    public class JsonSerialization : IJsonSerialization//, IStartable
     {
         private string baseFilePath;
         private string _streamingAssetsPath = Application.streamingAssetsPath;

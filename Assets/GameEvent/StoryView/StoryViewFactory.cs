@@ -8,10 +8,10 @@ namespace Assets.GameEvent.EventCardView
 {
     public class StoryViewFactory : BaseFactory
     {
-        public StoryViewFactory(IAssetRefs assetRefs, IObjectResolver resolver) : base(/*assetRefs,*/ resolver)
+        public StoryViewFactory()
         {
             _factoryObjectPool = new SingleObjectPool();
-            _prefabGameObj = assetRefs.StoryView;
+            _prefabGameObj = _assetRefs.StoryView;
         }
     }
 }

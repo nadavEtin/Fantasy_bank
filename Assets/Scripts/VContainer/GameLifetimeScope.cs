@@ -14,65 +14,65 @@ using GameEvent;
 using GameEvent.EventCountdown;
 using GameEvent.EventResolution;
 using UnityEngine;
-using VContainer.Unity;
+//using VContainer.Unity;
 
 namespace VContainer
 {
-    public class GameLifetimeScope : LifetimeScope
+    public class GameLifetimeScope //: LifetimeScope
     {
-        [SerializeField] private AssetRefs _assetRefs;
-        [SerializeField] private GameEventSettings _eventSettings;
-        [SerializeField] private StoriesRefs _storyRefs;
+        //[SerializeField] private AssetRefs _assetRefs;
+        //[SerializeField] private GameEventSettings _eventSettings;
+        //[SerializeField] private StoriesRefs _storyRefs;
 
-        private IContainerBuilder _containerBuilder;
+        //private IContainerBuilder _containerBuilder;
 
-        protected override void Configure(IContainerBuilder builder)
-        {
-            _containerBuilder = builder;
+        //protected override void Configure(IContainerBuilder builder)
+        //{
+        //    _containerBuilder = builder;
             
-            builder.RegisterInstance<IAssetRefs, AssetRefs>(_assetRefs);
-            builder.RegisterInstance<IGameEventSettings, GameEventSettings>(_eventSettings);
-            builder.RegisterInstance<IStoriesRefs, StoriesRefs>(_storyRefs);
+        //    builder.RegisterInstance<IAssetRefs, AssetRefs>(_assetRefs);
+        //    builder.RegisterInstance<IGameEventSettings, GameEventSettings>(_eventSettings);
+        //    builder.RegisterInstance<IStoriesRefs, StoriesRefs>(_storyRefs);
             
-            builder.RegisterEntryPoint<GameDirector>();
-            builder.Register<EventBus>(Lifetime.Singleton);
-            builder.Register<JsonSerialization>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<UiManager>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<InputManager>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<BankManager>(Lifetime.Scoped).AsImplementedInterfaces();
-            builder.Register<StoryEventManager>(Lifetime.Singleton).AsImplementedInterfaces();
-            //builder.Register<StoryValidator>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<EventResolutionViewManager>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<EventEffectsResolver>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<EventsData>(Lifetime.Singleton);
-            builder.Register<ScreenParams>(Lifetime.Singleton);
-            builder.Register<EventCountdownManager>(Lifetime.Singleton);
-            builder.RegisterComponentInHierarchy<Canvas>();
-            builder.RegisterComponentInHierarchy<Camera>();
+        //    builder.RegisterEntryPoint<GameDirector>();
+        //    builder.Register<EventBus>(Lifetime.Singleton);
+        //    builder.Register<JsonSerialization>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    builder.Register<UiManager>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    builder.Register<InputManager>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    builder.Register<BankManager>(Lifetime.Scoped).AsImplementedInterfaces();
+        //    builder.Register<StoryEventManager>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    //builder.Register<StoryValidator>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    builder.Register<EventResolutionViewManager>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    builder.Register<EventEffectsResolver>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    builder.Register<EventsData>(Lifetime.Singleton);
+        //    builder.Register<ScreenParams>(Lifetime.Singleton);
+        //    builder.Register<EventCountdownManager>(Lifetime.Singleton);
+        //    builder.RegisterComponentInHierarchy<Canvas>();
+        //    builder.RegisterComponentInHierarchy<Camera>();
             
-            builder.RegisterBuildCallback(container =>
-            {
-                container.Resolve<EventsData>();
-                container.Resolve<ScreenParams>();
-                container.Resolve<EventCountdownManager>();
-            });
+        //    builder.RegisterBuildCallback(container =>
+        //    {
+        //        container.Resolve<EventsData>();
+        //        container.Resolve<ScreenParams>();
+        //        container.Resolve<EventCountdownManager>();
+        //    });
             
-            Factories();
-        }
+        //    Factories();
+        //}
 
-        private void Factories()
-        {
-            _containerBuilder.Register<EventCountdownFactory>(Lifetime.Singleton).AsImplementedInterfaces();
-            _containerBuilder.Register<EventResolutionViewFactory>(Lifetime.Singleton).AsImplementedInterfaces();
-            _containerBuilder.Register<StoryViewFactory>(Lifetime.Singleton).AsImplementedInterfaces();
-            //TODO: check if this is needed after using implemented intefaces
-            /*_containerBuilder.RegisterBuildCallback(container =>
-            {
-                container.Resolve<EventCountdownFactory>();
-                container.Resolve<EventResolutionViewFactory>();
+        //private void Factories()
+        //{
+        //    _containerBuilder.Register<EventCountdownFactory>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    _containerBuilder.Register<EventResolutionViewFactory>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    _containerBuilder.Register<StoryViewFactory>(Lifetime.Singleton).AsImplementedInterfaces();
+        //    //TODO: check if this is needed after using implemented intefaces
+        //    /*_containerBuilder.RegisterBuildCallback(container =>
+        //    {
+        //        container.Resolve<EventCountdownFactory>();
+        //        container.Resolve<EventResolutionViewFactory>();
 
-            });*/
-        }
+        //    });*/
+        //}
     }
 }
 
