@@ -5,6 +5,7 @@ using Assets.GameEvent.EventResolution;
 using GameCore.EventBus;
 using GameCore.EventBus.GameplayEvents;
 using GameCore.ScriptableObjects;
+using GameCore.UI;
 using GameCore.Utility.GeneralClasses;
 using UnityEngine;
 
@@ -13,21 +14,23 @@ namespace GameEvent.EventCountdown
     public class EventCountdownManager : IDisposable
     {
         private List<IEventCountdownView> _activeEventCountdowns;
-        private readonly IBaseFactory _countdownFactory;
-        private readonly EventBus _eventBus;
+        private readonly EventCountdownFactory _countdownFactory;
+        private readonly EventsManager _eventBus;
         private readonly IGameEventSettings _settings;
-        private readonly Canvas _canvas;
+        private readonly IUiManager _uiManager;
         private readonly float _countdownViewsGap = 15;
         private IEventResolutionViewManager _eventResolutionManager;
+        private RectTransform _coundownContainer;
 
-        public EventCountdownManager(IBaseFactory countdownFactory, IEventResolutionViewManager eventResolutionViewManager, EventBus eventBus, IGameEventSettings settings, Canvas canvas)
+        public EventCountdownManager(EventCountdownFactory countdownFactory, IEventResolutionViewManager eventResolutionViewManager, EventsManager eventBus, IGameEventSettings settings, IUiManager uiManager)
         {
             _activeEventCountdowns = new List<IEventCountdownView>();
             _countdownFactory = countdownFactory;
             _eventBus = eventBus;
-            _canvas = canvas;
+            _uiManager = uiManager;
             _settings = settings;
             _eventResolutionManager = eventResolutionViewManager;
+            _coundownContainer = uiManager.CanvasRefs.StoryEventCountdownHolder;
 
             //event handling
             _eventBus.Subscribe(GameplayEvent.StoryEventApproved, EventApproved);
@@ -37,9 +40,11 @@ namespace GameEvent.EventCountdown
         private void EventApproved(BaseEventParams evParams)
         {
             var eventParams = (EventApprovedParams)evParams;
-            var newCdObj = _countdownFactory.Create(_canvas.transform).GetComponent<IEventCountdownView>();
-            newCdObj.ObjTransform.SetParent(_canvas.transform);
+            var newCdObj = _countdownFactory.Create(_uiManager.Canvas.transform).GetComponent<IEventCountdownView>();            
             newCdObj.Setup(eventParams.EventData);
+            newCdObj.ObjTransform.SetParent(_coundownContainer);
+            //newCdObj.ObjTransform.SetParent(_canvas.transform);
+
             _activeEventCountdowns.Add(newCdObj);
             SortCountdownViews();
         }

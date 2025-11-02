@@ -28,7 +28,7 @@ namespace GameEvent.StoryView
         //private IBankBalance _bankBalance;
         private Action<bool, IGameDataEvent> _resolutionCb;
         //private Camera _camera;
-        private EventBus _eventBus;
+        private EventsManager _eventBus;
 
         //private bool isDragging = false;
         //private Vector3 offset;
@@ -173,6 +173,7 @@ namespace GameEvent.StoryView
             }
         }
 
+        //TODO: remove this
         private void OnDrawGizmosSelected()
         {
             if (_mainCamera == null || _renderer == null) return;
@@ -224,7 +225,7 @@ namespace GameEvent.StoryView
 
         [Inject]
         private void Setup(IInputManager inputManager, IBankBalance bankBalance, IGameEventSettings settings,
-            Camera camera, EventBus eventBus)
+            Camera camera, EventsManager eventBus)
         {
             //_camera = camera;
             //_inputManager = inputManager;

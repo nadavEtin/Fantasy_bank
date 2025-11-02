@@ -6,15 +6,20 @@ namespace GameCore.UI
 {
     public class UiManager : IUiManager
     {
+        public ICanvasRefs CanvasRefs => _canvasRefs;
+        public Canvas Canvas => _canvas;
+
+        private ICanvasRefs _canvasRefs;
         private readonly IAssetRefs _assetRefs;
         private Canvas _canvas;
 
-        private TextMeshProUGUI _goldDisplayText;
-        
-        public UiManager(IAssetRefs assetRefs, Canvas canvas)
+        private TextMeshProUGUI _goldDisplayText;        
+
+        public UiManager(IAssetRefs assetRefs, Canvas canvas, ICanvasRefs canvasRefs)
         {
             _assetRefs = assetRefs;
             _canvas = canvas;
+            _canvasRefs = canvasRefs;
             var goldText = GameObject.Instantiate(_assetRefs.GoldDisplay, _canvas.transform);
             goldText.name = "GoldText";
             _goldDisplayText = goldText.GetComponentInChildren<TextMeshProUGUI>();

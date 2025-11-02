@@ -15,14 +15,14 @@ namespace GameCore
     public enum GamePhases
     {
         ResolveReadyEvents,
-        MainPhase,
-        EndPhase,
-        AdvanceEvent
+        PresentNewStoryEvent,        
+        AdvanceEvent,
+        EndPhase
     }
 
     public class GameDirector : IGameDirector, IStartable
     {
-        private readonly EventBus.EventBus _eventBus;
+        private readonly EventsManager _eventBus;
 
         private readonly IAssetRefs _assetRefs;
         private readonly IStoriesRefs _storyRefs;
@@ -39,7 +39,7 @@ namespace GameCore
         //test
         private readonly IObjectResolver _resolver;
 
-        public GameDirector(EventBus.EventBus bus, IAssetRefs assetRefs, IStoriesRefs storyRefs, IBankBalance bankBalance,
+        public GameDirector(EventsManager bus, IAssetRefs assetRefs, IStoriesRefs storyRefs, IBankBalance bankBalance,
             IGameEventManager eventManager, Canvas canvas, Camera camera, IUiManager uiManager, IObjectResolver resolver)
         {
             _assetRefs = assetRefs;
@@ -55,6 +55,7 @@ namespace GameCore
 
             _resolver = resolver;
             ComponentsSetup();
+            EventSubscriptionsSetup();
             StartGame();
             //GameEventCreate();
         }
@@ -73,6 +74,11 @@ namespace GameCore
             _storyRefs.InitSetup();
         }
 
+        private void EventSubscriptionsSetup()
+        {
+            _eventBus.Subscribe(GameplayEvent.PhaseEnded, OnPhaseEnded);
+        }
+
 
         #region Game Flow
 
@@ -84,7 +90,7 @@ namespace GameCore
                 case GamePhases.ResolveReadyEvents:
                     _eventBus.Publish(GameplayEvent.MainPhase, new EmptyParams());
                     break;
-                case GamePhases.MainPhase:
+                case GamePhases.PresentNewStoryEvent:
                     
                     break;
                 
@@ -96,6 +102,13 @@ namespace GameCore
                 default:
                     break;
             }
+        }
+
+        private void OnPhaseEnded(BaseEventParams eventParams)
+        {
+            var eventString = (SingleParamString)eventParams;
+            var phaseName = eventString.Value;
+            GamePhaseDone(_currentPhase);
         }
 
         private void AdvanceTurn()

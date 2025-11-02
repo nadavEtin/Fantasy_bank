@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.GameEvent.EventCardView;
 using Bank;
 using GameCore.EventBus;
 using GameCore.EventBus.GameplayEvents;
@@ -18,9 +19,9 @@ namespace GameEvent
         private readonly IInputManager _inputManager;
         private readonly IBankBalance _bankBalance;
         private IStoryValidator _storyValidator;
-        private IBaseFactory _storyViewFactory;
+        private StoryViewFactory _storyViewFactory;
         private Camera _camera;
-        private EventBus _eventBus;
+        private EventsManager _eventBus;
 
         //events that are being showed to the player in this round, usually 1-5 events
         private List<IGameDataEvent> _currentRoundEvents;
@@ -28,8 +29,8 @@ namespace GameEvent
         private Dictionary<StoryType, List<IGameDataEvent>> _approvedEventsOnCountdown;
         private readonly GameObject _eventContainer;
 
-        public EventManager(IAssetRefs assetRefs, IInputManager inputManager, IBaseFactory storyViewFactory,
-            IBankBalance bankBalance, IStoriesRefs storiesRefs, Camera camera, EventBus eventBus)
+        public EventManager(IAssetRefs assetRefs, IInputManager inputManager, StoryViewFactory storyViewFactory,
+            IBankBalance bankBalance, IStoriesRefs storiesRefs, Camera camera, EventsManager eventBus)
         {
             _assetRefs = assetRefs;
             _inputManager = inputManager;

@@ -19,14 +19,18 @@ namespace GameCore.Utility.GeneralClasses
             _resolver = resolver;
         }
 
-        public virtual GameObject Create()
+        public virtual GameObject Create(Transform parent = null)
         {
             var newObj = _factoryObjectPool.GetObjectFromPool();
 
             //Pool is empty
             if (newObj == null)
             {
-                newObj = _resolver.Instantiate(_prefabGameObj);
+                if(parent != null)
+                    newObj = _resolver.Instantiate(_prefabGameObj, parent);
+                else
+                    newObj = _resolver.Instantiate(_prefabGameObj);
+
                 try
                 {
                     newObj.GetComponent<IPoolable>().SetupReturnToPoolCb(ReturnToObjectPool);
@@ -41,12 +45,12 @@ namespace GameCore.Utility.GeneralClasses
             return newObj;
         }
 
-        public virtual GameObject Create(Transform parent)
-        {
-            var newObj = Create();
-            newObj.transform.SetParent(parent);
-            return newObj;
-        }
+        //public virtual GameObject Create(Transform parent)
+        //{
+        //    var newObj = Create(parent);
+        //    newObj.transform.SetParent(parent);
+        //    return newObj;
+        //}
 
         public virtual void ReturnToObjectPool(GameObject obj)
         {

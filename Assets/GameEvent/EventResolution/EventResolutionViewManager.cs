@@ -16,12 +16,12 @@ namespace Assets.GameEvent.EventResolution
         private Vector2 _eventResolutionNeutralPos;
         private Stack<IGameDataEvent> _activeEventResolutions;
         private IGameDataEvent _currentlyShownEvent;
-        private IBaseFactory _eventResolutionFactory;
+        private EventResolutionViewFactory _eventResolutionFactory;
         private IEventEffectsResolver _effectsResolver;
-        private EventBus _eventBus;
+        private EventsManager _eventBus;
         private IGameDirector _gameDirector;
 
-        private EventResolutionViewManager(IBaseFactory eventResolutionFactory, IGameEventSettings settings, EventBus eventBus, IGameDirector gameDirector, IEventEffectsResolver effectsResolver)
+        private EventResolutionViewManager(EventResolutionViewFactory eventResolutionFactory, IGameEventSettings settings, EventsManager eventBus, IGameDirector gameDirector, IEventEffectsResolver effectsResolver)
         {
             _activeEventResolutions = new Stack<IGameDataEvent>();
             _eventResolutionFactory = eventResolutionFactory;

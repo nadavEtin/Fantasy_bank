@@ -9,15 +9,15 @@ namespace GameCore.EventBus
         TouchStarted, TouchEnded,
         
         //game flow
-        NextTurn, NextRound, ResolveReadyEvents, MainPhase,
-        
+        NextTurn, NextRound, ResolveReadyEvents, MainPhase, PhaseProcessStarted, PhaseProcessEnded, PhaseEnded, PhaseStarted,
+
         //game loop
         GoldBalanceChanged, StoryEventApproved, StoryEventRefused, EventCountdownDone,
         GameStart, GameEnd
     }
 
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class EventBus
+    public class EventsManager
     {
         private readonly Dictionary<GameplayEvent, List<Action<BaseEventParams>>> _subscription = new();
 

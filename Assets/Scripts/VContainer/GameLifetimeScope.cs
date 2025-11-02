@@ -23,6 +23,7 @@ namespace VContainer
         [SerializeField] private AssetRefs _assetRefs;
         [SerializeField] private GameEventSettings _eventSettings;
         [SerializeField] private StoriesRefs _storyRefs;
+        [SerializeField] private CanvasRefs _canvasRefs;
 
         private IContainerBuilder _containerBuilder;
 
@@ -33,9 +34,10 @@ namespace VContainer
             builder.RegisterInstance<IAssetRefs, AssetRefs>(_assetRefs);
             builder.RegisterInstance<IGameEventSettings, GameEventSettings>(_eventSettings);
             builder.RegisterInstance<IStoriesRefs, StoriesRefs>(_storyRefs);
-            
+            builder.RegisterInstance<ICanvasRefs, CanvasRefs>(_canvasRefs);
+
             builder.RegisterEntryPoint<GameDirector>();
-            builder.Register<EventBus>(Lifetime.Singleton);
+            builder.Register<EventsManager>(Lifetime.Singleton);
             builder.Register<JsonSerialization>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<UiManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<InputManager>(Lifetime.Singleton).AsImplementedInterfaces();
@@ -62,9 +64,9 @@ namespace VContainer
 
         private void Factories()
         {
-            _containerBuilder.Register<EventCountdownFactory>(Lifetime.Singleton).AsImplementedInterfaces();
-            _containerBuilder.Register<EventResolutionViewFactory>(Lifetime.Singleton).AsImplementedInterfaces();
-            _containerBuilder.Register<StoryViewFactory>(Lifetime.Singleton).AsImplementedInterfaces();
+            _containerBuilder.Register<EventCountdownFactory>(Lifetime.Singleton);
+            _containerBuilder.Register<EventResolutionViewFactory>(Lifetime.Singleton);
+            _containerBuilder.Register<StoryViewFactory>(Lifetime.Singleton);
             //TODO: check if this is needed after using implemented intefaces
             /*_containerBuilder.RegisterBuildCallback(container =>
             {

@@ -17,16 +17,24 @@ namespace GameEvent.EventCountdown
             _prefabGameObj = assetRefs.EventCountdown;
         }
 
+        public override GameObject Create(Transform parent = null)
+        {
+            var obj = base.Create(parent);
+
+
+            return obj;
+        }
+
         /*public override GameObject Create()
         {
 
             return _resolver.Instantiate(_assetRefs.EventCountdown);
         }*/
 
-       /* public override GameObject Create(Transform parent)
-        {
-            return _resolver.Instantiate(_assetRefs.EventCountdown, parent);
-        }*/
+        /* public override GameObject Create(Transform parent)
+         {
+             return _resolver.Instantiate(_assetRefs.EventCountdown, parent);
+         }*/
 
         /*public override void ReturnToObjectPool(GameObject obj)
         {
