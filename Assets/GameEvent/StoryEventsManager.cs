@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace GameEvent
 {
-    public class EventManager : IGameEventManager, IDisposable
+    public class StoryEventsManager : IGameEventManager, IDisposable
     {
         private IAssetRefs _assetRefs;
         private readonly IInputManager _inputManager;
@@ -29,7 +29,7 @@ namespace GameEvent
         private Dictionary<StoryType, List<IGameDataEvent>> _approvedEventsOnCountdown;
         private readonly GameObject _eventContainer;
 
-        public EventManager(IAssetRefs assetRefs, IInputManager inputManager, StoryViewFactory storyViewFactory,
+        public StoryEventsManager(IAssetRefs assetRefs, IInputManager inputManager, StoryViewFactory storyViewFactory,
             IBankBalance bankBalance, IStoriesRefs storiesRefs, Camera camera, EventsManager eventBus)
         {
             _assetRefs = assetRefs;
