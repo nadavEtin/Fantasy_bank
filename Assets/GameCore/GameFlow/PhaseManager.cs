@@ -1,4 +1,5 @@
 ﻿using Assets.GameCore.EventBus;
+using GameCore;
 using GameCore.EventBus;
 using System;
 using System.Collections.Generic;
@@ -8,23 +9,29 @@ namespace Assets.GameCore.GameFlow
     public class PhaseManager
     {
         private List<IPhaseProcess> _activePhaseProcesses;
-        private string _activePhaseName;
-        private int _currentPhaseIndex;
-        private EventsManager _eventBus;
+        private GamePhases _activePhaseName;
+        //private int _currentPhaseIndex;
+        private EventsManager _eventsManager;
 
-        public PhaseManager(EventsManager eventBus)
+        public PhaseManager(EventsManager eventsManager)
         {
-            _currentPhaseIndex = 0;
-            _eventBus = eventBus;
-            _eventBus.Subscribe(GameplayEvent.PhaseProcessStarted, OnPhaseProcessStarted);
-            _eventBus.Subscribe(GameplayEvent.PhaseProcessEnded, OnPhaseProcessEnded);
-            eventBus.Subscribe(GameplayEvent.PhaseStarted, OnPhaseStarted);
+            //_currentPhaseIndex = 0;
+            _eventsManager = eventsManager;
+            _activePhaseProcesses = new List<IPhaseProcess>();
+            _eventsManager.Subscribe(GameplayEvent.PhaseProcessStarted, OnPhaseProcessStarted);
+            _eventsManager.Subscribe(GameplayEvent.PhaseProcessEnded, OnPhaseProcessEnded);
+            _eventsManager.Subscribe(GameplayEvent.PhaseStarted, OnPhaseStarted);
         }
 
         private void OnPhaseStarted(BaseEventParams baseEventParams)
         {
-            var phaseParams = (SingleParamString)baseEventParams;
-            _activePhaseName = phaseParams.Value;
+            var phaseParams = (GamePhaseParams)baseEventParams;
+            _activePhaseName = phaseParams.PhaseName;
+        }
+
+        private void OnPhaseEnded()
+        {
+            _eventsManager.Publish(GameplayEvent.PhaseEnded, new GamePhaseParams(_activePhaseName));
         }
 
         private void OnPhaseProcessStarted(BaseEventParams baseEventParams)
@@ -45,24 +52,7 @@ namespace Assets.GameCore.GameFlow
                 UnityEngine.Debug.LogWarning($"{endedPhase.Name} not found in process list");
             //_currentPhaseIndex++;
             if (_activePhaseProcesses.Count == 0)
-                StartNextPhase();
-        }
-
-        public void StartNextPhase()
-        {
-            //var currentPhase = _phaseProcesses[_currentPhaseIndex];
-            //currentPhase.OnCompleted += OnPhaseCompleted;
-            //currentPhase.StartProcess(); // Uncomment when StartProcess is implemented
-            _eventBus.Publish(GameplayEvent.PhaseEnded, new EmptyParams());
-            Console.WriteLine("All phases completed.");
-
-        }
-        private void OnPhaseCompleted()
-        {
-            //var completedPhase = _activePhaseProcesses[_currentPhaseIndex];
-            //completedPhase.OnCompleted -= OnPhaseCompleted;
-            //_currentPhaseIndex++;
-            //StartNextPhase();
+                OnPhaseEnded();
         }
     }
 }

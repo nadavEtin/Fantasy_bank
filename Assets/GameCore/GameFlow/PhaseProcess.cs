@@ -12,16 +12,11 @@ namespace Assets.GameCore.GameFlow
         private string _name;
         private bool _isComplete;
 
-        public PhaseProcess(string name, Action onCompleted)
+        public PhaseProcess(string name, bool isComplete = false)
         {
             _name = name;
             _isComplete = false;
-            OnCompleted = onCompleted;
-        }
-
-        public void StartProcess()
-        {
-            throw new NotImplementedException();
+            //OnCompleted = onCompleted;
         }
     }
 }

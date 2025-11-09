@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.GameCore.EventBus;
+using Assets.GameCore.GameFlow;
 using Assets.GameEvent.EventCardView;
 using Bank;
 using GameCore.EventBus;
@@ -15,13 +17,16 @@ namespace GameEvent
 {
     public class StoryEventsManager : IGameEventManager, IDisposable
     {
+        private const string STORY_EVENT_PHASE_NAME = "Story Event Phase";
+        private PhaseProcessStartOrEndParams _phaseProcessParams;
+
         private IAssetRefs _assetRefs;
         private readonly IInputManager _inputManager;
         private readonly IBankBalance _bankBalance;
         private IStoryValidator _storyValidator;
         private StoryViewFactory _storyViewFactory;
         private Camera _camera;
-        private EventsManager _eventBus;
+        private EventsManager _eventsManager;
 
         //events that are being showed to the player in this round, usually 1-5 events
         private List<IGameDataEvent> _currentRoundEvents;
@@ -39,7 +44,7 @@ namespace GameEvent
             _currentRoundEvents = new List<IGameDataEvent>();
             _storyValidator = new StoryValidator(bankBalance, storiesRefs);
             _camera = camera;
-            _eventBus = eventBus;
+            _eventsManager = eventBus;
             _pendingEvents = new Dictionary<StoryType, List<IGameDataEvent>>();
             _approvedEventsOnCountdown = new Dictionary<StoryType, List<IGameDataEvent>>();
 
@@ -74,9 +79,12 @@ namespace GameEvent
             NewTurn();
         }
 
+        //show a new story event to the player
         private void NewTurn(BaseEventParams eventParams = null)
         {
             _currentRoundEvents = _storyValidator.GetStoriesForCurrentTurn();
+            _phaseProcessParams = new PhaseProcessStartOrEndParams(new PhaseProcess(STORY_EVENT_PHASE_NAME));
+            _eventsManager.Publish(GameplayEvent.PhaseProcessStarted, _phaseProcessParams);
             NextStory();
         }
 
@@ -100,19 +108,22 @@ namespace GameEvent
         {
             if (approved && curEvent != null)
                 _approvedEventsOnCountdown[curEvent.EventType].Add(curEvent);
+            _eventsManager.Publish(GameplayEvent.PhaseProcessEnded, _phaseProcessParams);
+            _phaseProcessParams = null;
         }
 
         private void EventSubscriptions()
         {
-            _eventBus.Subscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
-            _eventBus.Subscribe(GameplayEvent.NextTurn, NewTurn);
-            _eventBus.Subscribe(GameplayEvent.GameStart, GameStart);
+            _eventsManager.Subscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
+            _eventsManager.Subscribe(GameplayEvent.NextTurn, NewTurn);
+            _eventsManager.Subscribe(GameplayEvent.GameStart, GameStart);
+            _eventsManager.Subscribe(GameplayEvent.ShowNewStoryEvent, NewTurn);
         }
 
         public void Dispose()
         {
-            _eventBus.Unsubscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
-            _eventBus.Unsubscribe(GameplayEvent.NextTurn, GameStart);
+            _eventsManager.Unsubscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
+            _eventsManager.Unsubscribe(GameplayEvent.NextTurn, GameStart);
         }
     }
 }

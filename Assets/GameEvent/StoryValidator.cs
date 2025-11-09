@@ -96,7 +96,7 @@ namespace GameEvent
             Random random = new Random();
             var result = new List<IGameDataEvent>();
             UpdateAvailableEvents();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)     //TODO: why only 3?
             {
                 if (_availableEventsPool.Count > 0)
                 {

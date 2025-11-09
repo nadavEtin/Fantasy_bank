@@ -6,7 +6,7 @@ namespace Assets.GameCore.GameFlow
     {
         string Name { get; }
         bool IsComplete { get; }
-        event Action OnCompleted;
+        //event Action OnCompleted;
         //void StartProcess();
     }
 }

@@ -1,3 +1,4 @@
+using Assets.GameCore.GameFlow;
 using Bank;
 using DG.Tweening;
 using GameCore.EventBus;
@@ -15,14 +16,14 @@ namespace GameCore
     public enum GamePhases
     {
         ResolveReadyEvents,
-        PresentNewStoryEvent,        
+        NewTurn,        
         AdvanceEvent,
         EndPhase
     }
 
     public class GameDirector : IGameDirector, IStartable
     {
-        private readonly EventsManager _eventBus;
+        private readonly EventsManager _eventsManager;
 
         private readonly IAssetRefs _assetRefs;
         private readonly IStoriesRefs _storyRefs;
@@ -33,6 +34,7 @@ namespace GameCore
         private readonly IBankBalance _bankBalance;
         private readonly IUiManager _uiManager;
 
+        private PhaseManager _phaseManager;
         private GamePhases[] _gamePhases;
         private GamePhases _currentPhase;
 
@@ -46,12 +48,13 @@ namespace GameCore
             _storyRefs = storyRefs;
             _canvas = canvas;
             _camera = camera;
-            _eventBus = bus;
+            _eventsManager = bus;
             _bankBalance = bankBalance;
             _uiManager = uiManager;
             _geManager = eventManager;
             _gamePhases = (GamePhases[])Enum.GetValues(typeof(GamePhases));
             _currentPhase = _gamePhases[0];
+            _phaseManager = new PhaseManager(_eventsManager);
 
             _resolver = resolver;
             ComponentsSetup();
@@ -62,9 +65,9 @@ namespace GameCore
 
         private void StartGame()
         {
-            _eventBus.Publish(GameplayEvent.GameStart, new EmptyParams());
-            //_currentPhase = GamePhases.ResolveReadyEvents;
-            //GamePhaseDone(_currentPhase);
+            _eventsManager.Publish(GameplayEvent.GameStart, new EmptyParams());
+            _currentPhase = GamePhases.ResolveReadyEvents;
+            GamePhaseDone(_currentPhase);
 
         }
 
@@ -76,7 +79,7 @@ namespace GameCore
 
         private void EventSubscriptionsSetup()
         {
-            _eventBus.Subscribe(GameplayEvent.PhaseEnded, OnPhaseEnded);
+            _eventsManager.Subscribe(GameplayEvent.PhaseEnded, OnPhaseEnded);
         }
 
 
@@ -88,16 +91,16 @@ namespace GameCore
             switch (phase)
             {
                 case GamePhases.ResolveReadyEvents:
-                    _eventBus.Publish(GameplayEvent.MainPhase, new EmptyParams());
+                    _eventsManager.Publish(GameplayEvent.MainPhase, new EmptyParams());
                     break;
-                case GamePhases.PresentNewStoryEvent:
-                    
+                case GamePhases.NewTurn:
+                    _eventsManager.Publish(GameplayEvent.ShowNewStoryEvent, new EmptyParams());
                     break;
                 
                 case GamePhases.AdvanceEvent:
                     break;
                 case GamePhases.EndPhase:
-                    _eventBus.Publish(GameplayEvent.ResolveReadyEvents, new EmptyParams());
+                    _eventsManager.Publish(GameplayEvent.ResolveReadyEvents, new EmptyParams());
                     break;
                 default:
                     break;
@@ -113,7 +116,7 @@ namespace GameCore
 
         private void AdvanceTurn()
         {
-            _eventBus.Publish(GameplayEvent.NextTurn, new NextTurnEventParams());
+            _eventsManager.Publish(GameplayEvent.NextTurn, new NextTurnEventParams());
         }
 
         private void GameEventCreate()
