@@ -41,7 +41,11 @@ namespace GameCore.Utility.GeneralClasses
                     throw;
                 }                
             }
-            
+            else if (parent != null)
+            {
+                newObj.transform.SetParent(parent, false);
+            }
+
             return newObj;
         }
 

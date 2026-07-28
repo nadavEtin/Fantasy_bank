@@ -1,3 +1,4 @@
+using Assets.GameCore.EventBus;
 using Assets.GameCore.GameFlow;
 using Bank;
 using DG.Tweening;
@@ -109,8 +110,8 @@ namespace GameCore
 
         private void OnPhaseEnded(BaseEventParams eventParams)
         {
-            var eventString = (SingleParamString)eventParams;
-            var phaseName = eventString.Value;
+            var eventString = (GamePhaseParams)eventParams;
+            var phaseName = eventString.PhaseType;
             GamePhaseDone(_currentPhase);
         }
 

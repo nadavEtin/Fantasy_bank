@@ -40,28 +40,21 @@ namespace GameEvent.EventCountdown
         private void EventApproved(BaseEventParams evParams)
         {
             var eventParams = (EventApprovedParams)evParams;
-            var newCdObj = _countdownFactory.Create(_uiManager.Canvas.transform).GetComponent<IEventCountdownView>();            
+            var newCdObj = _countdownFactory.Create(_coundownContainer).GetComponent<IEventCountdownView>();
             newCdObj.Setup(eventParams.EventData);
-            newCdObj.ObjTransform.SetParent(_coundownContainer);
-            //newCdObj.ObjTransform.SetParent(_canvas.transform);
 
             _activeEventCountdowns.Add(newCdObj);
             SortCountdownViews();
         }
 
-        /*private void ResolveCountdownEvent(IGameDataEvent data)
-        {
-            
-        }*/
 
+        //currently not used
         private void SortCountdownViews()
         {
             _activeEventCountdowns = _activeEventCountdowns.OrderBy(c => c.CountdownDuration).ToList();
             var spacing = _activeEventCountdowns[0].ObjTransform.rect.size.y * 1.2f;
             for (int i = 0; i < _activeEventCountdowns.Count; i++)
-            {
-                _activeEventCountdowns[i].ObjTransform.anchoredPosition = new Vector2(0, 0 + spacing * i);
-            }
+                _activeEventCountdowns[i].SetStackIndex(i, spacing);
         }
 
         private void NewTurn(BaseEventParams evParams)

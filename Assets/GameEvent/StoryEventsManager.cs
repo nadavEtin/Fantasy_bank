@@ -33,6 +33,7 @@ namespace GameEvent
         private Dictionary<StoryType, List<IGameDataEvent>> _pendingEvents;
         private Dictionary<StoryType, List<IGameDataEvent>> _approvedEventsOnCountdown;
         private readonly GameObject _eventContainer;
+        private int _storyIndex = 0;
 
         public StoryEventsManager(IAssetRefs assetRefs, IInputManager inputManager, StoryViewFactory storyViewFactory,
             IBankBalance bankBalance, IStoriesRefs storiesRefs, Camera camera, EventsManager eventBus)
@@ -92,7 +93,8 @@ namespace GameEvent
         {
             if (_currentRoundEvents.Count > 0)
             {
-                var curStory = _currentRoundEvents[0];
+                var curStory = _currentRoundEvents[_storyIndex];
+                _storyIndex++;
                 var curStoryView = _storyViewFactory.Create(_eventContainer.transform);
                 var validation = _storyValidator.StoryEventValidationEntry(curStory);
                 curStoryView.GetComponent<IStoryCardView>().Init(curStory, EventResolution);
@@ -100,6 +102,7 @@ namespace GameEvent
             }
             else
             {
+                _storyIndex = 0;
                 //Advance to the next round?
             }
         }
@@ -115,7 +118,7 @@ namespace GameEvent
         private void EventSubscriptions()
         {
             _eventsManager.Subscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
-            _eventsManager.Subscribe(GameplayEvent.NextTurn, NewTurn);
+            //_eventsManager.Subscribe(GameplayEvent.NextTurn, NewTurn);
             _eventsManager.Subscribe(GameplayEvent.GameStart, GameStart);
             _eventsManager.Subscribe(GameplayEvent.ShowNewStoryEvent, NewTurn);
         }
@@ -123,7 +126,9 @@ namespace GameEvent
         public void Dispose()
         {
             _eventsManager.Unsubscribe(GameplayEvent.EventCountdownDone, CountdownResolution);
-            _eventsManager.Unsubscribe(GameplayEvent.NextTurn, GameStart);
+            _eventsManager.Unsubscribe(GameplayEvent.GameStart, GameStart);
+            _eventsManager.Unsubscribe(GameplayEvent.ShowNewStoryEvent, NewTurn);
+            //_eventsManager.Unsubscribe(GameplayEvent.NextTurn, GameStart);
         }
     }
 }

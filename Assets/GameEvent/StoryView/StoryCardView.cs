@@ -27,7 +27,7 @@ namespace GameEvent.StoryView
         //private IInputManager _inputManager;
         //private IBankBalance _bankBalance;
         private Action<bool, IGameDataEvent> _resolutionCb;
-        //private Camera _camera;
+        private Camera _camera;
         private EventsManager _eventBus;
 
         //private bool isDragging = false;
@@ -36,8 +36,6 @@ namespace GameEvent.StoryView
         //private Quaternion startRotation;
 
         [SerializeField] private float maxRotationAngle = 45f; // Maximum rotation angle in degrees
-
-
 
         [Header("Settings")]
         [Range(0f, 0.5f)]
@@ -67,17 +65,22 @@ namespace GameEvent.StoryView
         private Renderer _renderer;
         private Color _originalColor;
 
-        void Start()
+        [Inject]
+        private void Setup(IInputManager inputManager, IBankBalance bankBalance, IGameEventSettings settings,
+            Camera camera, EventsManager eventBus)
         {
-            _mainCamera = Camera.main;
+            _camera = camera;
+            _mainCamera = camera != null ? camera : Camera.main;
+            _eventBus = eventBus;
+        }
+
+        private void Awake()
+        {
             _renderer = GetComponent<Renderer>();
+            if (_renderer == null)
+                return;
 
-            // Clone material to avoid changing shared material
-            _renderer.material = new Material(_renderer.material);
             _originalColor = _renderer.material.color;
-
-            _startPos = transform.position;
-            CalculateMaxX();
         }
 
         public void Init(IGameDataEvent storyData, Action<bool, IGameDataEvent> resolutionCb)
@@ -87,6 +90,43 @@ namespace GameEvent.StoryView
 
             _title.text = storyData.EventTitle;
             _mainText.text = storyData.EventText;
+
+            ResetToScreenCenter();
+        }
+
+        private void EnsureRendererInitialized()
+        {
+            if (_renderer != null)
+                return;
+
+            _renderer = GetComponent<Renderer>();
+            if (_renderer == null)
+                return;
+
+            // Clone material to avoid changing shared material
+            _renderer.material = new Material(_renderer.material);
+            _originalColor = _renderer.material.color;
+        }
+
+        private void ResetToScreenCenter()
+        {
+            EnsureRendererInitialized();
+
+            if (_mainCamera == null)
+                return;
+
+            var center = _mainCamera.transform.position;
+            center.z = transform.position.z;
+            transform.position = center;
+            transform.rotation = Quaternion.identity;
+            _startPos = center;
+            _isDragging = false;
+
+            if (_renderer != null)
+            {
+                _renderer.material.color = _originalColor;
+                CalculateMaxX();
+            }
         }
 
         public void ActivateEvent(bool shouldActivate)
@@ -195,6 +235,7 @@ namespace GameEvent.StoryView
             //_gameEventManager.
             //TODO: continue process after approved loan
             _eventBus.Publish(GameplayEvent.StoryEventApproved, new EventApprovedParams(EventData));
+            _resolutionCb(true, _storyData);
             //_eventData.ResolutionCb(true, this);
 
             //temp
@@ -206,7 +247,8 @@ namespace GameEvent.StoryView
             Debug.Log("no result");
             //_pressed = false;
             //_eventData.ResolutionCb(false, this);
-
+            _eventBus.Publish(GameplayEvent.StoryEventApproved, new EventApprovedParams(EventData));
+            _resolutionCb(false, _storyData);
             //temp
             //SnapToNeutralPos();
         }
@@ -222,16 +264,5 @@ namespace GameEvent.StoryView
             ObjectPoolCb(gameObject);
         }
 
-
-        [Inject]
-        private void Setup(IInputManager inputManager, IBankBalance bankBalance, IGameEventSettings settings,
-            Camera camera, EventsManager eventBus)
-        {
-            //_camera = camera;
-            //_inputManager = inputManager;
-            //_bankBalance = bankBalance;
-            _eventBus = eventBus;
-            //_settings = settings;
-        }
     }
 }

@@ -12,5 +12,6 @@ namespace GameEvent.EventCountdown
         IGameDataEvent EventData { get; }
         void ReduceCountdown(int amount);
         void CountdownDone();
+        void SetStackIndex(int index, float spacing);
     }
 }

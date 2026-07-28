@@ -26,7 +26,7 @@ namespace Assets.GameCore.GameFlow
         private void OnPhaseStarted(BaseEventParams baseEventParams)
         {
             var phaseParams = (GamePhaseParams)baseEventParams;
-            _activePhaseName = phaseParams.PhaseName;
+            _activePhaseName = phaseParams.PhaseType;
         }
 
         private void OnPhaseEnded()
