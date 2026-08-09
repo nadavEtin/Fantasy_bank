@@ -3,11 +3,15 @@ using GameEvent;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [CreateAssetMenu(fileName = "StoriesRefs", menuName = "Scriptable Objects/Stories References")]
 public class StoriesRefs : ScriptableObject, IStoriesRefs
 {
     public Dictionary<StoryType, Dictionary<string, EventDataSerialized>> AllStories { private set; get; }
+
+    [SerializeField] private string _storiesApiUrl = "http://localhost/fantasy_bank_api/get_stories.php";
+    [SerializeField] private bool _loadFromApi = true;
 
     private string _SA_path;
     private string _eventsFileName = "EventsData.json";
@@ -29,7 +33,10 @@ public class StoriesRefs : ScriptableObject, IStoriesRefs
             { StoryType.Loan, new Dictionary<string, EventDataSerialized>() }
         };
 
-        LoadStoriesFromFile();        
+        if (_loadFromApi && TryLoadStoriesFromApi())
+            return;
+
+        LoadStoriesFromFile();
     }
 
     public void SaveStory(EventDataSerialized data, StoryType type)
@@ -102,24 +109,51 @@ public class StoriesRefs : ScriptableObject, IStoriesRefs
         return _eventsDataContainer.GetSpecificEvent(titleKey);
     }*/
 
+    // ponytail: blocks boot for localhost; swap to async InitSetup if API isn't local/fast
+    private bool TryLoadStoriesFromApi()
+    {
+        using var req = UnityWebRequest.Get(_storiesApiUrl);
+        var op = req.SendWebRequest();
+        while (!op.isDone) { }
+
+        if (req.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogWarning($"Stories API failed ({req.error}), falling back to local file.");
+            return false;
+        }
+
+        return FillStoriesFromJson(req.downloadHandler.text);
+    }
+
     private void LoadStoriesFromFile()
     {
-        if (File.Exists(_eventsFilePath))
+        if (!File.Exists(_eventsFilePath))
+            return;
+
+        FillStoriesFromJson(File.ReadAllText(_eventsFilePath));
+    }
+
+    private bool FillStoriesFromJson(string jsonString)
+    {
+        var eventsDataContainer = JsonUtility.FromJson<StoriesDataContainerObj>(jsonString);
+        if (eventsDataContainer == null)
+            return false;
+
+        AllStories[StoryType.Other].Clear();
+        AllStories[StoryType.Loan].Clear();
+
+        if (eventsDataContainer.RegularEvents != null)
         {
-            var jsonString = File.ReadAllText(_eventsFilePath);
-            var eventsDataContainer = JsonUtility.FromJson<StoriesDataContainerObj>(jsonString);
-            //TODO: make this more efficient
             foreach (var story in eventsDataContainer.RegularEvents)
-            {
                 AllStories[StoryType.Other].Add(story.key, story.value);
-            }
-            foreach (var story in eventsDataContainer.LoanEvents)
-            {
-                AllStories[StoryType.Loan].Add(story.key, story.value);
-            }
         }
-        /*else
-            _eventsDataContainer = new StoriesDataContainerObj();*/
+        if (eventsDataContainer.LoanEvents != null)
+        {
+            foreach (var story in eventsDataContainer.LoanEvents)
+                AllStories[StoryType.Loan].Add(story.key, story.value);
+        }
+
+        return true;
     }
 
     private void WriteDataToFile()

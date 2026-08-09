@@ -51,8 +51,10 @@ namespace Editor
             //separate the ids with a comma ,
             eventRequirements = EditorGUILayout.TextField("Requirements", eventRequirements);
             eventName = EditorGUILayout.TextField("Title", eventName);
+            EditorGUILayout.LabelField("Event Text");
             eventText = EditorGUILayout.TextArea(eventText, GUILayout.Height(40));
             resolutionName = EditorGUILayout.TextField("Resolution Name", resolutionName);
+            EditorGUILayout.LabelField("Resolution Text");
             resolutionText = EditorGUILayout.TextArea(resolutionText, GUILayout.Height(40));
             eventDuration = EditorGUILayout.IntField("Duration", eventDuration);
             
