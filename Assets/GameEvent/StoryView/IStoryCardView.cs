@@ -1,8 +1,4 @@
-﻿using Bank;
-using GameCore.EventBus;
-using GameCore.Input;
-using System;
-using UnityEngine;
+﻿using System;
 
 namespace GameEvent.StoryView
 {

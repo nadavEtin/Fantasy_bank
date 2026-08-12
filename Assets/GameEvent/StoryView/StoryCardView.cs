@@ -224,33 +224,34 @@ namespace GameEvent.StoryView
 
         public void OnYesResult()
         {
-            Debug.Log("yes result");
-            //_pressed = false;
+            if (_resolutionCb == null)
+                return;
+
+            var cb = _resolutionCb;
+            _resolutionCb = null;
+            _isDragging = false;
 
             //TODO: invoke yesCb that should check if theres enoguh balance in the bank
             /*var res = _bankBalance.GetGoldFromBank(_eventData.LoanPrice);
             if (res == false)
                 OnNoResult();*/
 
-            //_gameEventManager.
             //TODO: continue process after approved loan
             _eventBus.Publish(GameplayEvent.StoryEventApproved, new EventApprovedParams(EventData));
-            _resolutionCb(true, _storyData);
-            //_eventData.ResolutionCb(true, this);
-
-            //temp
-            //SnapToNeutralPos();
+            cb(true, _storyData);
         }
 
         public void OnNoResult()
         {
-            Debug.Log("no result");
-            //_pressed = false;
-            //_eventData.ResolutionCb(false, this);
-            _eventBus.Publish(GameplayEvent.StoryEventApproved, new EventApprovedParams(EventData));
-            _resolutionCb(false, _storyData);
-            //temp
-            //SnapToNeutralPos();
+            if (_resolutionCb == null)
+                return;
+
+            var cb = _resolutionCb;
+            _resolutionCb = null;
+            _isDragging = false;
+
+            _eventBus.Publish(GameplayEvent.StoryEventRefused, new EventApprovedParams(EventData));
+            cb(false, _storyData);
         }
 
         public void SetupReturnToPoolCb(Action<GameObject> cb)

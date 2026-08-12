@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.GameCore.EventBus;
 using Assets.GameCore.GameFlow;
+using Assets.GameCore.Utility.ObjectPool;
 using Assets.GameEvent.EventCardView;
 using Bank;
 using GameCore.EventBus;
@@ -24,7 +25,7 @@ namespace GameEvent
         private readonly IInputManager _inputManager;
         private readonly IBankBalance _bankBalance;
         private IStoryValidator _storyValidator;
-        private StoryViewFactory _storyViewFactory;
+        private IStoryCardViewFactory _storyViewFactory;
         private Camera _camera;
         private EventsManager _eventsManager;
 
@@ -33,17 +34,18 @@ namespace GameEvent
         private Dictionary<StoryType, List<IGameDataEvent>> _pendingEvents;
         private Dictionary<StoryType, List<IGameDataEvent>> _approvedEventsOnCountdown;
         private readonly GameObject _eventContainer;
+        private IStoryCardView _currentStoryView;
         private int _storyIndex = 0;
 
-        public StoryEventsManager(IAssetRefs assetRefs, IInputManager inputManager, StoryViewFactory storyViewFactory,
-            IBankBalance bankBalance, IStoriesRefs storiesRefs, Camera camera, EventsManager eventBus)
+        public StoryEventsManager(IAssetRefs assetRefs, IInputManager inputManager, IStoryCardViewFactory storyViewFactory,
+            IBankBalance bankBalance, RoundSettings roundSettings, Camera camera, EventsManager eventBus)
         {
             _assetRefs = assetRefs;
             _inputManager = inputManager;
             _bankBalance = bankBalance;
             _storyViewFactory = storyViewFactory;
             _currentRoundEvents = new List<IGameDataEvent>();
-            _storyValidator = new StoryValidator(bankBalance, storiesRefs);
+            _storyValidator = new StoryValidator(bankBalance, roundSettings);
             _camera = camera;
             _eventsManager = eventBus;
             _pendingEvents = new Dictionary<StoryType, List<IGameDataEvent>>();
@@ -58,7 +60,7 @@ namespace GameEvent
         public void EventValidation(IGameDataEvent data)
         {
             _storyValidator.StoryEventValidationEntry(data);
-        }        
+        }
 
         private void CountdownResolution(BaseEventParams events)
         {
@@ -83,6 +85,7 @@ namespace GameEvent
         //show a new story event to the player
         private void NewTurn(BaseEventParams eventParams = null)
         {
+            _storyIndex = 0;
             _currentRoundEvents = _storyValidator.GetStoriesForCurrentTurn();
             _phaseProcessParams = new PhaseProcessStartOrEndParams(new PhaseProcess(STORY_EVENT_PHASE_NAME));
             _eventsManager.Publish(GameplayEvent.PhaseProcessStarted, _phaseProcessParams);
@@ -91,19 +94,24 @@ namespace GameEvent
 
         private void NextStory()
         {
-            if (_currentRoundEvents.Count > 0)
+            if (_storyIndex < _currentRoundEvents.Count)
             {
                 var curStory = _currentRoundEvents[_storyIndex];
                 _storyIndex++;
-                var curStoryView = _storyViewFactory.Create(_eventContainer.transform);
+                _currentStoryView = _storyViewFactory.CreateNewStoryCardView(_eventContainer.transform);
+                if (_currentStoryView == null)
+                {
+                    Debug.LogError("failed to create new story view");
+                    return;
+                }
+
                 var validation = _storyValidator.StoryEventValidationEntry(curStory);
-                curStoryView.GetComponent<IStoryCardView>().Init(curStory, EventResolution);
-                curStoryView.GetComponent<IStoryCardView>().ActivateEvent(validation);
+                _currentStoryView.Init(curStory, EventResolution);
+                _currentStoryView.ActivateEvent(validation);
             }
             else
             {
                 _storyIndex = 0;
-                //Advance to the next round?
             }
         }
 
@@ -111,6 +119,24 @@ namespace GameEvent
         {
             if (approved && curEvent != null)
                 _approvedEventsOnCountdown[curEvent.EventType].Add(curEvent);
+
+            if (_currentStoryView != null)
+            {
+                ((IPoolable)_currentStoryView)?.ExecutePoolCb();
+                _currentStoryView = null;
+            }
+
+            if (_storyIndex < _currentRoundEvents.Count)
+            {
+                NextStory();
+                return;
+            }
+
+            _storyIndex = 0;
+            _currentRoundEvents.Clear();
+            if (_phaseProcessParams == null)
+                return;
+
             _eventsManager.Publish(GameplayEvent.PhaseProcessEnded, _phaseProcessParams);
             _phaseProcessParams = null;
         }

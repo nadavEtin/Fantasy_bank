@@ -22,6 +22,7 @@ namespace VContainer
     {
         [SerializeField] private AssetRefs _assetRefs;
         [SerializeField] private GameEventSettings _eventSettings;
+        [SerializeField] private RoundSettings _roundSettings;
         [SerializeField] private StoriesRefs _storyRefs;
         [SerializeField] private CanvasRefs _canvasRefs;
 
@@ -33,6 +34,7 @@ namespace VContainer
             
             builder.RegisterInstance<IAssetRefs, AssetRefs>(_assetRefs);
             builder.RegisterInstance<IGameEventSettings, GameEventSettings>(_eventSettings);
+            builder.RegisterInstance<RoundSettings>(_roundSettings);
             builder.RegisterInstance<IStoriesRefs, StoriesRefs>(_storyRefs);
             builder.RegisterInstance<ICanvasRefs, CanvasRefs>(_canvasRefs);
 
@@ -66,7 +68,7 @@ namespace VContainer
         {
             _containerBuilder.Register<EventCountdownFactory>(Lifetime.Singleton);
             _containerBuilder.Register<EventResolutionViewFactory>(Lifetime.Singleton);
-            _containerBuilder.Register<StoryViewFactory>(Lifetime.Singleton);
+            _containerBuilder.Register<StoryViewFactory>(Lifetime.Singleton).AsImplementedInterfaces();
             //TODO: check if this is needed after using implemented intefaces
             /*_containerBuilder.RegisterBuildCallback(container =>
             {

@@ -1,6 +1,5 @@
 ﻿using Bank;
-using GameCore.Utility.Jsons;
-using GameEvent.StoryView;
+using GameCore.ScriptableObjects;
 using GameEvent.LoanEvent;
 using System;
 using System.Collections.Generic;
@@ -10,44 +9,55 @@ namespace GameEvent
 {
     public class StoryValidator : IStoryValidator
     {
+        private const int GeneratedEventIdStart = 1000;
+
         private IBankBalance _bankBalance;
-        private IStoriesRefs _storyRefs;
+        private RoundSettings _roundSettings;
 
         private List<int> _completedEvents;
-        //private Dictionary<StoryType, Dictionary<int, EventDataSerialized>> _unavailableEvents;
         private List<IGameDataEvent> _unavailableEvents;
         private List<IGameDataEvent> _availableEventsPool;
 
-        public StoryValidator(IBankBalance bankBalance, IStoriesRefs storyRefs)
+        private Random _random;
+
+        public StoryValidator(IBankBalance bankBalance, RoundSettings roundSettings)
         {
             _completedEvents = new List<int>();
             _unavailableEvents = new List<IGameDataEvent>();
             _availableEventsPool = new List<IGameDataEvent>();
             _bankBalance = bankBalance;
-            _storyRefs = storyRefs;
-            //_unavailableEvents = _storyRefs.AllStories;            
+            _roundSettings = roundSettings;
+            _random = new Random();           
         }
 
         public void GameStart()
         {
-            foreach (var storyType in _storyRefs.AllStories)
+            _completedEvents.Clear();
+            _unavailableEvents.Clear();
+            _availableEventsPool.Clear();
+
+            for (var i = 0; i < _roundSettings.EventsPerRound; i++)
             {
-                switch (storyType.Key)
-                {
-                    case StoryType.Other:
-                        break;
-                    case StoryType.Loan:
-                        foreach (var story in storyType.Value.Values)
-                        {
-                            var loan = (LoanStoryDataSerialized)story;
-                            var loanData = new LoanGameEventData(loan, loan.loanCost, loan.chanceOfSuccess);
-                            _unavailableEvents.Add(loanData);
-                        }
-                        break;
-                    default:
-                        break;
-                }                
+                var cost = Roll(_roundSettings.MinLoanCost, _roundSettings.MaxLoanCost);
+                var successChance = Roll(_roundSettings.MinSuccessChance, _roundSettings.MaxSuccessChance);
+                var duration = Roll(_roundSettings.MinDuration, _roundSettings.MaxDuration);
+                var eventText = $"Cost: {cost}\nSuccess chance: {successChance}%\nDuration: {duration} turns";
+
+                _unavailableEvents.Add(new LoanGameEventData(
+                    GeneratedEventIdStart + i,
+                    eventText,
+                    $"Loan Offer #{i + 1}",
+                    "Loan Completed",
+                    "The loan has reached its resolution.",
+                    duration,
+                    null,
+                    _bankBalance,
+                    cost,
+                    successChance,
+                    StoryType.Loan,
+                    Array.Empty<int>()));
             }
+
             UpdateAvailableEvents();
         }
 
@@ -92,15 +102,14 @@ namespace GameEvent
         }
 
         public List<IGameDataEvent> GetStoriesForCurrentTurn()
-        {
-            Random random = new Random();
+        {            
             var result = new List<IGameDataEvent>();
             UpdateAvailableEvents();
-            for (int i = 0; i < 3; i++)     //TODO: why only 3?
+            for (int i = 0; i < _roundSettings.EventsPerRound; i++)
             {
                 if (_availableEventsPool.Count > 0)
                 {
-                    var rnd = random.Next(_availableEventsPool.Count - 1);
+                    var rnd = _random.Next(_availableEventsPool.Count);
                     result.Add(_availableEventsPool[rnd]);
                     _availableEventsPool.RemoveAt(rnd);
                 }
@@ -132,6 +141,11 @@ namespace GameEvent
         {
             var loanData = (ILoanGameDataEvent)eventData;
             return _bankBalance.GoldBalance >= loanData.LoanPrice;
+        }
+
+        private int Roll(int min, int max)
+        {
+            return _random.Next(min, max + 1);
         }
     }
 }

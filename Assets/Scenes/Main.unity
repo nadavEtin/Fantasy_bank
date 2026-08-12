@@ -280,6 +280,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _assetRefs: {fileID: 11400000, guid: fab4aff44b4f55748940874f946b567b, type: 2}
   _eventSettings: {fileID: 11400000, guid: b06a2533ab72a1a4794f106572a20f1f, type: 2}
+  _roundSettings: {fileID: 11400000, guid: a59b2d9a62b04dc4a6dbd4b3f99e12e7, type: 2}
   _storyRefs: {fileID: 11400000, guid: 8d2fe8ddc6edd244a971dc03703bcc8b, type: 2}
   _canvasRefs: {fileID: 1125130134}
 --- !u!4 &393446630

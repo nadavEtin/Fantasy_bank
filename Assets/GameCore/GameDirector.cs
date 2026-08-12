@@ -96,8 +96,7 @@ namespace GameCore
                     break;
                 case GamePhases.NewTurn:
                     _eventsManager.Publish(GameplayEvent.ShowNewStoryEvent, new EmptyParams());
-                    break;
-                
+                    break;              
                 case GamePhases.AdvanceEvent:
                     break;
                 case GamePhases.EndPhase:
